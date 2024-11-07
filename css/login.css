@@ -1,0 +1,155 @@
+ *{
+    padding: 0;
+    margin: 0;
+}
+body{
+    background-image: url(/assests/photos/backgroundImage1.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
+.container{
+    display: grid;
+    grid-template-rows:30% 70%;
+}
+
+.logobox{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.logobox marquee{
+    color: white;
+    background: none;
+    position: absolute;
+    top: 200px;
+    font-size: 30px;
+    height: 50px;
+    width: 300px;
+}
+
+.logo{
+    height:300px;
+    width: 300px;
+    background: none;
+}
+
+.formbox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+}
+
+.box {
+    width: 330px;
+    height: 450px;
+}
+
+form{
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: 20px;
+    line-height: 50px;
+    background-image: url(../assests/photos/FormBackgroung\ Image.jpg);
+    opacity: 0.9;
+}
+
+form div{
+    display: flex;
+    flex-direction: column;
+    color: white;
+    background: none;
+}
+label{
+    background: none;
+}
+
+form div input{
+    width: 250px;
+    height: 20px;
+    border-radius: 10px;
+    background: rgba(226, 231, 233, 0.242);
+    box-shadow: 0 25px 45px rgba(251, 250, 250, 0.2);
+    border-radius: 10px;
+    border: 2px solid rgba(194, 192, 192, 0.5);
+    border-right: 2px solid rgba(255, 255, 255, .2);
+    border-bottom: 2px solid rgba(255, 255, 255, .2);
+    backdrop-filter: blue(10px);
+    padding: 10px;
+    color: white;
+}
+span{
+    background: none;
+}
+
+span a {
+    background: none;
+    color: #4dbcc0;
+    margin-left: 10px;
+}
+span a:hover{
+    color: crimson;
+
+}
+
+#login{
+    color: black;
+    font-weight: bold;
+    width: 270px;
+    height: 40px;
+    padding: 10px;
+    border-radius: 10px;
+    background: none;
+    background-color: #4dbcc0;
+    border: 10px #4dbcc0;
+}
+#login:hover{
+    background-color: aquamarine;
+}
+::placeholder {
+    color:#4dbcc0;
+}
+input:focus{
+  outline: none;
+}
+
+
+.messageDiv{
+    background-color:#4dbcc0;
+    color: black;
+    display: none;
+    padding: 2px 5px;
+    margin: 10px;
+    border-radius: 10px;
+    font-size: 1rem;
+    opacity: 0;
+    animation: fadeOut 7s forwards;
+    font-weight: bold;
+}
+.emailError{
+    color: red;
+}
+
+.passwordError{
+    color: red;
+}
+@media screen and (max-width:480px){
+    body{
+        background-image: url(../assests/photos/backgroundImage1.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 100vh;
+    }
+    marquee{
+        display: none;
+    }
+}
+ 
+
+

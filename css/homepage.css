@@ -1,0 +1,181 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+aside{
+    height: 100vh;
+    width: 25vw;
+    /* background-color:#4dbcc0; */
+    background-color: #0cc0df;
+    margin-top: 0;
+    top: 0;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
+
+main{
+    margin-left: 25%;
+}
+
+
+header{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    /* background-color: #4dbcc0; */
+    background-color: #0cc0df;
+    height: 7vh;
+    width: 75%;
+    margin-top: 0;
+    top: 0;
+    position: fixed;
+}
+
+aside{
+    height: 100vh;
+    width: 25vw;
+    position: fixed;
+}
+
+aside span{
+    font-size: 40px;
+}
+
+.main{
+    background-image: url(../assests/photos/FormBackgroung\ Image.jpg);
+    background-repeat: no-repeat;
+    background-size:100% 100%;
+    background-attachment: fixed;
+    display: grid;
+    grid-template-columns: 60% 40%;
+   
+
+}
+
+
+.feed{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 7vh;
+    
+}
+.ad{
+    display: flex;
+    justify-content: center;
+    
+}
+
+.ad1{
+    height:80vh;
+    width: 25vw;
+    /* background-color:#323EDD; */
+    background-color: #0cc0df;
+    margin-top: 100px;
+    position: fixed;
+}
+
+.box{
+    height: 400px;
+    width: 600px;
+    background-color:#F6F5F5;
+    margin: 10px;
+}
+
+/* .nav{
+    display: flex;
+    box-sizing: border-box;
+    padding: 15px 70px 15px 70px;
+    background-color: blueviolet;
+    border-radius: 20px;
+} */
+
+i{
+    margin-right: 15px;
+}
+
+
+
+#Logout{
+    background-color:#323EDD;
+    padding: 15px 70px 15px 70px;
+    color: white;
+    font-size: 25px;
+    border-radius: 20px;
+    border: none;
+}
+.messageIcon{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.hello{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.messageIcon i{
+    margin-left: 5px;
+    margin-right: 20px;
+}
+
+.hello span{
+    margin-left: 10px;
+    font-size: 25px;
+}
+
+
+a{
+    color: aliceblue;
+    text-decoration: none;
+    font-size: 25px;
+    box-sizing: border-box;
+    padding: 15px 70px 15px 70px;
+    background-color:#323EDD;
+    border-radius: 20px;
+}
+
+a i{
+   color: aliceblue;
+   margin-right: 15px;
+}
+
+.box{
+    display: grid;
+    grid-template-rows: 15% 70% 15%;
+}
+
+.profilePicture{
+    background-color:aquamarine;
+}
+
+.like{
+    background-color: aquamarine;
+}
+
+.LikeYes{
+    font-size: 30px;
+    background: none;
+    border: none;
+    color: red;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
