@@ -126,6 +126,7 @@ function showMessage(message, divId) {
     messageDiv.style.opacity = 1;
     setTimeout(() => {
         messageDiv.style.opacity = 0;
+        messageDiv.style.display = "none";
     }, 5000);
 }
 

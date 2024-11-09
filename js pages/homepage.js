@@ -21,6 +21,8 @@ const logout = document.getElementById('Logout')
 logout.addEventListener('click', () => {
     auth.signOut()
         .then(() => {
+            alert("Are you sure LogOut LinkUp ")
+
             console.log("User signed out.");
             window.location.href = "../index.html"
             localStorage.removeItem('uid');
@@ -31,13 +33,6 @@ logout.addEventListener('click', () => {
         });
 });
 
-const likeButton = document.querySelectorAll(".Likeyes");
-for(i=0; i<likeButton.length; i++){
-    likeButton[i].setAttribute(id, i);
 
-    likeButton[i].addEventListener("click",() =>{
-        likeButton[i].textContent.removeItem();
-        likeButton[i].setAttribute("cll")
-    })
-}
+
 
