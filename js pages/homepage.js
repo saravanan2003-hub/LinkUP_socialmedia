@@ -33,6 +33,23 @@ logout.addEventListener('click', () => {
         });
 });
 
+const LogoutRes = document.getElementById("LogoutRes");
+LogoutRes.addEventListener('click', () => {
+    auth.signOut()
+        .then(() => {
+            alert("Are you sure LogOut LinkUp ")
+
+            console.log("User signed out.");
+            window.location.href = "../index.html"
+            localStorage.removeItem('uid');
+            localStorage.clear();
+        })
+        .catch((error) => {
+            console.error("Error signing out: ", error);
+        });
+});
+
+
 
 
 

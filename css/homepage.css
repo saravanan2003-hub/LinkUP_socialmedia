@@ -282,17 +282,24 @@ footer{
         
     }
 
-    #Logout{
+    #LogoutRes{
         padding: 0;
         background: none;
         font-size: 40px;
         color: black;
+        border: none;
     }
 
     footer a i{
         font-size: 40px;
         color: black;
     }
+
+    a:hover{
+        display: none;
+    }
+
+    
 
 
 }
