@@ -1,14 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <script type="module" src="../js pages/post.js"></script>
     <link rel="stylesheet" href="../css/post.css">
 </head>
+
 <body>
-    <input type="file" name="" id="upload">
-    <button id="uploadBtn">upload</button>
+
+    <aside>
+        <span><img src="../assests/photos/linkup name img.png" alt=""></span>
+        <a href="./homepage.html" class="active"><i class="fa-solid fa-house"></i><span>Home</span></a>
+        <a href="./profile.html"><i class="fa-solid fa-user"></i><span>Profile</span></a>
+        <a href="./post.html"><i class="fa-solid fa-plus"></i><span>Post</span></a>
+        <button id="Logout"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></button>
+    </aside>
+
+
+    <div class="mainSection">
+        <header>
+            <div class="hello">
+                <span id="nameDisplay">Hello Saravanan</span>
+            </div>
+
+            <div class="messageIcon">
+                <button><i class="fa-solid fa-magnifying-glass"></i></button>
+                <button><i class="fa-solid fa-comments"></i></button>
+            </div>
+        </header>
+
+        <main>
+            <section class="postSection">
+                <div><img id="showImg"></div>
+                <input type="file" name="" id="upload">
+                <button id="uploadBtn">upload</button>
+            </section>
+
+            <footer>
+                <a href="./homepage.html" class="active"><i class="fa-solid fa-house"></i><p>Home</p></a>
+                <a href="./profile.html"><i class="fa-solid fa-user"></i><p>Profile</p></a>
+                <a href="./post.html"><i class="fa-solid fa-plus"></i><p>Post</p></a>
+                <button id="LogoutPost"><i class="fa-solid fa-right-from-bracket"></i><p>Logout</p></button>
+            </footer>
+        </main>
+    </div>
+
+    
 </body>
+
 </html>

@@ -2,12 +2,28 @@
     padding: 0;
     margin: 0;
 }
+header{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    /* background-color: #4dbcc0; */
+    /* background-color: #0cc0df; */
+    /* background-color:black; */
+    background-color: #252734;
+    height: 7vh;
+    width: 79%;
+    margin-top: 0;
+    top: 0;
+    position: fixed;
+    margin-left: 10px;
+    border-bottom: 2px solid white;
+}
 
 aside{
     height: 100vh;
-    width: 25vw;
+    width: 20vw;
     /* background-color:#4dbcc0; */
-    background-color: #0cc0df;
+    /* background-color: #0B192C; */
+    background-color: #333647;
     margin-top: 0;
     top: 0;
     position: fixed;
@@ -15,38 +31,22 @@ aside{
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    border-right: 2px solid white;
 
 }
 
 main{
-    margin-left: 25%;
+    margin-left: 20%;
 }
 
 
-header{
-    display: grid;
-    grid-template-columns: 50% 50%;
-    /* background-color: #4dbcc0; */
-    background-color: #0cc0df;
-    height: 7vh;
-    width: 75%;
-    margin-top: 0;
-    top: 0;
-    position: fixed;
-}
 
-aside{
-    height: 100vh;
-    width: 25vw;
-    position: fixed;
-}
+
+
 
 aside span img{
     height: 80px;
     width: 200px;
-   
-    
-    
 }
 
 
@@ -55,9 +55,10 @@ aside span img{
     background-repeat: no-repeat;
     background-size:100% 100%; */
 
-    background-color: black;
+    /* background-color: black; */
+    background-color: #252734;
     display: grid;
-    grid-template-columns: 60% 40%;
+    grid-template-columns: 2fr 1fr;
    
 
 }
@@ -69,29 +70,41 @@ aside span img{
     justify-content: space-evenly;
     align-items: center;
     margin-top: 7vh;
-    
+    border-right: 2px solid white;
 }
-.ad{
-    display: flex;
-    justify-content: center;
     
-}
+
 
 .ad1{
     height:80vh;
     width: 25vw;
     /* background-color:#323EDD; */
-    background-color: #0cc0df;
+    /* background-color: #0cc0df; */
+    /* background-color:#19D3DA; */
     margin-top: 100px;
     position: fixed;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
 }
+
+.ad1 div{
+    margin-left: 30px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
 
 .box{
     height: 400px;
     width: 600px;
-    background-color:#212121;
+    /* background-color:#212121; */
+    background-color: #333647;
     margin: 10px;
 }
+
 
 
 
@@ -102,9 +115,10 @@ i{
 
 
 #Logout{
-    background-color:#323EDD;
+    /* background-color:#323EDD; */
+    background: radial-gradient(circle,#1d8b8b,#12ceda 100%);
     padding: 15px 70px 15px 70px;
-    color: white;
+    color: black;
     font-size: 25px;
     border-radius: 20px;
     border: none;
@@ -125,6 +139,7 @@ i{
     margin-left: 5px;
     margin-right: 20px;
     font-size: 20px;
+    color: white;
 }
 
 .messageIcon button{
@@ -135,21 +150,24 @@ i{
 .hello span{
     margin-left: 10px;
     font-size: 25px;
+    color: white;
 }
 
 
 aside a{
-    color: aliceblue;
+    color: black;
     text-decoration: none;
     font-size: 25px;
     box-sizing: border-box;
     padding: 15px 70px 15px 70px;
-    background-color:#323EDD;
+    /* background-color:#323EDD; */
+    /* background-color: #12ceda; */
+    background: radial-gradient(circle,#1d8b8b,#12ceda 100%);
     border-radius: 20px;
 }
 
 a i{
-   color: aliceblue;
+   color: black;
    margin-right: 15px;
 }
 
@@ -165,7 +183,8 @@ a i{
 
 
 .profilePicture{
-    background-color:#212121;
+    /* background-color:#212121; */
+    background-color: #333647;
     border-bottom: 1px white solid;
     display: flex;
     justify-content: flex-start;
@@ -177,7 +196,8 @@ a i{
     margin-left: 20px;
 }
 .like{
-    background-color: #212121;
+    /* background-color: #212121; */
+    background-color: #333647;
     border-top: 1px white solid;
     display: flex;
     justify-content:flex-start;
@@ -207,26 +227,37 @@ a i{
 }
 
 aside a:hover{
-    background-color:#050C9C;
+    background: radial-gradient(circle,#12ceda,#1d8b8b 100%);
 }
 
 aside a:focus{
-    background-color: #050C9C;
+    background: radial-gradient(circle,#12ceda,#1d8b8b 100%);
 }
 
 #Logout:hover{
-    background-color: #050C9C;
+    background: radial-gradient(circle,#12ceda,#1d8b8b 100%);
 }
 #Logout :focus{
-    background-color: #050C9C;
+    background: radial-gradient(circle,#12ceda,#1d8b8b 100%);
 }
 
 footer{
+   bottom: 0;
+   height:7vh;
+   width: 10vw;
+   background-color: #252734;
+}
+
+footer button{
     display: none;
 }
 
 
-@media screen and (max-width:720px){
+
+
+
+
+/* @media screen and (max-width:720px){
     .container{
        display: none;
     }
@@ -245,11 +276,14 @@ footer{
    header{
     height: 7%;
     width: 100%;
+    margin: 0;
    }
+   
 
    main{
     margin: 0;
     margin-top: 5vh;
+    margin-bottom: 10vh;
    }
    main .feed{
    display: grid;
@@ -262,47 +296,163 @@ footer{
    }
 
    footer{
-    display: block;
+   
     bottom: 0;
     height: 7%;
     width: 100%;
     position: fixed;
-    background-color: #0cc0df;
+    background-color:#252734;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    
    }
 
-   footer a p{
-    display: none;
-    }
-
-    footer button p{
-        display: none;
-        
+    footer button{
+        display: block;
     }
 
     #LogoutRes{
         padding: 0;
         background: none;
         font-size: 40px;
-        color: black;
+        color: white;
         border: none;
     }
 
     footer a i{
         font-size: 40px;
-        color: black;
+        color:white;
     }
 
     a:hover{
         display: none;
     }
 
+    .feed{
+        border: 0;
+    }
+
     
 
 
+} */
+
+
+/* Media Query for Mobile Devices (max-width: 720px) */
+@media screen and (max-width: 720px) {
+
+    /* Hide the aside (sidebar) section */
+    aside {
+        display: none;
+    }
+
+    /* Hide ad section */
+    
+    .ad1 {
+        display: none;
+    }
+
+    /* Full-width header for mobile view */
+    header {
+        height: 10vh;
+        width: 100%;
+        margin: 0;
+        top: 0;
+        left: 0;
+        position: fixed;
+        z-index: 10;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 10px;
+    }
+
+    /* Adjust the main content for mobile view */
+    main{
+        margin: 0;
+        margin-top: 5vh;
+        margin-bottom: 10vh;
+       }
+       main .feed{
+       display: grid;
+       }
+    
+       .container{
+        display: grid;
+        grid-template-rows: 7% 83% 10%;
+        grid-template-columns: none;
+       }
+
+    /* Footer as a bottom navigation bar */
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 10vh;
+        background-color: #252734;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 10;
+        border-top: 1px solid white;
+    }
+
+    /* Footer navigation links */
+    footer a {
+        display: block;
+        color: white;
+        font-size: 25px;
+        text-decoration: none;
+        background: none;
+        border: none;
+    }
+
+    #LogoutRes {
+        font-size: 25px;
+        color: white;
+        border: none;
+        background: none;
+        display: block; /* Ensure it is visible */
+    }
+
+
+    /* Footer icon styling */
+    footer a i {
+        font-size: 25px;
+        color: white;
+    }
+
+    footer button i{
+        font-size: 25px;
+        color: white;  
+    }
+
+    /* Remove hover effect on mobile */
+    a:hover {
+        background: none;
+    }
+
+   
+
+
+
+    /* Logout button adjustments */
+    #Logout:hover {
+        background: none;
+    }
+
+    /* Hide unnecessary hover effects */
+    aside a:hover {
+        display: none;
+    }
+
+    .feed{
+        border: 0;
+    }
 }
+
+
 
 
 

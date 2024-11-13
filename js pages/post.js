@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getFirestore, setDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -17,6 +18,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
+const auth1 = getAuth(app);
 const uploadBtn = document.getElementById("uploadBtn");
 
 uploadBtn.addEventListener("click", () =>{
@@ -42,3 +44,37 @@ async function uploadImage(){
         console.error("Error Uploading Image:" , error);
     }
 }
+
+const upload = document.getElementById("upload");
+const showImg = document.getElementById("showImg");
+
+upload.addEventListener("change", () => {
+    const file = upload.files[0];
+
+    if (file && file.type.startsWith("image/")) {
+        const imageUrl = URL.createObjectURL(file);
+        showImg.setAttribute("src", imageUrl);
+    } else {
+        alert("Please upload a valid image file.");
+    }
+});
+
+
+const LogoutPost = document.getElementById("LogoutPost");
+LogoutPost.addEventListener('click', () => {
+    auth1.signOut()
+        .then(() => {
+            alert("Are you sure LogOut LinkUp ")
+
+            console.log("User signed out.");
+            window.location.href = "../index.html"
+            localStorage.removeItem('uid');
+            localStorage.clear();
+        })
+        .catch((error) => {
+            console.error("Error signing out: ", error);
+        });
+});
+
+
+
