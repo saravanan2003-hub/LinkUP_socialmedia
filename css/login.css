@@ -57,7 +57,7 @@ form{
     border-radius: 20px;
     line-height: 50px;
     background-image: url(../assests/photos/FormBackgroung\ Image.jpg);
-    opacity: 0.9;
+    opacity: 1;
 }
 
 form div{
@@ -108,6 +108,7 @@ span a:hover{
     background: none;
     background-color: #4dbcc0;
     border: 10px #4dbcc0;
+    cursor: pointer;
 }
 #login:hover{
     background-color: aquamarine;
@@ -133,11 +134,28 @@ input:focus{
     font-weight: bold;
 }
 .emailError{
-    color: red;
+    color: crimson;
 }
 
 .passwordError{
-    color: red;
+    color: crimson;
+}
+
+#eye{
+    font-size: 20px;
+    color: black;
+    z-index: 10;
+    position: relative;
+    bottom: 45px;
+    left: 240px;
+    cursor: pointer;
+}
+
+.eye{
+    margin: 0;
+    padding: 0;
+    width: 0;
+    height: 0;
 }
 @media screen and (max-width:480px){
     body{

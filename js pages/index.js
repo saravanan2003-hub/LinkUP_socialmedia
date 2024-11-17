@@ -32,9 +32,54 @@ function showMessage(message, divId) {
     }, 5000);
 }
 
+
+// const eye = document.getElementById("eye");
+
+// eye.addEventListener("click", () => {
+//     const passwordInput = document.getElementById("Login-password");
+//     const eyeIcon = document.getElementById("eye");
+
+//     // Toggle the password visibility
+//     if (passwordInput.type === "password") {
+//         passwordInput.type = "text";
+//         eyeIcon.classList.remove("fa-eye-slash");
+//         eyeIcon.classList.add("fa-eye");
+//     } else {
+//         passwordInput.type = "password";
+//         eyeIcon.classList.remove("fa-eye");
+//         eyeIcon.classList.add("fa-eye-slash");
+
+//     }
+
+
+// });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const eyeIcon = document.getElementById("eye");
+    const passwordInput = document.getElementById("Login-password");
+
+    eyeIcon.addEventListener("click", () => {
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            eyeIcon.classList.remove("fa-eye");
+            eyeIcon.classList.add("fa-eye-slash")
+           
+        } else {
+            passwordInput.type = "password";
+            eyeIcon.classList.remove("fa-eye-slash");
+            eyeIcon.classList.add("fa-eye");
+        }
+    });
+});
+
+
+
 // Validate login inputs function
 function validateLoginInputs() {
-    let isValid = true; // Assume valid initially
+    let isValid = true; // Assume valid 
+    
+    
 
     const emailInput = document.getElementById("Login-Email");
     const passwordInput = document.getElementById("Login-password");

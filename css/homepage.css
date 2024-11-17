@@ -242,101 +242,15 @@ aside a:focus{
 }
 
 footer{
+    display: none;
    bottom: 0;
    height:7vh;
    width: 10vw;
    background-color: #252734;
 }
 
-footer button{
-    display: none;
-}
 
 
-
-
-
-
-/* @media screen and (max-width:720px){
-    .container{
-       display: none;
-    }
-
-    aside{
-        display: none;
-        background: none;
-        border: none;
-
-    }
-   .ad{
-    display: none;
-    background: none;
-    border: none;}
-
-   header{
-    height: 7%;
-    width: 100%;
-    margin: 0;
-   }
-   
-
-   main{
-    margin: 0;
-    margin-top: 5vh;
-    margin-bottom: 10vh;
-   }
-   main .feed{
-   display: grid;
-   }
-
-   .container{
-    display: grid;
-    grid-template-rows: 7% 83% 10%;
-    grid-template-columns: none;
-   }
-
-   footer{
-   
-    bottom: 0;
-    height: 7%;
-    width: 100%;
-    position: fixed;
-    background-color:#252734;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    
-   }
-
-    footer button{
-        display: block;
-    }
-
-    #LogoutRes{
-        padding: 0;
-        background: none;
-        font-size: 40px;
-        color: white;
-        border: none;
-    }
-
-    footer a i{
-        font-size: 40px;
-        color:white;
-    }
-
-    a:hover{
-        display: none;
-    }
-
-    .feed{
-        border: 0;
-    }
-
-    
-
-
-} */
 
 
 /* Media Query for Mobile Devices (max-width: 720px) */

@@ -1,0 +1,132 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+header{
+    display: grid;
+    grid-template-columns: 50% 50%; 
+    /* background-color: #252734; */
+    height: 7vh;
+    width: 80vw;
+    margin-top: 0;
+    top: 0;
+    position: fixed;
+    margin-left: 2px;
+    border-bottom: 2px solid white;
+    margin-left: 20vw;
+    
+}
+
+
+aside{
+    height: 100vh;
+    width: 20vw;
+    background-color: #333647;
+    margin-top: 0;
+    top: 0;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    border-right: 2px solid white;
+
+}
+
+.postSection{
+    margin-top:7vh;
+}
+
+.messageIcon{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.hello{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#nameDisplay{
+    margin-left: 40px;
+}
+.messageIcon button{
+    
+    margin-right: 20px;
+    background: none;
+    border: none;
+    color: white;
+}
+
+.messageIcon button i{
+    color: white;
+    font-size: 20px;
+    z-index: 1;
+}
+
+
+
+.hello span{
+    margin-left: 10px;
+    font-size: 25px;
+    color: white;
+}
+
+aside span img{
+    height: 80px;
+    width: 200px;
+}
+
+aside a{
+    color: black;
+    text-decoration: none;
+    font-size: 25px;
+    box-sizing: border-box;
+    padding: 15px 70px 15px 70px;
+    /* background-color:#323EDD; */
+    /* background-color: #12ceda; */
+    background: radial-gradient(circle,#1d8b8b,#12ceda 100%);
+    border-radius: 20px;
+}
+
+a i{
+   color: black;
+   margin-right: 15px;
+}
+
+aside a:hover{
+    background: radial-gradient(circle,#12ceda,#1d8b8b 100%);
+}
+
+aside a:focus{
+    background: radial-gradient(circle,#12ceda,#1d8b8b 100%);
+}
+
+#Logout:hover{
+    background: radial-gradient(circle,#12ceda,#1d8b8b 100%);
+}
+#Logout :focus{
+    background: radial-gradient(circle,#12ceda,#1d8b8b 100%);
+}
+
+
+
+#Logout{
+    /* background-color:#323EDD; */
+    background: radial-gradient(circle,#1d8b8b,#12ceda 100%);
+    padding: 15px 70px 15px 70px;
+    color: black;
+    font-size: 25px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.mainSection{
+     display: grid;
+    grid-template-rows: 10% 90%;
+
+}

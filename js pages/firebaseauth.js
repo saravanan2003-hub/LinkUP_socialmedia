@@ -21,11 +21,30 @@ const analytics = getAnalytics(app);
 const auth = getAuth();
 const db = getFirestore();
 
+document.addEventListener("DOMContentLoaded", () => {
+    const eyeIcon = document.getElementById("eyeC");
+    const passwordInput = document.getElementById("password");
+
+    eyeIcon.addEventListener("click", () => {
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            eyeIcon.classList.remove("fa-eye");
+            eyeIcon.classList.add("fa-eye-slash")
+           
+        } else {
+            passwordInput.type = "password";
+            eyeIcon.classList.remove("fa-eye-slash");
+            eyeIcon.classList.add("fa-eye");
+        }
+    });
+});
+
 // Form elements
 const form = document.querySelector('#form');
 const username = document.querySelector('#username');
 const emailInput = document.querySelector('#Email');
 const password = document.querySelector('#password');
+const Cpass = document.getElementById("CPass");
 
 // Add event listener to the form
 form.addEventListener('submit', (event) => {
@@ -36,6 +55,7 @@ form.addEventListener('submit', (event) => {
         const userVal = username.value.trim()
         const emailVal = emailInput.value.trim();
         const passwordVal = password.value.trim();
+        
 
         createUserWithEmailAndPassword(auth, emailVal, passwordVal)
             .then((userCredential) => {
@@ -69,21 +89,34 @@ form.addEventListener('submit', (event) => {
 // Validate inputs function
 function validateInputs() {
     let isValid = true; // Assume valid initially
-
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const usernameRegex = /^(?=.*[a-zA-Z])[a-zA-Z][a-zA-Z0-9_-]{3,19}$/
+    
     const usernameVal = username.value.trim();
     const emailVal = emailInput.value.trim();
     const passwordVal = password.value.trim();
+    const CPassVal = Cpass.value.trim();
+
+
+   
+
 
     // Get error message elements
     const userError = document.getElementById("userError");
     const emailError = document.getElementById("emailError");
     const passwordError = document.getElementById("passwordError");
+    const CpassError = document.getElementById("cPassError");
 
     // Username validation
     if (usernameVal === '') {
         userError.textContent = "Username is required";
         isValid = false;
-    } else {
+    }
+    else if(!usernameRegex.test(usernameVal) ){
+        userError.textContent = "Please enter a valid username";
+        isValid = false;
+    }
+     else {
         userError.textContent = ""; // Clear error if valid
     }
 
@@ -92,23 +125,39 @@ function validateInputs() {
         emailError.textContent = "Email is required";
         isValid = false;
     } else if (!validateEmail(emailVal)) {
-        emailError.textContent = "Please check your email";
+        emailError.textContent = "Please check your Email";
         isValid = false;
-    } else {
+    }
+    
+    else {
         emailError.textContent = ""; // Clear error if valid
     }
+
 
     // Password validation
     if (passwordVal === '') {
         passwordError.textContent = "Password is required";
         isValid = false;
-    } else if (passwordVal.length < 8) {
-        passwordError.textContent = "Password must be at least 8 characters";
+    } 
+    else if(!strongPasswordRegex.test(passwordVal)){
+        passwordError.textContent = "include's special char, 3 numbers, CAPS letter"
+        isValid = false
+    }
+    else if (passwordVal.length < 12) {
+        passwordError.textContent = "Password must be at least 12 characters";
         isValid = false;
-    } else {
+    } 
+    else {
         passwordError.textContent = ""; // Clear error if valid
     }
 
+    //Confrim password Validation
+    if(passwordVal !== CPassVal){
+        CpassError.textContent = "please enter correct & same password"
+        isValid = false  
+    }
+
+    
     return isValid; // Return overall validity
 }
 

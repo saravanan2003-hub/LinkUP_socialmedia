@@ -14,7 +14,7 @@ body{
 }
 .container{
     display: grid;
-    grid-template-rows:30% 70%;
+    grid-template-rows:20% 80%;
     
     
 }
@@ -51,12 +51,12 @@ body{
 }
 
 .box {
-    width: 330px;
+    width: 350px;
     height: 500px;
 }
 
 form{
-    height: 500px;
+    height: 570px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -107,6 +107,7 @@ form div input{
     background: none;
     background-color: #4dbcc0;
     border: 10px #4dbcc0;
+    cursor: pointer;
 }
 #submit:hover{
     background-color: aquamarine;
@@ -149,13 +150,32 @@ span a:hover{
 }
 
 #emailError{
-    color: red;
+    color:crimson;
 }
 #userError{
-    color: red;
+    color: crimson;
 }
 #passwordError{
-    color: red;
+    color: crimson;
+}
+#cPassError{
+    color:crimson;
+}
+
+#eyeC{
+    font-size: 20px;
+    color: black;
+    z-index: 10;
+    position: relative;
+    bottom: 38px;
+    left: 240px;
+    cursor: pointer;
+}
+.eye{
+    margin: 0;
+    padding: 0;
+    width: 0;
+    height: 0;
 }
 
 @media screen and (max-width:480px){

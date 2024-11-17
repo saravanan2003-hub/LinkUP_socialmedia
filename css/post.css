@@ -204,6 +204,112 @@ footer{
     display: none;
 }
 
+@media screen and (max-width: 720px) {
+        /* Hide the aside (sidebar) section */
+        aside {
+            display: none;
+        }
+    
+    
+        /* Full-width header for mobile view */
+        header {
+            height: 7%;
+            width: 100%;
+            margin: 0;
+            top: 0;
+            left: 0;
+            position: fixed;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+            background-color: #252734;
+        }
+
+        main{
+            /* margin-top: 7%; */
+            background-color: #252734;
+            margin-bottom: 7%;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            margin-right: 0;
+        }
+        
+        .postSection{
+            margin: 0;
+            height: 80%;
+            width: 100%;
+            display: flex;
+            justify-content:space-evenly;
+            align-items: center;
+        }
+
+        
+
+  
+           
+        /* Footer as a bottom navigation bar */
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 7%;
+            background-color: #252734;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 10;
+            border-top: 1px solid white;
+        }
+    
+        /* Footer navigation links */
+        footer a {
+            display: block;
+            color: white;
+            font-size: 25px;
+            text-decoration: none;
+            background: none;
+            border: none;
+        }
+    
+        #LogoutPost {
+            font-size: 25px;
+            color: white;
+            border: none;
+            background: none;
+            display: block; /* Ensure it is visible */
+        }
+    
+    
+        /* Footer icon styling */
+        footer a i {
+            font-size: 25px;
+            color: white;
+        }
+    
+        footer button i{
+            font-size: 25px;
+            color: white;  
+        }
+    
+        /* Remove hover effect on mobile */
+        a:hover {
+            background: none;
+        }
+    /* Logout button adjustments */
+        #Logout:hover {
+            background: none;
+        }
+
+        #upload{
+            padding: 10px 10px 10px 10px;
+        }
+    
+        
+}
+
 
 
 
