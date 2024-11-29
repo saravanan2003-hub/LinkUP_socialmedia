@@ -31,6 +31,7 @@ aside{
     justify-content: space-evenly;
     align-items: center;
     border-right: 2px solid white;
+    z-index: 2;
 
 }
 
@@ -92,6 +93,13 @@ aside a{
     border-radius: 20px;
 }
 
+main{
+    margin-left: 20%;
+    display: grid;
+    grid-template-rows:15% 85%;
+    background-color:#252734;
+}
+
 a i{
    color: black;
    margin-right: 15px;
@@ -114,7 +122,9 @@ aside a:focus{
 
 
 
-#Logout{
+
+
+#ProfileLogout{
     /* background-color:#323EDD; */
     background: radial-gradient(circle,#1d8b8b,#12ceda 100%);
     padding: 15px 70px 15px 70px;
@@ -126,7 +136,134 @@ aside a:focus{
 }
 
 .mainSection{
-     display: grid;
-    grid-template-rows: 10% 90%;
+    display: grid;
+    grid-template-rows: 15% 85%;
 
 }
+
+.post-image{
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    margin: 30px;
+}
+
+.setProfile{
+    position: fixed;
+    height: 30%;
+    width: 80%;
+    border-bottom: 2px solid white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #333647;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    
+}
+
+#ProfileImg{
+    border-radius: 50%;
+    height: 200px;
+    width: 200px;
+    border: #12ceda solid 2px;
+    box-shadow: 0 0 10px 5px white; /* Creates a white shadow */
+                     /* Removes inline spacing if needed */
+    margin: 20px; 
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    margin: 30px;
+
+}
+
+#nameDis{
+    font-size: 50px;
+    color: white;
+}
+
+.head{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+}
+
+#fileDisplay{
+    margin-top: 24%;
+    width: 79vw;
+    align-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: #252734;
+
+}
+footer{
+    display: none;
+}
+
+.settings{
+    
+    height: 150px;
+    width: 150px;
+    background: radial-gradient(circle,#1d8b8b,#12ceda 100%);
+    display: none;
+
+   
+}
+
+.settings div{
+    margin-top: 15px;
+    margin-left: 20px;
+    position: relative;
+    
+}
+
+#ellipsis{
+    height: 30px;
+    width: 60px;
+    background-color: #12ceda;
+    border: none;
+    position: relative;
+    bottom: 30px;
+    
+}
+
+.fa-ellipsis{
+    font-size: x-large;
+
+}
+
+#Choose{
+    padding: 9px;
+    width:90px ;
+    background-color:#252734;
+    color: white;
+    border: none;
+    margin-right: 10px;
+    margin-top: 5px;
+    margin-bottom: 30px;
+}
+#Remove{
+    height: 40px;
+    width: 110px;
+    background-color:white;
+    color: black;
+    border: none;
+    margin-right: 500px;
+
+}
+
+input[type="file"] {
+    color: transparent; /* Make the text (e.g., file name) invisible */
+    width: 120px; /* Adjust width for your design */
+    cursor: pointer; /* Keep the pointer behavior */
+  }
+
+
+  
+  
+  
+

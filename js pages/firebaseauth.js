@@ -55,12 +55,11 @@ form.addEventListener('submit', (event) => {
         const userVal = username.value.trim()
         const emailVal = emailInput.value.trim();
         const passwordVal = password.value.trim();
-        
 
         createUserWithEmailAndPassword(auth, emailVal, passwordVal)
             .then((userCredential) => {
                 const user = userCredential.user;
-                const userData = {
+                const userData = { 
                     username: userVal,
                     email: emailVal
                 };
@@ -163,7 +162,7 @@ function validateInputs() {
 
 // Email validation function
 const validateEmail = (email) => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simplified email regex
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo|outlook)\.com$/i;  //^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simplified email regex
     return emailPattern.test(email);
 };
 

@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getFirestore, setDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getFirestore, setDoc, doc, getDoc,addDoc,collection } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
@@ -18,7 +18,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
-const auth1 = getAuth(app);
+const auth = getAuth(app);
 const uploadBtn = document.getElementById("uploadBtn");
 
 uploadBtn.addEventListener("click", () =>{
@@ -26,6 +26,7 @@ uploadBtn.addEventListener("click", () =>{
 });
 
 async function uploadImage(){
+    const messageShow = document.getElementById("messageShow");
     const upload = document.getElementById("upload");
     const file = upload.files[0];
 
@@ -35,15 +36,53 @@ async function uploadImage(){
         return;
     }
 
-    try{
+
+    try {
         const storageRef = ref(storage, `image/${file.name}`);
         await uploadBytes(storageRef, file);
-        console.log("File Uploaded Sucessfully");
+        console.log("File Uploaded Successfully");
+        
+    
+        const downloadURL = await getDownloadURL(storageRef);
+        console.log(downloadURL);
+        insertPost(downloadURL);
+        messageShow.style.display = "block";
+    } catch (error) {
+        console.error("Error:", error);
+    }
+    
+}
+
+async function  insertPost(downloadURL){
+   
+    const uploadInput = document.getElementById("upload");
+    const file = uploadInput.files[0];
+
+    const postData = {
+        postURL : downloadURL,
+        postTime : new Date().getTime().toString(),
+        postName :file.name,
+        uid :localStorage.getItem("uid")
+    };
+
+    try{
+        const docRef = await addDoc(collection(db,"Posts"),postData);
+        
+       
     }
     catch(error){
-        console.error("Error Uploading Image:" , error);
+        console.error("Error Adding Document:",error);
     }
 }
+
+
+
+
+
+
+
+
+// _____________________________--------------------------------------upload----
 
 const upload = document.getElementById("upload");
 const showImg = document.getElementById("showImg");
@@ -60,9 +99,15 @@ upload.addEventListener("change", () => {
 });
 
 
+const ok = document.getElementById("ok");
+ok.addEventListener("click", () =>{
+    window.location.href = "./homepage.html"
+})
+
+
 const LogoutPost = document.getElementById("LogoutPost");
 LogoutPost.addEventListener('click', () => {
-    auth1.signOut()
+    auth.signOut()
         .then(() => {
             alert("Are you sure LogOut LinkUp ")
 

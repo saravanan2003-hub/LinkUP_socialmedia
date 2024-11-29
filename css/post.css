@@ -111,10 +111,28 @@ aside a:focus{
 #Logout :focus{
     background: radial-gradient(circle,#12ceda,#1d8b8b 100%);
 }
+#messageShow{
+    display: none;
+    position: absolute;
+    height: 200px;
+    width: 300px;
+    background-color:white;
+    padding-top: 25px;
+}
+
+.mg{
+    margin: 20px;
+}
+
+#messageShow div{
+    display: flex;
+    flex-direction: column;
+    justify-content:space-between;
+    align-items: center;
+}
 
 
-
-#Logout{
+#LogoutPost{
     /* background-color:#323EDD; */
     background: radial-gradient(circle,#1d8b8b,#12ceda 100%);
     padding: 15px 70px 15px 70px;
@@ -123,6 +141,23 @@ aside a:focus{
     border-radius: 20px;
     border: none;
     cursor: pointer;
+}
+
+.fa-check-to-slot{
+    font-size: 50px;
+    color: green;
+
+}
+
+#ok{
+    padding: 10px 50px;
+    background: radial-gradient(circle,#1d8b8b,#12ceda 100%);
+    border: none;
+}
+
+#messageShow div{
+    font-size: 25px;
+    
 }
 
 .mainSection{
@@ -197,6 +232,12 @@ main{
 #uploadBtn:hover{
     background: radial-gradient(circle,#1d8b8b,#12ceda, 100%);   
 }
+
+input[type="file"] {
+    color: transparent; /* Make the text (e.g., file name) invisible */
+    width: 120px; /* Adjust width for your design */
+    cursor: pointer; /* Keep the pointer behavior */
+  }
 
 
 

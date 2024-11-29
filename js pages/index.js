@@ -33,26 +33,7 @@ function showMessage(message, divId) {
 }
 
 
-// const eye = document.getElementById("eye");
 
-// eye.addEventListener("click", () => {
-//     const passwordInput = document.getElementById("Login-password");
-//     const eyeIcon = document.getElementById("eye");
-
-//     // Toggle the password visibility
-//     if (passwordInput.type === "password") {
-//         passwordInput.type = "text";
-//         eyeIcon.classList.remove("fa-eye-slash");
-//         eyeIcon.classList.add("fa-eye");
-//     } else {
-//         passwordInput.type = "password";
-//         eyeIcon.classList.remove("fa-eye");
-//         eyeIcon.classList.add("fa-eye-slash");
-
-//     }
-
-
-// });
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -136,6 +117,7 @@ loginForm.addEventListener("submit", (event) => {
                 const user = userCredential.user;
                 showMessage('Login successful', 'signInMessage');
                 localStorage.setItem('uid', user.uid);
+               
               window.location.href = "./pages/homepage.html"// Adjust path if necessary
             })
             .catch((error) => {

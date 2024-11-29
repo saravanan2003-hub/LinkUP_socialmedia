@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile page</title>
     <link rel="stylesheet" href="../css/profile.css">
-    <script type="module" src="../js pages/profile.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js"></script>
+
 
 </head>
 <body>
@@ -17,13 +16,31 @@
             <span><img src="../assests/photos/linkup name img.png" alt=""></span>
             <a href="./homepage.html" class="active"><i class="fa-solid fa-house"></i><span>Home</span></a>
             <a href="./profile.html"><i class="fa-solid fa-user"></i><span>Profile</span></a>
-            <a href="./post.html"><i class="fa-solid fa-plus"></i><span>Post</span></a>
-            <button id="Logout"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></button>
+            <a href="./post.html"><i class="fa-solid fa-photo-film"></i><span>Post</span></a>
+            <button id="ProfileLogout"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></button>
         </aside>
 
 
         <main>
-            <div class="fileDisplay"></div>
+            <div class="setProfile">
+                <div class="head">
+                    <div>
+                        <img src="../assests/photos/dummy-image.jpg" alt="" id="ProfileImg">
+                        <button id="ellipsis"><i class="fa-solid fa-ellipsis"></i></button>
+                    </div>
+                    <div class="settings">
+                        <div>
+                            <input type="file" placeholder="choose photo" id="Choose">
+                            <button id="Remove">RemoveProfile</button>
+                        </div>
+                    </div>
+                </div>
+                <span id="nameDis"></span>
+            </div>
+
+            <div class="files">
+                <div id="fileDisplay"></div>
+            </div>
             
         </main>
 
@@ -35,5 +52,7 @@
             <button id="LogoutPost"><i class="fa-solid fa-right-from-bracket"></i></button>
         </footer>
     </div>
+
+    <script type="module" src="../js pages/profile.js"></script>
 </body>
 </html>
