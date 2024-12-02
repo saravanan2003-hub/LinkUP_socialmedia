@@ -61,7 +61,9 @@ form.addEventListener('submit', (event) => {
                 const user = userCredential.user;
                 const userData = { 
                     username: userVal,
-                    email: emailVal
+                    email: emailVal,
+                    profileimg :"../assests/photos/dummy-image.jpg",
+
                 };
                 // Store user data in Firestore
                 const docRef = doc(db, "users", user.uid);

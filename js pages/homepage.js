@@ -38,7 +38,7 @@ logout.addEventListener('click', () => {
 });
 
 
-// user name fetch function
+/////////////////////////////////////////////     user name fetch function    /////////////////////////////////////////////////////////////
 async function getUsername() {
     const nameDis = document.getElementById("nameDisplay");
 
@@ -78,6 +78,72 @@ async function getUsername() {
 
 getUsername();
 
+///// post fetch
+async function fetchPosts() {
+    const uid = localStorage.getItem("uid");
+    const feed = document.getElementById("feed");
+
+    // Fetch user details once
+    const userDocRef = doc(db, "users", uid);
+    const userDoc = await getDoc(userDocRef);
+    const userData = userDoc.data();
+
+    if (!userData) {
+        console.error("User data not found.");
+        return;
+    }
+
+    const { username, profileImg } = userData;
+
+    // Fetch posts
+    const querySnapshot = await getDocs(
+        query(collection(db, "Posts"), where("uid", "==", uid))
+    );
+
+    querySnapshot.forEach((doc) => {
+        const postData = doc.data();
+        const postURL = postData.postURL;
+
+        console.log("Post Data:", postData);
+
+        // Create post box with the provided structure
+        const box = document.createElement("div");
+        box.className = "box";
+        box.innerHTML = `
+            <div class="profilePicture">
+                <div>
+                    <img src="${profileImg}" alt="Profile Image" class="userPhoto">
+                </div>
+                <div>
+                    <p class="username">${username}</p>
+                </div>
+            </div>
+            <div class="mainPicture">
+                <img src="${postURL}" alt="Post Image" class="postImg">
+            </div>
+            <div class="like">
+                <button class="LikeYes">
+                    <i class="fa-regular fa-heart heart"></i>
+                </button>
+            </div>
+        `;
+
+        // Add like button functionality
+        const likeButton = box.querySelector(".LikeYes .heart");
+        likeButton.addEventListener("click", () => {
+            likeButton.classList.toggle("fa-regular");
+            likeButton.classList.toggle("fa-solid");
+        });
+
+        // Append box to the feed
+        feed.appendChild(box);
+    });
+}
+
+fetchPosts();
+
+
+///////////////////////////////////////  logout function //////////////////////////////////////////////////
 const LogoutRes = document.getElementById("LogoutRes");
 LogoutRes.addEventListener('click', () => {
     auth.signOut()

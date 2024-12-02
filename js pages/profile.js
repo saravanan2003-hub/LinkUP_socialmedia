@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getFirestore, setDoc, doc, getDocs, getDoc, addDoc, collection, query, where, deleteDoc} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getFirestore, setDoc, doc, getDocs, getDoc, addDoc, collection, query, where, deleteDoc,updateDoc} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL,deleteObject } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
@@ -19,6 +19,13 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
 const auth = getAuth(app);
+
+const showImg = document.getElementById("ProfileImg");
+const docRef = doc(db, "users",localStorage.getItem("uid"));
+const docSnap = await getDoc(docRef);
+console.log(docSnap.data().profileimg);
+
+showImg.src=docSnap.data().profileimg;
 
 if (localStorage.getItem("src")) {
     const showImg = document.getElementById("ProfileImg");
@@ -64,33 +71,25 @@ upload.addEventListener("change", () =>{
 async function uploadImage(){
 
     const uid = localStorage.getItem("uid");
-    const profileCollection = collection(db, "profile");
-    const q = query(profileCollection, where("uid", "==", uid));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(async (doc)=>{
-        await deleteDoc(doc.ref);
-    })
     const messageShow = document.getElementById("ProfileImg");
     const file = upload.files[0];
 
 
-    if(!file){
-        console.log("No file Selected");
-        return;
-    }
-
 
     try {
+
         const storageRef = ref(storage, `image/${file.name}`);
         await uploadBytes(storageRef, file);
         console.log("File Uploaded Successfully");
         
     
         const downloadURL = await getDownloadURL(storageRef);
-        console.log(downloadURL);
-        insertPost(downloadURL);
+        const docRef = doc(db, "users",localStorage.getItem("uid"));
+        const docSnap = await getDoc(docRef);
+        await updateDoc(docRef, { profileimg:downloadURL});
         messageShow.style.display = "block";
         window.location.reload(true);
+        
     } catch (error) {
         console.error("Error:", error);
     }
@@ -101,28 +100,7 @@ async function uploadImage(){
 
 
 
-// insert post datas to profil image
-async function  insertPost(downloadURL){
-   
-    const uploadInput = document.getElementById("Choose");
-    const file = uploadInput.files[0];
 
-    const postData = {
-        profileURL : downloadURL,
-        profileSetTime : new Date().getTime().toString(),
-        profileName :file.name,
-        uid :localStorage.getItem("uid")
-    };
-
-    try{
-        const docRef = await addDoc(collection(db,"profile"),postData);
-        
-       
-    }
-    catch(error){
-        console.error("Error Adding Document:",error);
-    }
-}
 
 //ellipsis button action 
 const ellipsis = document.getElementById("ellipsis");
@@ -137,82 +115,20 @@ ellipsis.addEventListener("click", () =>{
 })
 
 // image choose input action
-const showImg = document.getElementById("ProfileImg");
-
-upload.addEventListener("change", () => {
-    const file = upload.files[0];
-    showImg.removeAttribute("src" , "../assests/photos/dummy-image.jpg");
-
-    if (file && file.type.startsWith("image/")) {
-        const imageUrl = URL.createObjectURL(file);
-        console.log(imageUrl)
-        
-    } else {
-        alert("Please upload a valid image file.");
-    }
-    
-   
-});
-
-
- async function showProfile()
-{
-    const showImg = document.getElementById("ProfileImg");
-    
-    try {
-        // Get UID from localStorage
-        const uid = localStorage.getItem("uid");
-        if (!uid) {
-            console.error("UID not found in localStorage.");
-            return;
-        }
-
-        // Query the Firestore 'profile' collection for the matching UID and limit to 1 result
-        const profileCollection = collection(db, "profile");
-        const q = query(profileCollection, where("uid", "==", uid));
-        const querySnapshot = await getDocs(q);
-
-        // Check if a document exists
-        if (!querySnapshot.empty) {
-            const doc = querySnapshot.docs[0]; // Get the first document
-            const data = doc.data();
-            console.log("Profile Data:", data);
-
-            // Get the profileURL and use it
-            const profileURL = data.profileURL;
-            const profileName = data.profileName;
-            
-            console.log("Profile URL:", profileURL);
-
-            // Example: Setting it to an image element
-            const profileImageElement = document.getElementById("ProfileImg");
-            if (profileImageElement) {
-                profileImageElement.setAttribute("src", profileURL);
-                profileImageElement.setAttribute("imgName" ,profileName)
-                console.log(profileImageElement);
-            }
-        } else {
-            console.log("No matching profile found.");
-        }
-    } catch (error) {
-        console.error("Error fetching profile URL:", error);
-    }
-}
-
-showProfile();
 
 
 
 
 
-// remove button action
-const Remove = document.getElementById("Remove");
-Remove.addEventListener("click", () =>{
-    alert("Are you sure remove the profile");
-    const showImg = document.getElementById("ProfileImg");
-    showImg.removeAttribute("scr");
-    showImg.setAttribute("src", "../assests/photos/dummy-image.jpg") 
-})
+
+// // remove button action
+// const Remove = document.getElementById("Remove");
+// Remove.addEventListener("click", () =>{
+//     alert("Are you sure remove the profile");
+//     const showImg = document.getElementById("ProfileImg");
+//     showImg.removeAttribute("scr");
+//     showImg.setAttribute("src", "../assests/photos/dummy-image.jpg") 
+// })
 
 
 // user name fetch function
