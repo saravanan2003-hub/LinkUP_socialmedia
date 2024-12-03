@@ -13,7 +13,6 @@ header{
     top: 0;
     position: fixed;
     margin-left: 2px;
-    border-bottom: 2px solid white;
     margin-left: 20vw;
     
 }
@@ -22,7 +21,7 @@ header{
 aside{
     height: 100vh;
     width: 20vw;
-    background-color: #333647;
+    background-color:#92C7CF;
     margin-top: 0;
     top: 0;
     position: fixed;
@@ -30,7 +29,7 @@ aside{
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    border-right: 2px solid white;
+    border-right: 2px solid black;
     z-index: 2;
 
 }
@@ -45,37 +44,6 @@ aside{
     align-items: center;
 }
 
-.hello{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-#nameDisplay{
-    margin-left: 40px;
-}
-.messageIcon button{
-    
-    margin-right: 20px;
-    background: none;
-    border: none;
-    color: white;
-}
-
-.messageIcon button i{
-    color: white;
-    font-size: 20px;
-    z-index: 1;
-}
-
-
-
-.hello span{
-    margin-left: 10px;
-    font-size: 25px;
-    color: white;
-}
-
 aside span img{
     height: 80px;
     width: 200px;
@@ -87,17 +55,16 @@ aside a{
     font-size: 25px;
     box-sizing: border-box;
     padding: 15px 70px 15px 70px;
-    /* background-color:#323EDD; */
-    /* background-color: #12ceda; */
-    background: radial-gradient(circle,#1d8b8b,#12ceda 100%);
+    background-color: #E5E1DA;
     border-radius: 20px;
 }
 
 main{
     margin-left: 20%;
     display: grid;
+    height: 100vh;
     grid-template-rows:15% 85%;
-    background-color:#252734;
+    background-color: #FBF9F1;
 }
 
 a i{
@@ -106,18 +73,18 @@ a i{
 }
 
 aside a:hover{
-    background: radial-gradient(circle,#12ceda,#1d8b8b 100%);
+    box-shadow: 0 0 10px white, 0 0 60px white;
 }
 
 aside a:focus{
-    background: radial-gradient(circle,#12ceda,#1d8b8b 100%);
+    box-shadow: 0 0 10px white, 0 0 60px white;
 }
 
-#Logout:hover{
-    background: radial-gradient(circle,#12ceda,#1d8b8b 100%);
+#ProfileLogout:hover{
+    box-shadow: 0 0 10px white, 0 0 60px white;
 }
-#Logout :focus{
-    background: radial-gradient(circle,#12ceda,#1d8b8b 100%);
+#ProfileLogout :focus{
+    box-shadow: 0 0 10px white, 0 0 60px white;
 }
 
 
@@ -125,8 +92,7 @@ aside a:focus{
 
 
 #ProfileLogout{
-    /* background-color:#323EDD; */
-    background: radial-gradient(circle,#1d8b8b,#12ceda 100%);
+    background-color: #E5E1DA;
     padding: 15px 70px 15px 70px;
     color: black;
     font-size: 25px;
@@ -152,11 +118,11 @@ aside a:focus{
     position: fixed;
     height: 30%;
     width: 80%;
-    border-bottom: 2px solid white;
+    border-bottom: 2px solid black;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background-color: #333647;
+    background-color:#FBF9F1;
     z-index: 1;
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -180,7 +146,7 @@ aside a:focus{
 
 #nameDis{
     font-size: 50px;
-    color: white;
+    color: black;
 }
 
 .head{
@@ -197,7 +163,8 @@ aside a:focus{
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-evenly;
-    background-color: #252734;
+    
+    
 
 }
 footer{

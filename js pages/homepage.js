@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getFirestore, setDoc, doc, getDocs, getDoc, addDoc, collection, query, where} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL,deleteObject } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
+import { getStorage, ref, uploadBytes, getDownloadURL,deleteObject,listAll } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
 
@@ -19,6 +19,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
 const auth = getAuth(app);
+const folderRef = ref(storage, 'Posts')
 
 //logout function
 const logout = document.getElementById('Logout')
@@ -93,13 +94,10 @@ async function fetchPosts() {
         return;
     }
 
-    const { username, profileImg } = userData;
+    const { username, profileimg } = userData;
 
     // Fetch posts
-    const querySnapshot = await getDocs(
-        query(collection(db, "Posts"), where("uid", "==", uid))
-    );
-
+    const querySnapshot = await getDocs(collection(db, "Posts"))
     querySnapshot.forEach((doc) => {
         const postData = doc.data();
         const postURL = postData.postURL;
@@ -112,7 +110,7 @@ async function fetchPosts() {
         box.innerHTML = `
             <div class="profilePicture">
                 <div>
-                    <img src="${profileImg}" alt="Profile Image" class="userPhoto">
+                    <img src="${profileimg}" alt="Profile Image" class="userPhoto">
                 </div>
                 <div>
                     <p class="username">${username}</p>

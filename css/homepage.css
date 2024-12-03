@@ -5,25 +5,20 @@
 header{
     display: grid;
     grid-template-columns: 50% 50%;
-    /* background-color: #4dbcc0; */
-    /* background-color: #0cc0df; */
-    /* background-color:black; */
-    background-color: #252734;
+    background-color: #92C7CF;
     height: 7vh;
-    width: 79%;
+    width: 80%;
     margin-top: 0;
     top: 0;
     position: fixed;
-    margin-left: 10px;
-    border-bottom: 2px solid white;
+    margin-left: 2px;
+    
 }
 
 aside{
     height: 100vh;
     width: 20vw;
-    /* background-color:#4dbcc0; */
-    /* background-color: #0B192C; */
-    background-color: #333647;
+    background-color: #92C7CF;
     margin-top: 0;
     top: 0;
     position: fixed;
@@ -31,92 +26,69 @@ aside{
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    border-right: 2px solid white;
+    border-right: 2px solid black;
+    z-index: 2;
+    
 
 }
 
 main{
     margin-left: 20%;
+    height: 100%;
+    background-color: #FBF9F1;
 }
-
-
-
-
-
 
 aside span img{
-    height: 80px;
-    width: 200px;
+    height: 150px;
+    width: 400px;
 }
 
-
 .main{
-    /* background-image: url(../assests/photos/FormBackgroung\ Image.jpg);
-    background-repeat: no-repeat;
-    background-size:100% 100%; */
 
-    /* background-color: black; */
-    background-color: #252734;
     display: grid;
     grid-template-columns: 2fr 1fr;
    
 
 }
 
-
 .feed{
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: flex-start;
     align-items: center;
     margin-top: 7vh;
-    border-right: 2px solid white;
+    
 }
     
-
+.ad{
+    height: 100vh;
+}
 
 .ad1{
-    height:80vh;
+    
     width: 25vw;
-    /* background-color:#323EDD; */
-    /* background-color: #0cc0df; */
-    /* background-color:#19D3DA; */
-    margin-top: 100px;
+    height: 93%;
+    margin-top: 7vh;
     position: fixed;
     display: grid;
     grid-template-rows: 1fr 1fr;
+    border-left: 2px solid black;
 }
 
 .ad1 div{
     margin-left: 30px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-
-
-.box{
-    height: 400px;
-    width: 600px;
-    /* background-color:#212121; */
-    background-color: #333647;
-    margin: 10px;
-}
-
-
-
-
 i{
     margin-right: 15px;
 }
 
-
-
 #Logout{
-    /* background-color:#323EDD; */
-    background: radial-gradient(circle,#1d8b8b,#12ceda 100%);
+    background-color: #E5E1DA;
     padding: 15px 70px 15px 70px;
     color: black;
     font-size: 25px;
@@ -139,7 +111,7 @@ i{
     margin-left: 5px;
     margin-right: 20px;
     font-size: 20px;
-    color: white;
+    color: black;
 }
 
 .messageIcon button{
@@ -150,7 +122,7 @@ i{
 .hello span{
     margin-left: 10px;
     font-size: 25px;
-    color: white;
+    color: black;
 }
 
 
@@ -160,9 +132,7 @@ aside a{
     font-size: 25px;
     box-sizing: border-box;
     padding: 15px 70px 15px 70px;
-    /* background-color:#323EDD; */
-    /* background-color: #12ceda; */
-    background: radial-gradient(circle,#1d8b8b,#12ceda 100%);
+    background-color: #E5E1DA;
     border-radius: 20px;
 }
 
@@ -172,17 +142,32 @@ a i{
 }
 
 .box{
+    height: 600px;
+    width: 600px;
+    background-color: #AAD7D9;
+    margin: 60px;
     display: grid;
-    grid-template-rows: 15% 70% 15%;
+    grid-template-rows: 15% 80% 10%;
+    border-top-right-radius: 50px;
+    
     
 }
+
+
 .box div{
     flex-wrap: wrap;
 }
 
+.mainPicture{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
 .postImg{
-    width: 300px;
-    height: 300px;
+    width: 500px;
+    height: 450px;
     object-fit: cover;
     margin: 30px;
 }
@@ -190,12 +175,12 @@ a i{
 
 
 .profilePicture{
-    /* background-color:#212121; */
-    background-color: #333647;
-    border-bottom: 1px white solid;
+    background-color:#AAD7D9 ;
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    border-bottom: 1px black solid;
+    border-top-right-radius: 50px;
 }
 
 
@@ -204,11 +189,13 @@ a i{
 }
 .like{
     /* background-color: #212121; */
-    background-color: #333647;
-    border-top: 1px white solid;
+    background-color: #AAD7D9;
+    border-top: 1px black solid;
     display: flex;
     justify-content:flex-start;
     align-items: center;
+    border-bottom-left-radius: 40px;
+
 }
 
 .like button{
@@ -223,29 +210,29 @@ a i{
 }
 
 .userPhoto{
-    height: 50px;
-    width: 50px;
+    height: 70px;
+    width: 70px;
     border-radius: 100%;
 }
 
 .username{
-    color: white;
+    color: black;
     font-size: 25px;
 }
 
 aside a:hover{
-    background: radial-gradient(circle,#12ceda,#1d8b8b 100%);
+    box-shadow: 0 0 10px white, 0 0 60px white;
 }
 
 aside a:focus{
-    background: radial-gradient(circle,#12ceda,#1d8b8b 100%);
+    box-shadow: 0 0 10px white, 0 0 60px white;
 }
 
 #Logout:hover{
-    background: radial-gradient(circle,#12ceda,#1d8b8b 100%);
+    box-shadow: 0 0 10px white, 0 0 60px white;
 }
 #Logout :focus{
-    background: radial-gradient(circle,#12ceda,#1d8b8b 100%);
+    box-shadow: 0 0 10px white, 0 0 60px white ;
 }
 
 footer{

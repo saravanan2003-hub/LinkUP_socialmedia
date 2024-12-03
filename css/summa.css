@@ -1,0 +1,303 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+/* Header Styling */
+header {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    background-color: #92C7CF;
+    height: 7vh;
+    width: 80%;
+    margin-top: 0;
+    top: 0;
+    position: fixed;
+    margin-left: 2px;
+    border-bottom: 2px solid white;
+    z-index: 10;
+}
+
+aside {
+    height: 100vh;
+    width: 20vw;
+    background-color: #92C7CF;
+    margin-top: 0;
+    top: 0;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    border-right: 2px solid black;
+}
+
+main {
+    margin-left: 20%;
+}
+
+aside span img {
+    height: 80px;
+    width: 200px;
+}
+
+.main {
+    background-color: #FBF9F1;
+}
+
+.feed {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 7vh;
+    border-right: 2px solid black;
+}
+
+.ad1 {
+    height: 80vh;
+    width: 25vw;
+    margin-top: 100px;
+    position: fixed;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+
+.ad1 div {
+    margin-left: 30px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box {
+    height: 400px;
+    width: 600px;
+    background-color: #AAD7D9;
+    margin: 10px;
+    display: grid;
+    grid-template-rows: 15% 70% 15%;
+}
+
+.box div {
+    flex-wrap: wrap;
+}
+
+.postImg {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    margin: 30px;
+}
+
+.profilePicture {
+    background-color: #AAD7D9;
+    border-bottom: 1px black solid;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.profilePicture div {
+    margin-left: 20px;
+}
+
+.like {
+    background-color: #AAD7D9;
+    border-top: 1px black solid;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.like button {
+    margin-left: 20px;
+}
+
+.LikeYes {
+    font-size: 30px;
+    background: none;
+    border: none;
+    color: red;
+}
+
+.userPhoto {
+    height: 50px;
+    width: 50px;
+    border-radius: 100%;
+}
+
+.username {
+    color: white;
+    font-size: 25px;
+}
+
+aside a {
+    color: black;
+    text-decoration: none;
+    font-size: 25px;
+    box-sizing: border-box;
+    padding: 15px 70px;
+    background-color: #E5E1DA;
+    border-radius: 20px;
+}
+
+a i {
+    color: black;
+    margin-right: 15px;
+}
+
+aside a:hover {
+    background: radial-gradient(circle, #12ceda, #1d8b8b 100%);
+}
+
+aside a:focus {
+    background: radial-gradient(circle, #12ceda, #1d8b8b 100%);
+}
+
+#Logout {
+    background-color: #E5E1DA;
+    padding: 15px 70px;
+    color: black;
+    font-size: 25px;
+    border-radius: 20px;
+    border: none;
+}
+
+#Logout:hover {
+    background: radial-gradient(circle, #12ceda, #1d8b8b 100%);
+}
+
+#Logout:focus {
+    background: radial-gradient(circle, #12ceda, #1d8b8b 100%);
+}
+
+.messageIcon {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.messageIcon button i {
+    margin-left: 5px;
+    margin-right: 20px;
+    font-size: 20px;
+    color: white;
+}
+
+.messageIcon button {
+    background: none;
+    border: none;
+}
+
+.hello {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.hello span {
+    margin-left: 10px;
+    font-size: 25px;
+    color: white;
+}
+
+footer {
+    display: none;
+    bottom: 0;
+    height: 7vh;
+    width: 10vw;
+    background-color: #252734;
+}
+
+/* Media Query for Mobile Devices */
+@media screen and (max-width: 720px) {
+    aside {
+        display: none;
+    }
+
+    .ad1 {
+        display: none;
+    }
+
+    header {
+        height: 10vh;
+        width: 100%;
+        margin: 0;
+        top: 0;
+        left: 0;
+        position: fixed;
+        z-index: 10;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 10px;
+    }
+
+    main {
+        margin: 0;
+        margin-top: 5vh;
+        margin-bottom: 10vh;
+    }
+
+    main .feed {
+        display: grid;
+    }
+
+    .container {
+        display: grid;
+        grid-template-rows: 7% 83% 10%;
+    }
+
+    footer {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 10vh;
+        background-color: #252734;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 10;
+        border-top: 1px solid white;
+    }
+
+    footer a {
+        color: white;
+        font-size: 25px;
+        text-decoration: none;
+        background: none;
+        border: none;
+    }
+
+    #LogoutRes {
+        font-size: 25px;
+        color: white;
+        border: none;
+        background: none;
+        display: block;
+    }
+
+    footer a i {
+        font-size: 25px;
+        color: white;
+    }
+
+    footer button i {
+        font-size: 25px;
+        color: white;
+    }
+
+    a:hover {
+        background: none;
+    }
+
+    aside a:hover {
+        display: none;
+    }
+
+    .feed {
+        border: 0;
+    }
+}

@@ -22,7 +22,7 @@ header{
 aside{
     height: 100vh;
     width: 20vw;
-    background-color: #333647;
+    background-color: #92C7CF;
     margin-top: 0;
     top: 0;
     position: fixed;
@@ -30,7 +30,7 @@ aside{
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    border-right: 2px solid white;
+    border-right: 2px solid black;
 
 }
 
@@ -58,11 +58,11 @@ aside{
     margin-right: 20px;
     background: none;
     border: none;
-    color: white;
+    color: black;
 }
 
 .messageIcon button i{
-    color: white;
+    color:black;
     font-size: 20px;
     z-index: 1;
 }
@@ -72,7 +72,7 @@ aside{
 .hello span{
     margin-left: 10px;
     font-size: 25px;
-    color: white;
+    color: black;
 }
 
 aside span img{
@@ -86,9 +86,7 @@ aside a{
     font-size: 25px;
     box-sizing: border-box;
     padding: 15px 70px 15px 70px;
-    /* background-color:#323EDD; */
-    /* background-color: #12ceda; */
-    background: radial-gradient(circle,#1d8b8b,#12ceda 100%);
+    background-color: #E5E1DA;
     border-radius: 20px;
 }
 
@@ -98,18 +96,18 @@ a i{
 }
 
 aside a:hover{
-    background: radial-gradient(circle,#12ceda,#1d8b8b 100%);
+    box-shadow: 0 0 10px white, 0 0 60px white;
 }
 
 aside a:focus{
-    background: radial-gradient(circle,#12ceda,#1d8b8b 100%);
+    box-shadow: 0 0 10px white, 0 0 60px white;
 }
 
-#Logout:hover{
-    background: radial-gradient(circle,#12ceda,#1d8b8b 100%);
+#LogoutPost:hover{
+    box-shadow: 0 0 10px white, 0 0 60px white;
 }
-#Logout :focus{
-    background: radial-gradient(circle,#12ceda,#1d8b8b 100%);
+#LogoutPost :focus{
+    box-shadow: 0 0 10px white, 0 0 60px white;
 }
 #messageShow{
     display: none;
@@ -133,8 +131,7 @@ aside a:focus{
 
 
 #LogoutPost{
-    /* background-color:#323EDD; */
-    background: radial-gradient(circle,#1d8b8b,#12ceda 100%);
+    background-color: #E5E1DA;
     padding: 15px 70px 15px 70px;
     color: black;
     font-size: 25px;
@@ -151,7 +148,7 @@ aside a:focus{
 
 #ok{
     padding: 10px 50px;
-    background: radial-gradient(circle,#1d8b8b,#12ceda 100%);
+    background-color: #E5E1DA;
     border: none;
 }
 
@@ -170,7 +167,7 @@ main{
     margin-left: 20vw;
     height: 100vh;
     width: 80vw;
-    background-color:#252734 ;
+    background-color:#FBF9F1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -180,7 +177,8 @@ main{
 .postSection{
     height: 70vh;
     width: 60%;
-    background-color:#333647 ;
+    
+    background-color:#92C7CF ;
     display: flex;
     flex-direction: column;
     justify-content:space-evenly;
@@ -192,13 +190,14 @@ main{
     width:90%;
     height: 70%;
     padding: 10px;
-    background-color:#252734 ;
+    background-color:#E5E1DA ;
     padding: 10px;
 }
 
 #showImg{
     width:100%;
     height: 100%;
+    border: 2px solid black;
     
 }
 
@@ -206,8 +205,9 @@ main{
     display: inline-block;
     padding: 10px 90px;
     flex-wrap:wrap ;
-    background: radial-gradient(circle,#1d8b8b,#12ceda,#252523 100%);
-    color: #fff;
+    background-color: #E5E1DA;
+    color: black;
+    font-weight: bolder;
     cursor: pointer;
     border-radius: 10px;
     
@@ -217,20 +217,23 @@ main{
 
 #uploadBtn{
     padding: 10px 90px;
-    background: radial-gradient(circle,#1d8b8b,#12ceda,#252523 100%);
+    background-color: #E5E1DA;
     cursor: pointer;
     border-radius: 10px;
     border: none;
-    color: white;
+    color: black;
+    font-weight: bolder;
 
 }
 
 #upload:hover{
-    background: radial-gradient(circle,#1d8b8b,#12ceda, 100%);
+    background-color: #54b1d0;
+    box-shadow: 0 0 10px #54b1d0, 0 0 60px #54b1d0;
 }
 
 #uploadBtn:hover{
-    background: radial-gradient(circle,#1d8b8b,#12ceda, 100%);   
+    background-color: #54b1d0;
+    box-shadow: 0 0 10px #54b1d0, 0 0 60px #54b1d0;   
 }
 
 input[type="file"] {
