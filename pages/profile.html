@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
 
 
 </head>
+
 <body>
     <div class="container">
         <aside>
@@ -23,25 +25,40 @@
 
         <main>
             <div class="setProfile">
-                <div class="head">
-                    <div>
-                        <img  alt="" id="ProfileImg">
-                        <button id="ellipsis"><i class="fa-solid fa-ellipsis"></i></button>
-                    </div>
-                    <div class="settings">
+                
+                    <div class="head">
                         <div>
-                            <input type="file" placeholder="choose photo" id="Choose">
-                            <button id="Remove">RemoveProfile</button>
+                            <img alt="" id="ProfileImg">
+                        </div>
+                        <div class="settings">
+                            <div>
+                                <input type="file" placeholder="choose photo" id="Choose">
+                                <button id="Remove">RemoveProfile</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <span id="nameDis"></span>
+                    <span id="nameDis"></span>
+                    <span id="pen"><i class="fa-solid fa-user-pen"></i></span>
+                    <div class="popUp">
+                        <div class="popupDiv">
+                            <div><p>Do you want change your name?</p></div>
+                            <div class="input">
+                                <input type="text" id="usernameChange" placeholder="Enter your new name here">
+                                <span class="nameChangeError"></span>
+                            </div>
+                            <div class="buttonDiv">
+                                <span><button id="okay">Okay</button></span>
+                                <span><button id="cancel">Cancel</button></span>
+                            </div>
+                        </div>
+                    </div>
+
             </div>
 
             <div class="files">
                 <div id="fileDisplay"></div>
             </div>
-            
+
         </main>
 
 
@@ -55,6 +72,5 @@
 
     <script type="module" src="../js pages/profile.js"></script>
 </body>
-</html>
 
-<a href="../assests/photos/dummy-image.jpg"></a>
+</html>

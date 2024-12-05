@@ -96,15 +96,70 @@ async function uploadImage(){
     
 }
 
+////////////////////////////////////// user name change function /////////////
+const pen = document.getElementById("pen");
+pen.addEventListener("click", () =>{
+    const popup = document.getElementsByClassName("popUp")[0];
+    if(popup.style.display =="none"){
+     popup.style.display ="block";
+    }
+    else{
+        popup.style.display = "none"
+    }
+});
 
 
 
+const okay = document.getElementById("okay");
+const cancel = document.getElementById("cancel");
+okay.addEventListener("click", (event) =>{
+    event.preventDefault();
+    if(valid()){
+    const usernameChange = document.getElementById("usernameChange");
+    const usernameChangeVal = usernameChange.value.trim();
+    const docRef = doc(db, "users",localStorage.getItem("uid"));
+    const docSnap = getDoc(docRef);
+    updateDoc(docRef, {username :usernameChangeVal});
+
+    setTimeout(() => {
+        window.location.reload(true); // Force reload from the server
+    }, 2000);
+    }
+
+});
+
+cancel.addEventListener("click", () =>{
+    const popup = document.getElementsByClassName("popUp")[0];
+    popup.style.display = "none";
+})
+///////////////////////////////////// username valitation //////////////////////
+function valid() {
+    const usernameRegex = /^(?=.*[a-zA-Z])[a-zA-Z][a-zA-Z0-9_-]{3,19}$/;
+    const usernameChange = document.getElementById("usernameChange");
+    const usernameChangeVal = usernameChange.value.trim();
+
+    let isValid = true;
+    const changeError = document.getElementsByClassName("nameChangeError");
+
+    if (usernameChangeVal === "") {
+        changeError[0].textContent = "Please enter a username";
+        isValid = false;
+    } else if (!usernameRegex.test(usernameChangeVal)) {
+        changeError[0].textContent = "Please enter a valid username";
+        isValid = false;
+    } else {
+        changeError[0].textContent = ""; // Clear any error message
+        isValid = true;
+    }
+
+    return isValid;
+}
 
 
 
 //ellipsis button action 
-const ellipsis = document.getElementById("ellipsis");
-ellipsis.addEventListener("click", () =>{
+const profileSettings = document.getElementById("ProfileImg");
+profileSettings.addEventListener("click", () =>{
     const settings = document.getElementsByClassName("settings");
     if(settings[0].style.display === "none"){
         settings[0].style.display = "block";
@@ -114,21 +169,26 @@ ellipsis.addEventListener("click", () =>{
     }
 })
 
-// image choose input action
 
 
+// remove button action
+const Remove = document.getElementById("Remove");
+Remove.addEventListener("click", () =>{
+    alert("Are you sure remove the profile");
+    const showImg = document.getElementById("ProfileImg");
+    showImg.removeAttribute("scr");
+    showImg.setAttribute("src", "../assests/photos/dummy-image.jpg") 
 
-
-
-
-// // remove button action
-// const Remove = document.getElementById("Remove");
-// Remove.addEventListener("click", () =>{
-//     alert("Are you sure remove the profile");
-//     const showImg = document.getElementById("ProfileImg");
-//     showImg.removeAttribute("scr");
-//     showImg.setAttribute("src", "../assests/photos/dummy-image.jpg") 
-// })
+    const fileRef = ref(storage, 'profile/'+profileName);   //delete from storage
+    deleteObject(fileRef)
+    .then(() => {
+      console.log("File deleted successfully");
+    })
+    .catch((error) => {
+      console.error("Error deleting file:", error);
+    });
+    showImg.setAttribute("src", "../assests/photos/dummy-image.jpg") 
+})
 
 
 // user name fetch function
@@ -179,19 +239,29 @@ getUsername();
 
 // logout function
 const LogoutPost = document.getElementById("ProfileLogout");
-LogoutPost.addEventListener('click', () => {
-    auth.signOut()
-        .then(() => {
-            alert("Are you sure LogOut LinkUp ")
 
-            console.log("User signed out.");
-            window.location.href = "../index.html"
-            localStorage.removeItem('uid');
-            localStorage.clear();
-        })
-        .catch((error) => {
-            console.error("Error signing out: ", error);
-        });
+LogoutPost.addEventListener('click', () => {
+    // Show the confirmation box before signing out
+    const userChoice = confirm("Are you sure you want to log out?");
+    
+    if (userChoice) {
+        // Proceed with signing out
+        auth.signOut()
+            .then(() => {
+                console.log("User signed out.");
+                localStorage.removeItem('uid');
+                localStorage.clear();
+
+                // Redirect to the home page after sign-out
+                window.location.href = "../index.html";
+            })
+            .catch((error) => {
+                console.error("Error signing out: ", error);
+            });
+    } else {
+        // If user clicks "Cancel", just log that the logout was canceled
+        console.log("Logout canceled by the user.");
+    }
 });
 
 

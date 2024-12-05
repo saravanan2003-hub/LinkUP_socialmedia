@@ -1,17 +1,17 @@
 *{
     padding: 0;
     margin: 0;
+    scrollbar-width: none;
 }
 header{
     display: grid;
     grid-template-columns: 50% 50%;
     background-color: #92C7CF;
-    height: 7vh;
+    height: 10vh;
     width: 80%;
     margin-top: 0;
     top: 0;
     position: fixed;
-    margin-left: 2px;
     
 }
 
@@ -26,7 +26,7 @@ aside{
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    border-right: 2px solid black;
+    /* border-right: 2px solid black; */
     z-index: 2;
     
 
@@ -39,9 +39,15 @@ main{
 }
 
 aside span img{
-    height: 150px;
-    width: 400px;
+    height: 80px;
+    width: 200px;
 }
+
+aside span img:hover {
+    filter: drop-shadow(0 10px 10px white);
+    transition: filter 0.3s ease-in-out;
+}
+
 
 .main{
 
@@ -68,19 +74,22 @@ aside span img{
     
     width: 25vw;
     height: 93%;
-    margin-top: 7vh;
+    margin-top: 10vh;
     position: fixed;
     display: grid;
     grid-template-rows: 1fr 1fr;
-    border-left: 2px solid black;
+    /* border-left: 2px solid black; */
 }
 
 .ad1 div{
-    margin-left: 30px;
-    margin-bottom: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0;
+}
+
+.spotify{
+    margin-bottom: 50px;
 }
 
 i{
@@ -222,17 +231,21 @@ a i{
 
 aside a:hover{
     box-shadow: 0 0 10px white, 0 0 60px white;
+    transition: box-shadow 0.3s ease-in-out;
 }
 
 aside a:focus{
     box-shadow: 0 0 10px white, 0 0 60px white;
+    transition: box-shadow 0.3s ease-in-out;
 }
 
 #Logout:hover{
     box-shadow: 0 0 10px white, 0 0 60px white;
+    transition: box-shadow 0.3s ease-in-out;
 }
 #Logout :focus{
     box-shadow: 0 0 10px white, 0 0 60px white ;
+    transition: box-shadow 0.3s ease-in-out;
 }
 
 footer{

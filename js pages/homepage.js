@@ -79,66 +79,100 @@ async function getUsername() {
 
 getUsername();
 
-///// post fetch
+/////////////////////////////////////////////  fetch post    ///////////////////////////////////////
 async function fetchPosts() {
-    const uid = localStorage.getItem("uid");
-    const feed = document.getElementById("feed");
+    try {
+        const feed = document.getElementById("feed");
 
-    // Fetch user details once
-    const userDocRef = doc(db, "users", uid);
-    const userDoc = await getDoc(userDocRef);
-    const userData = userDoc.data();
+        if (!feed) {
+            console.error("Feed element not found in the DOM.");
+            return;
+        }
 
-    if (!userData) {
-        console.error("User data not found.");
-        return;
+        // Fetch all posts from the "Posts" collection
+        const postsSnapshot = await getDocs(query(collection(db, "Posts")));
+
+        if (postsSnapshot.empty) {
+            console.warn("No posts found.");
+            return;
+        }
+
+        // Loop through each post document
+        for (const postDoc of postsSnapshot.docs) {
+            const postData = postDoc.data();
+            const postURL = postData.postURL;
+            const postUID = postData.uid;
+
+            if (!postURL || !postUID) {
+                console.warn("Post missing required fields:", postData);
+                continue; // Skip invalid posts
+            }
+
+            // Fetch user data for the post author
+            
+            // const userSnapshot = await getDoc(userQuery);
+            // console.log(userSnapshot.data());
+            
+
+        
+            const userDocRef = doc(db, 'users',postUID);
+            const docSnap = await getDoc(userDocRef);
+            const userData=docSnap.data()
+            console.log(userData);
+            
+            const username = userData.username || "Unknown User";
+            const profileimg = userData.profileimg || "default-profile.png";
+
+            // Create post box
+            const box = document.createElement("div");
+            box.className = "box";
+            box.innerHTML = `
+                <div class="profilePicture">
+                    <div>
+                        <img src="${profileimg}" alt="Profile Image" class="userPhoto" id="userPhoto">
+                    </div>
+                    <div>
+                        <p class="username" id="username">${username}</p>
+                    </div>
+                </div>
+                <div class="mainPicture">
+                    <img src="${postURL}" alt="Post Image" class="postImg">
+                </div>
+                <div class="like">
+                    <button class="LikeYes">
+                        <i class="fa-regular fa-heart heart"></i>
+                    </button>
+                </div>
+            `;
+
+            // Add like button functionality
+            const likeButton = box.querySelector(".LikeYes .heart");
+            likeButton.addEventListener("click", () => {
+                likeButton.classList.toggle("fa-regular");
+                likeButton.classList.toggle("fa-solid");
+            });
+
+            // Append box to the feed
+            feed.appendChild(box);
+
+            const userPhoto = document.getElementById("userPhoto");
+            userPhoto.addEventListener("click", () =>{
+                window.location.href = "./profile.html"
+            });
+
+            const username1 = document.getElementById("username");
+            username1.addEventListener("click", () =>{
+                window.location.href = "./profile.html"
+            })
+        }
+    } catch (error) {
+        console.error("Error fetching posts:", error);
     }
-
-    const { username, profileimg } = userData;
-
-    // Fetch posts
-    const querySnapshot = await getDocs(collection(db, "Posts"))
-    querySnapshot.forEach((doc) => {
-        const postData = doc.data();
-        const postURL = postData.postURL;
-
-        console.log("Post Data:", postData);
-
-        // Create post box with the provided structure
-        const box = document.createElement("div");
-        box.className = "box";
-        box.innerHTML = `
-            <div class="profilePicture">
-                <div>
-                    <img src="${profileimg}" alt="Profile Image" class="userPhoto">
-                </div>
-                <div>
-                    <p class="username">${username}</p>
-                </div>
-            </div>
-            <div class="mainPicture">
-                <img src="${postURL}" alt="Post Image" class="postImg">
-            </div>
-            <div class="like">
-                <button class="LikeYes">
-                    <i class="fa-regular fa-heart heart"></i>
-                </button>
-            </div>
-        `;
-
-        // Add like button functionality
-        const likeButton = box.querySelector(".LikeYes .heart");
-        likeButton.addEventListener("click", () => {
-            likeButton.classList.toggle("fa-regular");
-            likeButton.classList.toggle("fa-solid");
-        });
-
-        // Append box to the feed
-        feed.appendChild(box);
-    });
 }
 
 fetchPosts();
+
+
 
 
 ///////////////////////////////////////  logout function //////////////////////////////////////////////////

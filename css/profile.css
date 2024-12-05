@@ -1,6 +1,7 @@
 *{
     margin: 0;
     padding: 0;
+    scrollbar-width: none;
 }
 
 header{
@@ -29,7 +30,6 @@ aside{
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    border-right: 2px solid black;
     z-index: 2;
 
 }
@@ -74,17 +74,21 @@ a i{
 
 aside a:hover{
     box-shadow: 0 0 10px white, 0 0 60px white;
+    transition: box-shadow 0.3s ease-in-out;
 }
 
 aside a:focus{
     box-shadow: 0 0 10px white, 0 0 60px white;
+    transition: box-shadow 0.3s ease-in-out;
 }
 
 #ProfileLogout:hover{
     box-shadow: 0 0 10px white, 0 0 60px white;
+    transition: box-shadow 0.3s ease-in-out;
 }
 #ProfileLogout :focus{
     box-shadow: 0 0 10px white, 0 0 60px white;
+    transition: box-shadow 0.3s ease-in-out;
 }
 
 
@@ -118,14 +122,11 @@ aside a:focus{
     position: fixed;
     height: 30%;
     width: 80%;
-    border-bottom: 2px solid black;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
     background-color:#FBF9F1;
     z-index: 1;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
     
 }
 
@@ -151,9 +152,11 @@ aside a:focus{
 
 .head{
     display: flex;
-    justify-content:center;
+    justify-content:flex-start;
     align-items: center;
 }
+
+
 
 #fileDisplay{
     margin-top: 24%;
@@ -164,18 +167,121 @@ aside a:focus{
     align-items: center;
     justify-content: space-evenly;
     
-    
-
 }
+
+.popUp{
+    position: absolute;
+    right:100px;
+    top: 200px;
+    height: 350px;
+    width: 350px;
+    z-index: 10;
+    background-color: #92C7CF;
+    display: none;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* Exit animation */
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+}
+
+
+
+.input{
+    display: flex;
+    flex-direction: column;
+}
+.popupDiv div{
+    display: flex;
+    margin: 35px;
+}
+
+.popupDiv div p{
+    font-size: 21px;
+}
+
+.popupDiv div input{
+    padding: 15px 55px 15px 20px;
+    border-radius: 10px;
+    border: none;
+    background-color:#E5E1DA ;
+    color: black;
+}
+
+.nameChangeError{
+    color: red;
+    font-size: 20px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.buttonDiv{
+    display: flex;
+    flex-direction: column;
+}
+
+#okay{
+    padding: 13px 122px 13px 122px;
+    background-color: #E5E1DA;
+    border-radius: 10px;
+    margin-bottom: 35px;
+    border: none;
+}
+
+#okay:hover{
+    box-shadow: 0 0 10px white, 0 0 60px white;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+
+#cancel{
+    padding: 13px 118px 13px 118px;
+    background-color: #E5E1DA;
+    border-radius: 10px;
+    border: none;
+}
+#cancel:hover{
+    box-shadow: 0 0 10px white, 0 0 60px white;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+::placeholder{
+    color: black;
+}
+
 footer{
     display: none;
 }
 
 .settings{
-    
+    position:absolute;
+    left:500px;
     height: 150px;
     width: 150px;
-    background: radial-gradient(circle,#1d8b8b,#12ceda 100%);
+    background-color: #92C7CF;
     display: none;
 
    
@@ -187,27 +293,19 @@ footer{
     position: relative;
     
 }
-
-#ellipsis{
-    height: 30px;
-    width: 60px;
-    background-color: #12ceda;
-    border: none;
-    position: relative;
-    bottom: 30px;
-    
-}
-
-.fa-ellipsis{
-    font-size: x-large;
-
-}
+ #pen{
+    font-size: 30px;
+    margin-left: 25px;
+    margin-top: 7px;
+    cursor: pointer;
+ }
 
 #Choose{
     padding: 9px;
     width:90px ;
-    background-color:#252734;
-    color: white;
+    background-color:#E5E1DA;
+    color:black ;
+    font-weight: bold;
     border: none;
     margin-right: 10px;
     margin-top: 5px;
@@ -216,8 +314,9 @@ footer{
 #Remove{
     height: 40px;
     width: 110px;
-    background-color:white;
+    background-color:#E5E1DA;
     color: black;
+    font-weight: bold;
     border: none;
     margin-right: 500px;
 

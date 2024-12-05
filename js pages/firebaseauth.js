@@ -52,7 +52,12 @@ form.addEventListener('submit', (event) => {
 
     if (validateInputs()) {
         // Proceed with user creation
-        const userVal = username.value.trim()
+        const userVal1 = username.value.trim()
+        const spl = userVal1.split("");
+        const upper = spl[0].toUpperCase();
+        spl[0] = upper;
+        const join = spl.join("")
+        const userVal = join;
         const emailVal = emailInput.value.trim();
         const passwordVal = password.value.trim();
 

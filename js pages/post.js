@@ -47,6 +47,9 @@ async function uploadImage(){
         console.log(downloadURL);
         insertPost(downloadURL);
         messageShow.style.display = "block";
+        setTimeout(() => {
+            window.location.href = "./homepage.html"
+        }, 2000);
     } catch (error) {
         console.error("Error:", error);
     }
@@ -99,26 +102,31 @@ upload.addEventListener("change", () => {
 });
 
 
-const ok = document.getElementById("ok");
-ok.addEventListener("click", () =>{
-    window.location.href = "./homepage.html"
-})
 
 
 const LogoutPost = document.getElementById("LogoutPost");
 LogoutPost.addEventListener('click', () => {
-    auth.signOut()
-        .then(() => {
-            alert("Are you sure LogOut LinkUp ")
+    // Show the confirmation box before signing out
+    const userChoice = confirm("Are you sure you want to log out?");
+    
+    if (userChoice) {
+        // Proceed with signing out
+        auth.signOut()
+            .then(() => {
+                console.log("User signed out.");
+                localStorage.removeItem('uid');
+                localStorage.clear();
 
-            console.log("User signed out.");
-            window.location.href = "../index.html"
-            localStorage.removeItem('uid');
-            localStorage.clear();
-        })
-        .catch((error) => {
-            console.error("Error signing out: ", error);
-        });
+                // Redirect to the home page after sign-out
+                window.location.href = "../index.html";
+            })
+            .catch((error) => {
+                console.error("Error signing out: ", error);
+            });
+    } else {
+        // If user clicks "Cancel", just log that the logout was canceled
+        console.log("Logout canceled by the user.");
+    }
 });
 
 
