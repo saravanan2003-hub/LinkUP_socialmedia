@@ -178,22 +178,28 @@ main{
 }
 
 .postSection{
-    height: 70vh;
-    width: 60%;
-    
+    height: 80vh;
+    width: 50%;
     background-color:#92C7CF ;
     display: flex;
     flex-direction: column;
     justify-content:space-evenly;
     align-items: center;
-
+    margin-bottom: 70px;
 }
 
 .postSection div{
     width:90%;
-    height: 70%;
+    height: 65%;
     padding: 10px;
     background-color:#E5E1DA ;
+    padding: 10px;
+}
+
+#PostCaption{
+    height: 50px;
+    width: 465px;
+    border-radius: 10px;
     padding: 10px;
 }
 
@@ -202,22 +208,32 @@ main{
     height: 100%;
 }
 
+
 #upload {
-    display: inline-block;
-    padding: 10px 90px;
-    flex-wrap:wrap ;
-    background-color: #E5E1DA;
-    color: black;
-    font-weight: bolder;
-    cursor: pointer;
-    border-radius: 10px;
-    
+    display: none; /* Hides the default file input */
 }
 
+#upload-label {
+    display: inline-block;
+    background-color: #E5E1DA;
+    color: black;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    padding: 15px 190px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
+#upload-label:hover {
+    background-color: #54b1d0;
+    box-shadow: 0 0 10px #54b1d0, 0 0 60px #54b1d0;
+}
 
 #uploadBtn{
-    padding: 10px 90px;
+    padding: 15px 220px;
     background-color: #E5E1DA;
     cursor: pointer;
     border-radius: 10px;
@@ -225,11 +241,6 @@ main{
     color: black;
     font-weight: bolder;
 
-}
-
-#upload:hover{
-    background-color: #54b1d0;
-    box-shadow: 0 0 10px #54b1d0, 0 0 60px #54b1d0;
 }
 
 #uploadBtn:hover{
@@ -284,7 +295,7 @@ footer{
         
         .postSection{
             margin: 0;
-            height: 80%;
+            height: 70%;
             width: 100%;
             display: flex;
             justify-content:space-evenly;

@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getFirestore, setDoc, doc, getDocs, getDoc, addDoc, collection, query, where} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL,deleteObject,listAll } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
+import { getFirestore, setDoc, doc, getDocs, getDoc, addDoc, collection, query, where } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject, listAll } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
 
@@ -20,23 +20,6 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 const auth = getAuth(app);
 const folderRef = ref(storage, 'Posts')
-
-//logout function
-const logout = document.getElementById('Logout')
-logout.addEventListener('click', () => {
-    auth.signOut()
-        .then(() => {
-            alert("Are you sure LogOut LinkUp ")
-
-            console.log("User signed out.");
-            window.location.href = "../index.html"
-            localStorage.removeItem('uid');
-            localStorage.clear();
-        })
-        .catch((error) => {
-            console.error("Error signing out: ", error);
-        });
-});
 
 
 /////////////////////////////////////////////     user name fetch function    /////////////////////////////////////////////////////////////
@@ -98,10 +81,22 @@ async function fetchPosts() {
         }
 
         // Loop through each post document
-        for (const postDoc of postsSnapshot.docs) {
+        for (var postDoc of postsSnapshot.docs) {
+            console.log(postDoc.id);
+
             const postData = postDoc.data();
             const postURL = postData.postURL;
             const postUID = postData.uid;
+            const postid = postDoc.id
+
+            if (postData.postDes === undefined || postData.postDes === "undefined") {
+                var postDes = " ";
+            } else {
+                var postDes = postData.postDes;
+            }
+
+
+
 
             if (!postURL || !postUID) {
                 console.warn("Post missing required fields:", postData);
@@ -109,17 +104,17 @@ async function fetchPosts() {
             }
 
             // Fetch user data for the post author
-            
+
             // const userSnapshot = await getDoc(userQuery);
             // console.log(userSnapshot.data());
-            
 
-        
-            const userDocRef = doc(db, 'users',postUID);
+
+
+            const userDocRef = doc(db, 'users', postUID);
             const docSnap = await getDoc(userDocRef);
-            const userData=docSnap.data()
+            const userData = docSnap.data()
             console.log(userData);
-            
+
             const username = userData.username || "Unknown User";
             const profileimg = userData.profileimg || "default-profile.png";
 
@@ -140,28 +135,101 @@ async function fetchPosts() {
                 </div>
                 <div class="like">
                     <button class="LikeYes">
-                        <i class="fa-regular fa-heart heart"></i>
+                        <div><p>${postDes}</p></div>
+                        <div class="like_count">
+                            <i class="fa-regular fa-heart heart"></i>
+                            <span id="like-count">0</span>
+                            <button id="showlike">View</like>
+                        </div>
                     </button>
                 </div>
             `;
 
-            // Add like button functionality
-            const likeButton = box.querySelector(".LikeYes .heart");
-            likeButton.addEventListener("click", () => {
-                likeButton.classList.toggle("fa-regular");
-                likeButton.classList.toggle("fa-solid");
-            });
+            const like = box.getElementsByClassName("LikeYes", "heart")[0];
+            like.addEventListener("click", async () => {
+                try {
+                    // Reference to the Likes collection
+                    const likesCollectionRef = collection(db, "Likes");
 
+                    // Fetch all documents in the collection
+                    const querySnapshot = await getDocs(likesCollectionRef);
+
+                    // Iterate through the documents and log the data
+                    querySnapshot.forEach(async (doc) => {
+                        try {
+                            const docData = doc.data(); // Get the current document data
+                            const userUID = localStorage.getItem("uid"); // Get the user UID
+                    
+                            // Check if this document matches the desired postUID and userUID is not in likedPeople
+                            if (postid === docData.postID) {
+                                // Ensure `likedPeople` exists and is an array
+                                if (!Array.isArray(docData.likedPeople)) {
+                                    docData.likedPeople = [];
+                                }
+                    
+                                if (!docData.likedPeople.includes(userUID)) {
+                                    // Add userUID to the array
+                                    docData.likedPeople.push(userUID);
+                    
+                                    // Update the document in Firestore
+                                    await setDoc(doc.ref, docData); // Use doc.ref to update the specific document
+
+                                    const likeCount = document.getElementById("like-count")
+                                    likeCount.textContent = docData.likedPeople.length
+                                    console.log(docData.likedPeople.length);
+                                    
+                                    
+                                    console.log(`Document ${doc.id} successfully updated!`);
+                                } else {
+                                    if (docData.likedPeople.includes(userUID)) {
+                                        // Remove userUID from the array
+                                        docData.likedPeople = docData.likedPeople.filter((uid) => uid !== userUID);
+                                    
+                                        // Optionally update the document in Firestore
+                                        try {
+                                            await setDoc(doc.ref, docData); // Save the updated data back to Firestore
+                                            console.log(`User ${userUID} removed from likedPeople.`);
+
+                                            const likeCount = document.getElementById("like-count")
+                                            likeCount.textContent = docData.likedPeople.length
+                                            console.log(docData.likedPeople.length);
+                                        } catch (error) {
+                                            console.error("Error updating document:", error);
+                                        }
+                                    } else {
+                                        console.log(`User ${userUID} is not in the likedPeople array.`);
+                                    }
+                                    
+                                }
+                            } else {
+                                console.log(`No match found for postUID: ${postid} with docData.postID: ${docData.postID}`);
+                            }
+                        } catch (error) {
+                            console.error(`Error updating document ${doc.id}:`, error);
+                        }
+                    });
+                    
+                    
+                    
+
+                } catch (error) {
+                    console.error("Error fetching documents:", error);
+                }
+
+
+
+
+            });
             // Append box to the feed
             feed.appendChild(box);
 
             const userPhoto = document.getElementById("userPhoto");
-            userPhoto.addEventListener("click", () =>{
+            userPhoto.addEventListener("click", () => {
                 window.location.href = "./profile.html"
             });
 
             const username1 = document.getElementById("username");
-            username1.addEventListener("click", () =>{
+            username1.addEventListener("click", () => {
                 window.location.href = "./profile.html"
             })
         }
@@ -169,7 +237,6 @@ async function fetchPosts() {
         console.error("Error fetching posts:", error);
     }
 }
-
 fetchPosts();
 
 
@@ -178,18 +245,52 @@ fetchPosts();
 ///////////////////////////////////////  logout function //////////////////////////////////////////////////
 const LogoutRes = document.getElementById("LogoutRes");
 LogoutRes.addEventListener('click', () => {
-    auth.signOut()
-        .then(() => {
-            alert("Are you sure LogOut LinkUp ")
+    // Show the confirmation box before signing out
+    const userChoice = confirm("Are you sure you want to log out?");
 
-            console.log("User signed out.");
-            window.location.href = "../index.html"
-            localStorage.removeItem('uid');
-            localStorage.clear();
-        })
-        .catch((error) => {
-            console.error("Error signing out: ", error);
-        });
+    if (userChoice) {
+        // Proceed with signing out
+        auth.signOut()
+            .then(() => {
+                console.log("User signed out.");
+                localStorage.removeItem('uid');
+                localStorage.clear();
+
+                // Redirect to the home page after sign-out
+                window.location.href = "../index.html";
+            })
+            .catch((error) => {
+                console.error("Error signing out: ", error);
+            });
+    } else {
+        // If user clicks "Cancel", just log that the logout was canceled
+        console.log("Logout canceled by the user.");
+    }
+});
+
+const logout1 = document.getElementById("Logout")
+logout1.addEventListener('click', () => {
+    // Show the confirmation box before signing out
+    const userChoice = confirm("Are you sure you want to log out?");
+
+    if (userChoice) {
+        // Proceed with signing out
+        auth.signOut()
+            .then(() => {
+                console.log("User signed out.");
+                localStorage.removeItem('uid');
+                localStorage.clear();
+
+                // Redirect to the home page after sign-out
+                window.location.href = "../index.html";
+            })
+            .catch((error) => {
+                console.error("Error signing out: ", error);
+            });
+    } else {
+        // If user clicks "Cancel", just log that the logout was canceled
+        console.log("Logout canceled by the user.");
+    }
 });
 
 

@@ -57,7 +57,8 @@ async function uploadImage(){
 }
 
 async function  insertPost(downloadURL){
-   
+    const postCaption = document.getElementById("PostCaption")
+    const captionVal = postCaption.value
     const uploadInput = document.getElementById("upload");
     const file = uploadInput.files[0];
 
@@ -65,25 +66,40 @@ async function  insertPost(downloadURL){
         postURL : downloadURL,
         postTime : new Date().getTime().toString(),
         postName :file.name,
-        uid :localStorage.getItem("uid")
+        uid :localStorage.getItem("uid"),
+        postDes : captionVal
     };
+
+    
+
 
     try{
         const docRef = await addDoc(collection(db,"Posts"),postData);
+        
+        var postId = docRef.id;
         
        
     }
     catch(error){
         console.error("Error Adding Document:",error);
     }
+
+    const userUID = localStorage.getItem("uid");
+            var LikeDetails = {
+                postID:postId,
+                userID: userUID,
+                likeCount: 0,
+                likeClass: "fa-regular",
+                likedPeople: []
+            }
+
+    try{
+        const docRef1 = await addDoc(collection(db, "Likes"), LikeDetails);
+    }
+    catch(error){
+        console.error("Error Adding Document:",error);
+    }
 }
-
-
-
-
-
-
-
 
 // _____________________________--------------------------------------upload----
 
