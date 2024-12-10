@@ -75,26 +75,6 @@ async function  insertPost(downloadURL){
 
     try{
         const docRef = await addDoc(collection(db,"Posts"),postData);
-        
-        var postId = docRef.id;
-        
-       
-    }
-    catch(error){
-        console.error("Error Adding Document:",error);
-    }
-
-    const userUID = localStorage.getItem("uid");
-            var LikeDetails = {
-                postID:postId,
-                userID: userUID,
-                likeCount: 0,
-                likeClass: "fa-regular",
-                likedPeople: []
-            }
-
-    try{
-        const docRef1 = await addDoc(collection(db, "Likes"), LikeDetails);
     }
     catch(error){
         console.error("Error Adding Document:",error);

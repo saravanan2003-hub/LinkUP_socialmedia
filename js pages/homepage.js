@@ -63,6 +63,7 @@ async function getUsername() {
 getUsername();
 
 /////////////////////////////////////////////  fetch post    ///////////////////////////////////////
+
 async function fetchPosts() {
     try {
         const feed = document.getElementById("feed");
@@ -81,22 +82,14 @@ async function fetchPosts() {
         }
 
         // Loop through each post document
-        for (var postDoc of postsSnapshot.docs) {
-            console.log(postDoc.id);
-
+        for (const postDoc of postsSnapshot.docs) {
             const postData = postDoc.data();
             const postURL = postData.postURL;
             const postUID = postData.uid;
-            const postid = postDoc.id
+            const postid = postDoc.id;
 
-            if (postData.postDes === undefined || postData.postDes === "undefined") {
-                var postDes = " ";
-            } else {
-                var postDes = postData.postDes;
-            }
-
-
-
+            // Default post description if undefined
+            const postDes = postData.postDes || " ";
 
             if (!postURL || !postUID) {
                 console.warn("Post missing required fields:", postData);
@@ -104,19 +97,20 @@ async function fetchPosts() {
             }
 
             // Fetch user data for the post author
-
-            // const userSnapshot = await getDoc(userQuery);
-            // console.log(userSnapshot.data());
-
-
-
-            const userDocRef = doc(db, 'users', postUID);
+            const userDocRef = doc(db, "users", postUID);
             const docSnap = await getDoc(userDocRef);
-            const userData = docSnap.data()
-            console.log(userData);
-
+            const userData = docSnap.data() || {};
             const username = userData.username || "Unknown User";
             const profileimg = userData.profileimg || "default-profile.png";
+
+            // Fetch likes data for the post
+            const likesDocRef = doc(db, "Likes", postid);
+            const likesDocSnap = await getDoc(likesDocRef);
+            const likesData = likesDocSnap.data() || { likedPeople: []};
+
+            const userUID = localStorage.getItem("uid");
+            const isLiked = likesData.likedPeople.includes(userUID);
+            const likeCount = likesData.likedPeople.length;
 
             // Create post box
             const box = document.createElement("div");
@@ -124,120 +118,172 @@ async function fetchPosts() {
             box.innerHTML = `
                 <div class="profilePicture">
                     <div>
-                        <img src="${profileimg}" alt="Profile Image" class="userPhoto" id="userPhoto">
+                        <img src="${profileimg}" alt="Profile Image" class="userPhoto" id="userPhoto-${postid}">
                     </div>
                     <div>
-                        <p class="username" id="username">${username}</p>
+                        <p class="username" id="username-${postid}">${username}</p>
                     </div>
                 </div>
                 <div class="mainPicture">
                     <img src="${postURL}" alt="Post Image" class="postImg">
                 </div>
                 <div class="like">
-                    <button class="LikeYes">
-                        <div><p>${postDes}</p></div>
+                    <div class="LikeYes">
+                        <div><span class="postDes">${postDes}</span></div>
                         <div class="like_count">
-                            <i class="fa-regular fa-heart heart"></i>
-                            <span id="like-count">0</span>
-                            <button id="showlike">View</like>
+                            <i class="fa-${isLiked ? "solid" : "regular"} fa-heart heart" id="heart-${postid}"></i>
+                            <span id="like-count-${postid}">${likeCount}</span>
+                            <button id="showlike-${postid}" class="viewLike">View Likes</button>
+                            <i class="fa-solid fa-comment" id="comment-${postid}"></i>
                         </div>
-                    </button>
+                    </div>
                 </div>
             `;
 
-            const like = box.getElementsByClassName("LikeYes", "heart")[0];
-            like.addEventListener("click", async () => {
+            // Add event listener to like button
+            const heart = box.querySelector(`#heart-${postid}`);
+            const likeCountEl = box.querySelector(`#like-count-${postid}`);
+
+            heart.addEventListener("click", async () => {
                 try {
-                    // Reference to the Likes collection
-                    const likesCollectionRef = collection(db, "Likes");
+                    const likesDocSnap = await getDoc(likesDocRef);
+                    const likesData = likesDocSnap.data() || { likedPeople: [] };
 
-                    // Fetch all documents in the collection
-                    const querySnapshot = await getDocs(likesCollectionRef);
+                    const likedPeople = likesData.likedPeople;
+                    const userUID = localStorage.getItem("uid");
 
-                    // Iterate through the documents and log the data
-                    querySnapshot.forEach(async (doc) => {
-                        try {
-                            const docData = doc.data(); // Get the current document data
-                            const userUID = localStorage.getItem("uid"); // Get the user UID
-                    
-                            // Check if this document matches the desired postUID and userUID is not in likedPeople
-                            if (postid === docData.postID) {
-                                // Ensure `likedPeople` exists and is an array
-                                if (!Array.isArray(docData.likedPeople)) {
-                                    docData.likedPeople = [];
-                                }
-                    
-                                if (!docData.likedPeople.includes(userUID)) {
-                                    // Add userUID to the array
-                                    docData.likedPeople.push(userUID);
-                    
-                                    // Update the document in Firestore
-                                    await setDoc(doc.ref, docData); // Use doc.ref to update the specific document
+                    if (likedPeople.includes(userUID)) {
+                        // Unlike the post
+                        const updatedLikedPeople = likedPeople.filter((uid) => uid !== userUID);
+                        await setDoc(likesDocRef, { likedPeople: updatedLikedPeople });
 
-                                    const likeCount = document.getElementById("like-count")
-                                    likeCount.textContent = docData.likedPeople.length
-                                    console.log(docData.likedPeople.length);
-                                    
-                                    
-                                    console.log(`Document ${doc.id} successfully updated!`);
-                                } else {
-                                    if (docData.likedPeople.includes(userUID)) {
-                                        // Remove userUID from the array
-                                        docData.likedPeople = docData.likedPeople.filter((uid) => uid !== userUID);
-                                    
-                                        // Optionally update the document in Firestore
-                                        try {
-                                            await setDoc(doc.ref, docData); // Save the updated data back to Firestore
-                                            console.log(`User ${userUID} removed from likedPeople.`);
+                        // Update UI
+                        heart.classList.remove("fa-solid");
+                        heart.classList.add("fa-regular");
+                        likeCountEl.textContent = updatedLikedPeople.length;
+                        console.log(`User ${userUID} unliked the post.`);
+                    } else {
+                        // Like the post
+                        likedPeople.push(userUID);
+                        await setDoc(likesDocRef, { likedPeople });
 
-                                            const likeCount = document.getElementById("like-count")
-                                            likeCount.textContent = docData.likedPeople.length
-                                            console.log(docData.likedPeople.length);
-                                        } catch (error) {
-                                            console.error("Error updating document:", error);
-                                        }
-                                    } else {
-                                        console.log(`User ${userUID} is not in the likedPeople array.`);
-                                    }
-                                    
-                                }
-                            } else {
-                                console.log(`No match found for postUID: ${postid} with docData.postID: ${docData.postID}`);
-                            }
-                        } catch (error) {
-                            console.error(`Error updating document ${doc.id}:`, error);
-                        }
-                    });
-                    
-                    
-                    
-
+                        // Update UI
+                        heart.classList.remove("fa-regular");
+                        heart.classList.add("fa-solid");
+                        likeCountEl.textContent = likedPeople.length;
+                        console.log(`User ${userUID} liked the post.`);
+                    }
                 } catch (error) {
-                    console.error("Error fetching documents:", error);
+                    console.error("Error toggling like status:", error);
                 }
-
-
-
-
             });
+
             // Append box to the feed
             feed.appendChild(box);
 
-            const userPhoto = document.getElementById("userPhoto");
-            userPhoto.addEventListener("click", () => {
-                window.location.href = "./profile.html"
+            // Add event listeners for user profile redirection
+            const userPhoto = box.querySelector(`#userPhoto-${postid}`);
+            const usernameEl = box.querySelector(`#username-${postid}`);
+
+            [userPhoto, usernameEl].forEach((element) => {
+                element.addEventListener("click", () => {
+                    window.location.href = "./profile.html";
+                });
             });
 
-            const username1 = document.getElementById("username");
-            username1.addEventListener("click", () => {
-                window.location.href = "./profile.html"
+
+
+            const likeShow = document.getElementById(`showlike-${postid}`);
+            const popmain = document.getElementById("likeShowPopup"); // Declare popmain globally
+
+            likeShow.addEventListener("click", () => {
+                likePeople();
+
+                // Toggle display of the popup
+                if (popmain) {
+                    popmain.style.display = (popmain.style.display === "none" || popmain.style.display === "") ? "block" : "none";
+                } else {
+                    console.error("likeShowPopup element not found.");
+                }
+            });
+
+            // Who liked show function
+            async function likePeople() {
+                try {
+                    const likedPostID = docSnap.id;
+                    console.log(likedPostID);
+
+                    const likedPeoples = likesData.likedPeople;
+
+                    if (!popmain) {
+                        console.error("likeShowPopup element not found.");
+                        return;
+                    }
+
+                    // Clear existing content to avoid duplicates
+                    popmain.innerHTML = `<i id="xmark" class="fa-solid fa-xmark"></i>`;
+
+                    for (const people of likedPeoples) {
+                        if (likedPostID === people) {
+                            const username = userData.username || "Unknown User";
+                            const profileimg = userData.profileimg || "default-profile.png";
+                            console.log(username);
+                            console.log(profileimg);
+
+                            // Create and append child popup
+                            const childPopup = document.createElement("div");
+                            childPopup.classList.add("childPopup");
+                            childPopup.innerHTML = `
+                    <img src="${profileimg}" alt="profileImg" class="popupPost">
+                    <p class="popupUser">${username}</p>
+                `;
+                            popmain.appendChild(childPopup);
+                        }
+                    }
+
+                    // Close popup on xmark click
+                    const xmark = document.getElementById("xmark");
+                    if (xmark) {
+                        xmark.addEventListener("click", () => {
+                            popmain.style.display = "none";
+                        });
+                    } else {
+                        console.error("xmark element not found.");
+                    }
+                } catch (error) {
+                    console.error("Error in likePeople function:", error);
+                }
+            }
+
+            const comment = document.getElementById(`comment-${postid}`);
+            comment.addEventListener("click", () =>{
+                const commentDiv = c=document.getElementsByClassName("comment")[0];
+                if(commentDiv.style.display =="none"){
+                    commentDiv.style.display = "block"
+                }
+
+                const commenText = document.getElementById("commentText").value;
+                const CommentSend = document.getElementById("CommentSend");
+                CommentSend.addEventListener("click", async() =>{
+                   
+                })
             })
+
+
+
         }
     } catch (error) {
         console.error("Error fetching posts:", error);
     }
 }
+
+// Fetch posts when the page loads
 fetchPosts();
+
+
+
+
+
 
 
 
