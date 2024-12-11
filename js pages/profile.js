@@ -114,6 +114,7 @@ pen.addEventListener("click", () =>{
 
 const okay = document.getElementById("okay");
 const cancel = document.getElementById("cancel");
+const profileXmark = document.getElementById("profileXmark");
 okay.addEventListener("click", (event) =>{
     event.preventDefault();
     if(valid()){
@@ -130,9 +131,14 @@ okay.addEventListener("click", (event) =>{
 
 });
 
-cancel.addEventListener("click", () =>{
+profileXmark.addEventListener("click", () =>{
     const popup = document.getElementsByClassName("popUp")[0];
     popup.style.display = "none";
+})
+
+cancel.addEventListener("click", () =>{
+    const usernameChange = document.getElementById("usernameChange")
+    const usernameChangeVal = usernameChange.value = "";
 })
 ///////////////////////////////////// username valitation //////////////////////
 function valid() {

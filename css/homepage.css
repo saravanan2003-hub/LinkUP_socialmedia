@@ -273,12 +273,10 @@ a i{
     width: 500px;
     top: 200px;
     left: 450px;
-    background-color: #92C7CF;
-    /* display: flex;
-    justify-content:center;
-    align-items: flex-start; */
+    background-color:#E5E1DA;
     position: fixed;
     padding: 10px;
+    border-radius: 10px;
 }
 
 .commentIp{
@@ -302,11 +300,7 @@ a i{
     border-radius: 10px;
 }
 
-#commentDisplay{
-    height: 530px;
-    width: 500px;
-    background-color: white;
-}
+
 
 .fa-comment{
     margin-left: 15px;
@@ -384,6 +378,72 @@ footer{
     font-size: 20px;
     color: black;
 }
+
+#commentDisplay {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 10px;
+    overflow-y: auto;
+    height: 480px;
+    width: 480px;
+    background-color:#92C7CF;
+}
+
+.comment-item {
+    /* border-bottom: 1px solid #ddd; */
+    padding: 5px 0;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    background-color: #AAD7D9;
+    margin: 10px;
+    border-radius: 20px;
+    
+}
+
+.comment-item p {
+    margin: 5px 0;
+}
+
+.comment-item small {
+    color: #777;
+    font-size: 12px;
+}
+
+.comment-profile{
+    height: 75px;
+    width: 75px;
+    border-radius: 50%;
+
+}
+
+#xmarkComment{
+    font-size: 20px;
+    color: red;
+    position: relative;
+    left: 480px;
+}
+
+.comment_profileDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+
+.main_commentDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.commentedTime{
+    margin-bottom: 10px;
+}
+
+
+
 
 
 

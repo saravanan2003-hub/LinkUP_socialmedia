@@ -85,7 +85,7 @@ async function fetchPosts() {
         for (const postDoc of postsSnapshot.docs) {
             const postData = postDoc.data();
             const postURL = postData.postURL;
-            const postUID = postData.uid;
+            var postUID = postData.uid;
             const postid = postDoc.id;
 
             // Default post description if undefined
@@ -106,7 +106,12 @@ async function fetchPosts() {
             // Fetch likes data for the post
             const likesDocRef = doc(db, "Likes", postid);
             const likesDocSnap = await getDoc(likesDocRef);
-            const likesData = likesDocSnap.data() || { likedPeople: []};
+            const likesData = likesDocSnap.data() || { likedPeople: [] };
+
+            //create and fetch comments from comments table
+            const commentsDocRef = doc(db, "Comments", postid);
+            const commentsDocSnap = await getDoc(commentsDocRef);
+            const commentsData = commentsDocSnap.data() || { comments: [] }
 
             const userUID = localStorage.getItem("uid");
             const isLiked = likesData.likedPeople.includes(userUID);
@@ -156,22 +161,26 @@ async function fetchPosts() {
                         // Unlike the post
                         const updatedLikedPeople = likedPeople.filter((uid) => uid !== userUID);
                         await setDoc(likesDocRef, { likedPeople: updatedLikedPeople });
+                        likePeople()
 
                         // Update UI
                         heart.classList.remove("fa-solid");
                         heart.classList.add("fa-regular");
                         likeCountEl.textContent = updatedLikedPeople.length;
                         console.log(`User ${userUID} unliked the post.`);
+
                     } else {
                         // Like the post
                         likedPeople.push(userUID);
                         await setDoc(likesDocRef, { likedPeople });
+                        likePeople()
 
                         // Update UI
                         heart.classList.remove("fa-regular");
                         heart.classList.add("fa-solid");
                         likeCountEl.textContent = likedPeople.length;
                         console.log(`User ${userUID} liked the post.`);
+
                     }
                 } catch (error) {
                     console.error("Error toggling like status:", error);
@@ -234,9 +243,9 @@ async function fetchPosts() {
                             const childPopup = document.createElement("div");
                             childPopup.classList.add("childPopup");
                             childPopup.innerHTML = `
-                    <img src="${profileimg}" alt="profileImg" class="popupPost">
-                    <p class="popupUser">${username}</p>
-                `;
+                            <img src="${profileimg}" alt="profileImg" class="popupPost">
+                            <p class="popupUser">${username}</p>
+                            `;
                             popmain.appendChild(childPopup);
                         }
                     }
@@ -255,19 +264,68 @@ async function fetchPosts() {
                 }
             }
 
-            const comment = document.getElementById(`comment-${postid}`);
-            comment.addEventListener("click", () =>{
-                const commentDiv = c=document.getElementsByClassName("comment")[0];
-                if(commentDiv.style.display =="none"){
-                    commentDiv.style.display = "block"
+
+            const commentButton = document.getElementById(`comment-${postid}`); // Button for showing the comment section
+            commentButton.addEventListener("click", () => {
+                const commentDiv = document.getElementsByClassName("comment")[0]; // Select the comment div
+                if (commentDiv.style.display === "none") {
+                    commentDiv.style.display = "block"; // Show the comment section
+                } else {
+                    commentDiv.style.display = "none"; // Hide the comment section
                 }
 
-                const commenText = document.getElementById("commentText").value;
+                
                 const CommentSend = document.getElementById("CommentSend");
                 CommentSend.addEventListener("click", async() =>{
-                   
+                    try {
+
+                        //comment disabled
+                        
+
+                        const commentText = document.getElementById("commentText").value;
+                        const commentsDocRef = doc(db, "Comments", postid);
+                        const commentsDocSnap = await getDoc(commentsDocRef);
+                        const commentsData = commentsDocSnap.data() || { comments: [] }; // Initialize if document doesn't exist
+                    
+                        // Ensure commentsData.comments is an array
+                        if (!Array.isArray(commentsData.comments)) {
+                            commentsData.comments = [];
+                        }
+                    
+                        const newComment = {
+                            comment: commentText, // The comment text
+                            userId: userUID,      // ID of the user making the comment
+                            timestamp: new Date().toISOString() // Timestamp of the comment
+                        };
+                        document.getElementById("commentText").value = "";
+                    
+                        // Add the new comment to the comments array
+                        commentsData.comments.push(newComment);
+                    
+                        // Update the document in Firestore
+                        await setDoc(commentsDocRef, commentsData);
+                    
+                        console.log("Comment added successfully!");
+                        
+                    } catch (error) {
+                        console.error("Error in comment function:", error);
+                    }
+                    
+                    
                 })
-            })
+
+                const xmarkComment = document.getElementById("xmarkComment");
+                xmarkComment.addEventListener("click", () =>{
+                    const commentDiv = document.getElementsByClassName("comment")[0]; // Select the comment div
+                if (commentDiv.style.display === "block") {
+                    commentDiv.style.display = "none"; // Show the comment section
+                }
+                })
+
+                fetchAndDisplayComments(postid)
+
+            });
+
 
 
 
@@ -275,10 +333,75 @@ async function fetchPosts() {
     } catch (error) {
         console.error("Error fetching posts:", error);
     }
+
+
+
+    async function fetchAndDisplayComments(postid) {
+        try {
+            const commentsDocRef = doc(db, "Comments", postid);
+            const commentsDocSnap = await getDoc(commentsDocRef);
+    
+            if (commentsDocSnap.exists()) {
+                const commentsData = commentsDocSnap.data();
+                const commentsArray = commentsData.comments || []; // Default to empty array if no comments
+    
+    
+                
+                //// user deatails fetch from firestore.
+                const userDocRef = doc(db, "users" ,postUID);
+                const docSnap = await getDoc(userDocRef);
+                const userData = docSnap.data() || {};
+    
+                console.log(docSnap.id);
+    
+               
+    
+                // Get the container for displaying comments
+                const commentsContainer = document.getElementById("commentDisplay");
+                commentsContainer.innerHTML = ""; // Clear existing comments
+    
+                commentsArray.forEach(comment => {
+                    // Create a new comment div
+                    const commentDiv = document.createElement("div");
+                    commentDiv.classList.add("comment-item");
+    
+                    if(docSnap.id === comment.userId){
+                        var username = userData.username || "Unknown User";
+                        var profileimg = userData.profileimg || "default-profile.png";
+                    }
+                       
+                    
+                    // Add comment content
+                    commentDiv.innerHTML = `
+                    <div class="comment_profileDiv">
+                        <small class="commentedTime">${new Date(comment.timestamp).toLocaleString()}</small>
+                        <img src="${profileimg}" class="comment-profile" alt="ProfileImg">
+                        <p>${username}</p>
+                    </div>
+                    <div class="main_commentDiv">
+                        <p>${comment.comment}</p>
+                        
+                    </div>
+                    
+                       
+                                       `;
+    
+                    // Append to the container
+                    commentsContainer.appendChild(commentDiv);
+                });
+            } else {
+                console.log("No comments found for this post.");
+            }
+        } catch (error) {
+            console.error("Error fetching comments:", error);
+        }
+    }
 }
 
 // Fetch posts when the page loads
 fetchPosts();
+
+
 
 
 

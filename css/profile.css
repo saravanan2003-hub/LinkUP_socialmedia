@@ -230,7 +230,7 @@ aside a:focus{
 }
 
 .popupDiv div p{
-    font-size: 21px;
+    font-size: 19px;
 }
 
 .popupDiv div input{
@@ -259,6 +259,7 @@ aside a:focus{
     border-radius: 10px;
     margin-bottom: 35px;
     border: none;
+    cursor: pointer;
 }
 
 #okay:hover{
@@ -272,10 +273,23 @@ aside a:focus{
     background-color: #E5E1DA;
     border-radius: 10px;
     border: none;
+    cursor: pointer;
 }
 #cancel:hover{
     box-shadow: 0 0 10px white, 0 0 60px white;
     transition: box-shadow 0.3s ease-in-out;
+}
+
+#profileXmark{
+    cursor: pointer;
+    color: red;
+    position: relative;
+    bottom: 30px;
+    right: 30px;
+    font-size:20px;
+    margin: 0;
+    border: 0;
+
 }
 
 ::placeholder{
