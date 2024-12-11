@@ -15,7 +15,7 @@
 <body>
     <div class="container">
         <aside>
-            <span><img src="../assests/photos/linkup name img.png" alt=""></span>
+            <span><img src="../assests/photos/LINK UP msg.png" alt=""></span>
             <a href="./homepage.html" class="active"><i class="fa-solid fa-house"></i><span>Home</span></a>
             <a href="./profile.html"><i class="fa-solid fa-user"></i><span>Profile</span></a>
             <a href="./post.html"><i class="fa-solid fa-photo-film"></i><span>Post</span></a>
@@ -25,23 +25,26 @@
 
         <main>
             <div class="setProfile">
-                
-                    <div class="head">
+                <div class="head">
+                    <div>
+                        <img alt="" id="ProfileImg">
+                    </div>
+                    <div class="settings">
                         <div>
-                            <img alt="" id="ProfileImg">
-                        </div>
-                        <div class="settings">
-                            <div>
-                                <input type="file" placeholder="choose photo" id="Choose">
-                                <button id="Remove">RemoveProfile</button>
-                            </div>
+                            <input type="file" placeholder="choose photo" id="Choose">
+                            <label for="Choose" id="upload-label">Choose Image</label>
+                            <button id="Remove">RemoveProfile</button>
                         </div>
                     </div>
+
                     <span id="nameDis"></span>
                     <span id="pen"><i class="fa-solid fa-user-pen"></i></span>
                     <div class="popUp">
                         <div class="popupDiv">
-                            <div><p>Do you want change your name?</p></div>
+                            <div>
+                                <i class="fa-regular fa-circle-xmark" id="profileXmark"></i>
+                                <p>Do you want change your name?</p>
+                            </div>
                             <div class="input">
                                 <input type="text" id="usernameChange" placeholder="Enter your new name here">
                                 <span class="nameChangeError"></span>
@@ -52,9 +55,11 @@
                             </div>
                         </div>
                     </div>
-
+                </div>
+                <div>
+                    <h1 class="postH1">Posts</h1>
+                </div>
             </div>
-
             <div class="files">
                 <div id="fileDisplay"></div>
             </div>

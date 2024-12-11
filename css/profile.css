@@ -45,8 +45,8 @@ aside{
 }
 
 aside span img{
-    height: 80px;
-    width: 200px;
+    height: 125px;
+    width: 230px;
 }
 
 aside a{
@@ -64,7 +64,8 @@ main{
     display: grid;
     height: 100vh;
     grid-template-rows:15% 85%;
-    background-color: #FBF9F1;
+    /* background-color: #FBF9F1; */
+    background-color: #E5E1DA;
 }
 
 a i{
@@ -120,13 +121,15 @@ aside a:focus{
 
 .setProfile{
     position: fixed;
-    height: 30%;
+    height: 40%;
     width: 80%;
-    background-color:#FBF9F1;
+    /* background-color:#FBF9F1; */
     z-index: 1;
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: flex-start;
+
     
 }
 
@@ -134,15 +137,19 @@ aside a:focus{
     border-radius: 50%;
     height: 200px;
     width: 200px;
-    border: #12ceda solid 2px;
-    box-shadow: 0 0 10px 5px white; /* Creates a white shadow */
-                     /* Removes inline spacing if needed */
+    border: 10px solid #92C7CF;
+    padding: 5px;
     margin: 20px; 
     width: 200px;
     height: 200px;
     object-fit: cover;
     margin: 30px;
+    cursor: pointer;
 
+}
+#ProfileImg:hover{
+    box-shadow: 0 0 10px #92C7CF, 0 0 60px #92C7CF;
+    transition: box-shadow 0.3s ease-in-out; 
 }
 
 #nameDis{
@@ -159,20 +166,23 @@ aside a:focus{
 
 
 #fileDisplay{
-    margin-top: 24%;
-    width: 79vw;
+    margin-top: 40%;
+    width: 100%;
+    height: 100%;
     align-content: center;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-evenly;
-    
+    justify-content: center;
+    background-color: #E5E1DA;
 }
+
+
 
 .popUp{
     position: absolute;
-    right:100px;
-    top: 200px;
+    right:290px;
+    top: 450px;
     height: 350px;
     width: 350px;
     z-index: 10;
@@ -220,7 +230,7 @@ aside a:focus{
 }
 
 .popupDiv div p{
-    font-size: 21px;
+    font-size: 19px;
 }
 
 .popupDiv div input{
@@ -249,6 +259,7 @@ aside a:focus{
     border-radius: 10px;
     margin-bottom: 35px;
     border: none;
+    cursor: pointer;
 }
 
 #okay:hover{
@@ -262,10 +273,23 @@ aside a:focus{
     background-color: #E5E1DA;
     border-radius: 10px;
     border: none;
+    cursor: pointer;
 }
 #cancel:hover{
     box-shadow: 0 0 10px white, 0 0 60px white;
     transition: box-shadow 0.3s ease-in-out;
+}
+
+#profileXmark{
+    cursor: pointer;
+    color: red;
+    position: relative;
+    bottom: 30px;
+    right: 30px;
+    font-size:20px;
+    margin: 0;
+    border: 0;
+
 }
 
 ::placeholder{
@@ -278,11 +302,15 @@ footer{
 
 .settings{
     position:absolute;
-    left:500px;
+    left:150px;
+    top: 200px;
     height: 150px;
-    width: 150px;
+    width: 250px;
     background-color: #92C7CF;
     display: none;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
 
    
 }
@@ -299,26 +327,46 @@ footer{
     margin-top: 7px;
     cursor: pointer;
  }
+ #pen:hover{
+    filter: drop-shadow(0 0 10px #92C7CF) drop-shadow(0 0 60px #92C7CF);
+    transition: filter 0.3s ease-in-out; /* Smooth transition effect */
+}
 
-#Choose{
-    padding: 9px;
-    width:90px ;
-    background-color:#E5E1DA;
-    color:black ;
-    font-weight: bold;
-    border: none;
-    margin-right: 10px;
-    margin-top: 5px;
-    margin-bottom: 30px;
+.postH1{
+    margin-left: 20px;
+    border-bottom: 2px solid #92C7CF;
+}
+
+
+
+
+#Choose {
+    display: none; /* Hides the default file input */
+}
+
+#upload-label {
+    display: inline-block;
+    background-color: #4F7E83;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    padding: 15px 50px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 #Remove{
-    height: 40px;
-    width: 110px;
+    height: 45px;
+    width: 205px;
     background-color:#E5E1DA;
     color: black;
     font-weight: bold;
     border: none;
     margin-right: 500px;
+    border-radius: 10px;
+    margin-top: 20px;
 
 }
 

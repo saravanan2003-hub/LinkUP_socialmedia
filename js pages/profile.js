@@ -73,25 +73,27 @@ async function uploadImage(){
     const uid = localStorage.getItem("uid");
     const messageShow = document.getElementById("ProfileImg");
     const file = upload.files[0];
+    if (file && file.type.startsWith("image/")) {
+        try {
 
-
-
-    try {
-
-        const storageRef = ref(storage, `image/${file.name}`);
-        await uploadBytes(storageRef, file);
-        console.log("File Uploaded Successfully");
+            const storageRef = ref(storage, `image/${file.name}`);
+            await uploadBytes(storageRef, file);
+            console.log("File Uploaded Successfully");
+            
         
+            const downloadURL = await getDownloadURL(storageRef);
+            const docRef = doc(db, "users",localStorage.getItem("uid"));
+            const docSnap = await getDoc(docRef);
+            await updateDoc(docRef, { profileimg:downloadURL});
+            messageShow.style.display = "block";
+            window.location.reload(true);
+            
+        } catch (error) {
+            console.error("Error:", error);
+        }
     
-        const downloadURL = await getDownloadURL(storageRef);
-        const docRef = doc(db, "users",localStorage.getItem("uid"));
-        const docSnap = await getDoc(docRef);
-        await updateDoc(docRef, { profileimg:downloadURL});
-        messageShow.style.display = "block";
-        window.location.reload(true);
-        
-    } catch (error) {
-        console.error("Error:", error);
+    } else {
+        alert("Please upload a valid image file.");
     }
     
 }
@@ -112,6 +114,7 @@ pen.addEventListener("click", () =>{
 
 const okay = document.getElementById("okay");
 const cancel = document.getElementById("cancel");
+const profileXmark = document.getElementById("profileXmark");
 okay.addEventListener("click", (event) =>{
     event.preventDefault();
     if(valid()){
@@ -128,13 +131,19 @@ okay.addEventListener("click", (event) =>{
 
 });
 
-cancel.addEventListener("click", () =>{
+profileXmark.addEventListener("click", () =>{
     const popup = document.getElementsByClassName("popUp")[0];
     popup.style.display = "none";
 })
+
+cancel.addEventListener("click", () =>{
+    const usernameChange = document.getElementById("usernameChange")
+    const usernameChangeVal = usernameChange.value = "";
+})
 ///////////////////////////////////// username valitation //////////////////////
 function valid() {
-    const usernameRegex = /^(?=.*[a-zA-Z])[a-zA-Z][a-zA-Z0-9_-]{3,19}$/;
+        const usernameRegex = /^(?=.*[a-zA-Z])[a-zA-Z][a-zA-Z0-9_-]{3,19}$/
+
     const usernameChange = document.getElementById("usernameChange");
     const usernameChangeVal = usernameChange.value.trim();
 
@@ -144,7 +153,13 @@ function valid() {
     if (usernameChangeVal === "") {
         changeError[0].textContent = "Please enter a username";
         isValid = false;
-    } else if (!usernameRegex.test(usernameChangeVal)) {
+    }
+    else if (usernameChangeVal.length < 3 || usernameChangeVal.length > 19) {
+        changeError[0].textContent = "length between 3 and 19 char.";
+        isValid = false;
+    }
+    
+    else if (!usernameRegex.test(usernameChangeVal)) {
         changeError[0].textContent = "Please enter a valid username";
         isValid = false;
     } else {

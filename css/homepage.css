@@ -35,12 +35,13 @@ aside{
 main{
     margin-left: 20%;
     height: 100%;
-    background-color: #FBF9F1;
+    /* background-color: #FBF9F1; */
+    background-color: #E5E1DA;
 }
 
 aside span img{
-    height: 80px;
-    width: 200px;
+    height: 125px;
+    width: 230px;
 }
 
 aside span img:hover {
@@ -62,7 +63,7 @@ aside span img:hover {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    margin-top: 7vh;
+    margin-top: 10vh;
     
 }
     
@@ -145,19 +146,69 @@ aside a{
     border-radius: 20px;
 }
 
+.popupPost{
+    height: 60px;
+    width: 70px;
+    box-sizing: 20px;
+    border: black 1px solid;
+    border-radius: 20px;
+    margin-right: 20px;
+}
+
+.childPopup{
+    /* background-color: #E5E1DA; */
+    height: 100px;
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-left: 5px;
+}
+
+.popupUser{
+    font-size: 20px;
+}
+
+#likeShowPopup{
+    display: none;
+    position: absolute;
+    height: 500px;
+    width: 300px;
+    top: 200px;
+    left: 500px;
+    background-color: #92C7CF;
+    /* display: flex;
+    justify-content:center;
+    align-items: flex-start; */
+    position: fixed;
+}
+
+#xmark{
+    position: absolute;
+    left: 270px;
+    top: 5px;
+    font-size: 30px;
+}
+
+
+
 a i{
    color: black;
    margin-right: 15px;
 }
 
 .box{
-    height: 600px;
+    height: 650px;
     width: 600px;
     background-color: #AAD7D9;
-    margin: 60px;
+    margin: 3px;
     display: grid;
-    grid-template-rows: 15% 80% 10%;
-    border-top-right-radius: 50px;
+    grid-template-rows: 13% 74% 13%;
+    /* border-top-right-radius: 50px;
+    border-bottom-left-radius:50px ;
+    border-bottom-right-radius: 50px; */
+    
     
     
 }
@@ -188,8 +239,8 @@ a i{
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    border-bottom: 1px black solid;
-    border-top-right-radius: 50px;
+    /* border-bottom: 1px black solid; */
+    /* border-top-right-radius: 50px; */
 }
 
 
@@ -199,12 +250,60 @@ a i{
 .like{
     /* background-color: #212121; */
     background-color: #AAD7D9;
-    border-top: 1px black solid;
+    /* border-top: 1px black solid; */
     display: flex;
     justify-content:flex-start;
     align-items: center;
-    border-bottom-left-radius: 40px;
+    /* border-bottom-left-radius:50px ;
+    border-bottom-right-radius: 50px; */
+}
 
+.viewLike{
+    padding: 5px 10px;
+    border: none;
+    background-color: #E5E1DA;
+    border-radius: 10px;
+
+}
+
+.comment{
+    display: none;
+    position: absolute;
+    height: 600px;
+    width: 500px;
+    top: 200px;
+    left: 450px;
+    background-color:#E5E1DA;
+    position: fixed;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.commentIp{
+    position: absolute;
+    bottom: 10px;
+
+}
+.commentIp input{
+    height:14px ;
+    width:360px ;
+    border-radius: 10px;
+    padding: 15px;
+    border: none;
+}
+
+.commentIp button{
+    height:44px ;
+    width: 90px;
+    /* margin-left: 10px; */
+    border: none;
+    border-radius: 10px;
+}
+
+
+
+.fa-comment{
+    margin-left: 15px;
 }
 
 .like button{
@@ -215,7 +314,26 @@ a i{
     font-size: 30px;
     background: none;
     border: none;
+    margin-left: 20px;
+    
+   
+}
+
+.heart{
     color: red;
+}
+
+.like_count{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#showlike{
+    padding: 5px 20px;
+    border: none;
+    background-color: #E5E1DA;
+    color: black;
 }
 
 .userPhoto{
@@ -255,6 +373,76 @@ footer{
    width: 10vw;
    background-color: #252734;
 }
+
+.postDes{
+    font-size: 20px;
+    color: black;
+}
+
+#commentDisplay {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 10px;
+    overflow-y: auto;
+    height: 480px;
+    width: 480px;
+    background-color:#92C7CF;
+}
+
+.comment-item {
+    /* border-bottom: 1px solid #ddd; */
+    padding: 5px 0;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    background-color: #AAD7D9;
+    margin: 10px;
+    border-radius: 20px;
+    
+}
+
+.comment-item p {
+    margin: 5px 0;
+}
+
+.comment-item small {
+    color: #777;
+    font-size: 12px;
+}
+
+.comment-profile{
+    height: 75px;
+    width: 75px;
+    border-radius: 50%;
+
+}
+
+#xmarkComment{
+    font-size: 20px;
+    color: red;
+    position: relative;
+    left: 480px;
+}
+
+.comment_profileDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+
+.main_commentDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.commentedTime{
+    margin-bottom: 10px;
+}
+
+
 
 
 
@@ -353,10 +541,6 @@ footer{
     a:hover {
         background: none;
     }
-
-   
-
-
 
     /* Logout button adjustments */
     #Logout:hover {
