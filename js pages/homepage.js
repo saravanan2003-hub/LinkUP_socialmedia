@@ -65,6 +65,8 @@ getUsername();
 /////////////////////////////////////////////  fetch post    ///////////////////////////////////////
 
 async function fetchPosts() {
+
+   
     try {
         const feed = document.getElementById("feed");
 
@@ -161,25 +163,27 @@ async function fetchPosts() {
                         // Unlike the post
                         const updatedLikedPeople = likedPeople.filter((uid) => uid !== userUID);
                         await setDoc(likesDocRef, { likedPeople: updatedLikedPeople });
-                        likePeople()
+    
 
                         // Update UI
                         heart.classList.remove("fa-solid");
                         heart.classList.add("fa-regular");
                         likeCountEl.textContent = updatedLikedPeople.length;
                         console.log(`User ${userUID} unliked the post.`);
+                        likePeople()
 
                     } else {
                         // Like the post
                         likedPeople.push(userUID);
                         await setDoc(likesDocRef, { likedPeople });
-                        likePeople()
+                        
 
                         // Update UI
                         heart.classList.remove("fa-regular");
                         heart.classList.add("fa-solid");
                         likeCountEl.textContent = likedPeople.length;
                         console.log(`User ${userUID} liked the post.`);
+                        likePeople()
 
                     }
                 } catch (error) {
@@ -216,40 +220,52 @@ async function fetchPosts() {
                 }
             });
 
-            // Who liked show function
+            /// show liked people function
             async function likePeople() {
                 try {
-                    const likedPostID = docSnap.id;
-                    console.log(likedPostID);
-
-                    const likedPeoples = likesData.likedPeople;
-
+                    if (!likesData || !likesData.likedPeople) {
+                        console.error("No likedPeople data available.");
+                        return;
+                    }
+            
+                    const likedPeoples = likesData.likedPeople; // Array of user IDs who liked the post
+                    const popmain = document.getElementById("likeShowPopup");
+            
                     if (!popmain) {
                         console.error("likeShowPopup element not found.");
                         return;
                     }
-
+            
                     // Clear existing content to avoid duplicates
                     popmain.innerHTML = `<i id="xmark" class="fa-solid fa-xmark"></i>`;
-
-                    for (const people of likedPeoples) {
-                        if (likedPostID === people) {
-                            const username = userData.username || "Unknown User";
-                            const profileimg = userData.profileimg || "default-profile.png";
-                            console.log(username);
-                            console.log(profileimg);
-
-                            // Create and append child popup
-                            const childPopup = document.createElement("div");
-                            childPopup.classList.add("childPopup");
-                            childPopup.innerHTML = `
-                            <img src="${profileimg}" alt="profileImg" class="popupPost">
-                            <p class="popupUser">${username}</p>
-                            `;
-                            popmain.appendChild(childPopup);
+            
+                    // Fetch user details for each likedPeople
+                    for (const userId of likedPeoples) {
+                        try {
+                            const userDocRef = doc(db, "users", userId);
+                            const userDocSnap = await getDoc(userDocRef);
+            
+                            if (userDocSnap.exists()) {
+                                const userData = userDocSnap.data();
+                                const username = userData.username || "Unknown User";
+                                const profileimg = userData.profileimg || "default-profile.png";
+            
+                                // Create and append child popup
+                                const childPopup = document.createElement("div");
+                                childPopup.classList.add("childPopup");
+                                childPopup.innerHTML = `
+                                    <img src="${profileimg}" alt="profileImg" class="popupPost">
+                                    <p class="popupUser">${username}</p>
+                                `;
+                                popmain.appendChild(childPopup);
+                            } else {
+                                console.warn(`User data not found for userId: ${userId}`);
+                            }
+                        } catch (userError) {
+                            console.error(`Error fetching data for userId: ${userId}`, userError);
                         }
                     }
-
+            
                     // Close popup on xmark click
                     const xmark = document.getElementById("xmark");
                     if (xmark) {
@@ -263,6 +279,7 @@ async function fetchPosts() {
                     console.error("Error in likePeople function:", error);
                 }
             }
+            
 
 
             const commentButton = document.getElementById(`comment-${postid}`); // Button for showing the comment section
@@ -322,8 +339,8 @@ async function fetchPosts() {
                 }
                 })
 
+                
                 fetchAndDisplayComments(postid)
-
             });
 
 
@@ -335,7 +352,6 @@ async function fetchPosts() {
     }
 
 
-
     async function fetchAndDisplayComments(postid) {
         try {
             const commentsDocRef = doc(db, "Comments", postid);
@@ -343,52 +359,45 @@ async function fetchPosts() {
     
             if (commentsDocSnap.exists()) {
                 const commentsData = commentsDocSnap.data();
-                const commentsArray = commentsData.comments || []; // Default to empty array if no comments
-    
-    
-                
-                //// user deatails fetch from firestore.
-                const userDocRef = doc(db, "users" ,postUID);
-                const docSnap = await getDoc(userDocRef);
-                const userData = docSnap.data() || {};
-    
-                console.log(docSnap.id);
-    
-               
+                const commentsArray = commentsData.comments || []; // Default to an empty array if no comments
     
                 // Get the container for displaying comments
                 const commentsContainer = document.getElementById("commentDisplay");
                 commentsContainer.innerHTML = ""; // Clear existing comments
     
-                commentsArray.forEach(comment => {
-                    // Create a new comment div
-                    const commentDiv = document.createElement("div");
-                    commentDiv.classList.add("comment-item");
+                // Fetch user data dynamically for each comment
+                for (const comment of commentsArray) {
+                    try {
+                        const userDocRef = doc(db, "users", comment.userId);
+                        const docSnap = await getDoc(userDocRef);
     
-                    if(docSnap.id === comment.userId){
-                        var username = userData.username || "Unknown User";
-                        var profileimg = userData.profileimg || "default-profile.png";
+                        // Default values if user data is missing
+                        const userData = docSnap.exists() ? docSnap.data() : {};
+                        const username = userData.username || "Unknown User";
+                        const profileimg = userData.profileimg || "default-profile.png";
+    
+                        // Create a new comment div
+                        const commentDiv = document.createElement("div");
+                        commentDiv.classList.add("comment-item");
+    
+                        // Add comment content
+                        commentDiv.innerHTML = `
+                            <div class="comment_profileDiv">
+                                <small class="commentedTime">${new Date(comment.timestamp).toLocaleString()}</small>
+                                <img src="${profileimg}" class="comment-profile" alt="Profile Image">
+                                <p>${username}</p>
+                            </div>
+                            <div class="main_commentDiv">
+                                <p>${comment.comment}</p>
+                            </div>
+                        `;
+    
+                        // Append to the container
+                        commentsContainer.appendChild(commentDiv);
+                    } catch (userError) {
+                        console.error("Error fetching user data for comment:", comment, userError);
                     }
-                       
-                    
-                    // Add comment content
-                    commentDiv.innerHTML = `
-                    <div class="comment_profileDiv">
-                        <small class="commentedTime">${new Date(comment.timestamp).toLocaleString()}</small>
-                        <img src="${profileimg}" class="comment-profile" alt="ProfileImg">
-                        <p>${username}</p>
-                    </div>
-                    <div class="main_commentDiv">
-                        <p>${comment.comment}</p>
-                        
-                    </div>
-                    
-                       
-                                       `;
-    
-                    // Append to the container
-                    commentsContainer.appendChild(commentDiv);
-                });
+                }
             } else {
                 console.log("No comments found for this post.");
             }
@@ -396,10 +405,12 @@ async function fetchPosts() {
             console.error("Error fetching comments:", error);
         }
     }
+   
 }
 
 // Fetch posts when the page loads
 fetchPosts();
+fetchAndDisplayComments(postid) 
 
 
 
@@ -458,7 +469,7 @@ logout1.addEventListener('click', () => {
             });
     } else {
         // If user clicks "Cancel", just log that the logout was canceled
-        console.log("Logout canceled by the user.");
+       
     }
 });
 
