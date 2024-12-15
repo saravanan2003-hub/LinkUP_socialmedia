@@ -34,7 +34,7 @@ aside{
 
 main{
     margin-left: 20%;
-    height: 100%;
+    height: 100vh;
     /* background-color: #FBF9F1; */
     background-color: #E5E1DA;
 }
@@ -64,11 +64,14 @@ aside span img:hover {
     justify-content: flex-start;
     align-items: center;
     margin-top: 10vh;
+    background-color: #E5E1DA;
     
 }
     
 .ad{
-    height: 100vh;
+    height: 90vh;
+    /* margin-top: 10vh; */
+    /* z-index: 1; */
 }
 
 .ad1{
@@ -80,6 +83,7 @@ aside span img:hover {
     display: grid;
     grid-template-rows: 1fr 1fr;
     /* border-left: 2px solid black; */
+    z-index: 1;
 }
 
 .ad1 div{
@@ -87,6 +91,7 @@ aside span img:hover {
     justify-content: center;
     align-items: center;
     margin: 0;
+    z-index: 1;
 }
 
 .spotify{
@@ -117,11 +122,12 @@ i{
     align-items: center;
 }
 
-.messageIcon button i{
+.messageIcon  i{
     margin-left: 5px;
     margin-right: 20px;
     font-size: 20px;
     color: black;
+    z-index: 10;
 }
 
 .messageIcon button{
@@ -199,18 +205,16 @@ a i{
 }
 
 .box{
-    height: 650px;
+    /* height: 650px; */
     width: 600px;
     background-color: #AAD7D9;
     margin: 3px;
-    display: grid;
-    grid-template-rows: 13% 74% 13%;
-    /* border-top-right-radius: 50px;
-    border-bottom-left-radius:50px ;
-    border-bottom-right-radius: 50px; */
-    
-    
-    
+    /* display: grid;
+    grid-template-rows: 13% 74% 13%; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
 }
 
 
@@ -219,15 +223,12 @@ a i{
 }
 
 .mainPicture{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
+    margin-left: 22px;
 }
 
 .postImg{
     width: 500px;
-    height: 450px;
+    /* height: 450px; */
     object-fit: cover;
     margin: 30px;
 }
@@ -239,8 +240,8 @@ a i{
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    /* border-bottom: 1px black solid; */
-    /* border-top-right-radius: 50px; */
+    margin-top: 20px;
+    margin-left: 30px;
 }
 
 
@@ -248,14 +249,13 @@ a i{
     margin-left: 20px;
 }
 .like{
-    /* background-color: #212121; */
     background-color: #AAD7D9;
-    /* border-top: 1px black solid; */
     display: flex;
     justify-content:flex-start;
     align-items: center;
-    /* border-bottom-left-radius:50px ;
-    border-bottom-right-radius: 50px; */
+    margin-bottom: 20px;
+    margin-left: 30px;
+    
 }
 
 .viewLike{
@@ -340,6 +340,7 @@ a i{
     height: 70px;
     width: 70px;
     border-radius: 100%;
+    object-fit: cover;
 }
 
 .username{
@@ -378,6 +379,9 @@ footer{
     font-size: 20px;
     color: black;
 }
+.postDesDiv{
+    margin-bottom: 10px;
+}
 
 #commentDisplay {
     border: 1px solid #ccc;
@@ -413,6 +417,7 @@ footer{
     height: 75px;
     width: 75px;
     border-radius: 50%;
+    object-fit: cover;
 
 }
 
@@ -443,6 +448,86 @@ footer{
 }
 
 
+#SearchInp{
+    width: 300px;
+    height: 20px;
+    padding: 10px;
+    background-color: #AAD7D9;
+    border: block;
+    border-radius: 10px;
+    position: relative;
+    left: 35px;
+    z-index: 1;
+    display: none;
+}
+
+.SearchBtn{
+    z-index: 19;
+}
+
+
+::placeholder{
+    color: black;
+    
+}
+
+.searchPro{
+    height: 70px;
+    width: 70px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.searchDiv{
+    margin: 15px;
+}
+
+.searchDiv div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    width:300px;
+    background-color: #92C7CF;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+
+}
+
+
+.searchUser{
+    color: black;
+    font-size: 20px;
+    margin-left: 20px;
+}
+
+#searchDetails{
+    height: 250px;
+    width: 330px;
+    position:absolute;
+    z-index: 10;
+    right: 30px;
+    top: 10px;
+    display: none;
+    background-color: #AAD7D9;
+    z-index: 10;
+    border-radius: 10px;
+    overflow-y: auto;
+}
+
+#searchXmark{
+    font-size: 20px;
+    color: red;
+    z-index: 12;
+}
+
+
+
+
+iframe{
+    z-index: 1;
+}
 
 
 
@@ -470,7 +555,7 @@ footer{
         top: 0;
         left: 0;
         position: fixed;
-        z-index: 10;
+        z-indx: 10;
         display: flex;
         justify-content: space-between;
         align-items: center;

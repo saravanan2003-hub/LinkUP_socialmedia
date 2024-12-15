@@ -136,7 +136,7 @@ async function fetchPosts() {
                 </div>
                 <div class="like">
                     <div class="LikeYes">
-                        <div><span class="postDes">${postDes}</span></div>
+                        <div class="postDesDiv"><span class="postDes">${postDes}</span></div>
                         <div class="like_count">
                             <i class="fa-${isLiked ? "solid" : "regular"} fa-heart heart" id="heart-${postid}"></i>
                             <span id="like-count-${postid}">${likeCount}</span>
@@ -410,7 +410,66 @@ async function fetchPosts() {
 
 // Fetch posts when the page loads
 fetchPosts();
-fetchAndDisplayComments(postid) 
+
+
+
+//////////////////// search bar function /////////////////
+
+const SearchBtn = document.getElementById("SearchBtn");
+const searchDetails = document.getElementById("searchDetails");
+SearchBtn.addEventListener("dblclick", () =>{
+    const SearchInp = document.getElementById("SearchInp");
+
+    if(SearchInp.style.display ==="none"){
+        SearchInp.style.display = "block"
+         searchDetails.style.display = "block"
+    }else{
+        SearchInp.style.display = "none"
+         searchDetails.style.display = "none"
+    }
+
+   
+})
+
+
+SearchBtn.addEventListener("click" ,async() =>{
+    const SearchInp = document.getElementById("SearchInp");
+    const SearchVal = SearchInp.value.trim();
+    
+
+    try {
+        const searchSnapshot = await getDocs(collection(db, "users"));
+        const searchDetails = document.getElementById("searchDetails");
+    
+        searchDetails.innerHTML = ""; // Clear previous search results
+    
+        searchSnapshot.forEach((doc) => {
+            const data = doc.data(); 
+            const name = data.username;
+            const profileImg = data.profileimg;
+    
+            // Check if SearchVal includes the name
+
+            if (name && SearchVal.toLowerCase().includes(name.toLowerCase())){
+                // Append user details to the searchDetails div
+                const userDiv = document.createElement("div");
+                userDiv.classList.add("searchDiv")
+                userDiv.innerHTML = `
+                    <div>
+                    <img src="${profileImg}" alt="ProfileImage" class="searchPro">
+                    <p class="searchUser">${name}</p>
+                    </div>
+                `;
+                searchDetails.appendChild(userDiv);
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+    }
+    
+});
+
+
 
 
 

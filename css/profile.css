@@ -38,11 +38,10 @@ aside a{
 }
 
 main{
+    height: 100vh;
     margin-left: 20%;
     display: grid;
-    height: 100vh;
     grid-template-rows:1fr 2fr;
-    /* background-color: #FBF9F1; */
     background-color: #E5E1DA;
 }
 
@@ -95,9 +94,10 @@ aside a:focus{
 
 .setProfile{
     position: fixed;
-    height: 40%;
-    width: 80%;
-    /* background-color:#FBF9F1; */
+    top: 0;
+    height: 40vh;
+    width: 80%; 
+    background-color: #E5E1DA;
     z-index: 1;
     display: flex;
     flex-direction: column;
@@ -140,12 +140,11 @@ aside a:focus{
 #fileDisplay{
     margin-top:10%;
     width: 100%;
-    height: 100%;
     align-content: center;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     background-color: #E5E1DA;
 }
 
@@ -349,8 +348,10 @@ input[type="file"] {
   }
 
 .files{
-    /* margin-top:60vh; */
-    height: 100%;
+    margin-top: 30vh;
+    margin-left: 60px;
+    height: 60vh;
+    overflow-y: auto;
 }
 
 
