@@ -70,8 +70,7 @@ aside span img:hover {
     
 .ad{
     height: 90vh;
-    /* margin-top: 10vh; */
-    /* z-index: 1; */
+    background-color: #E5E1DA;
 }
 
 .ad1{
@@ -82,8 +81,9 @@ aside span img:hover {
     position: fixed;
     display: grid;
     grid-template-rows: 1fr 1fr;
-    /* border-left: 2px solid black; */
     z-index: 1;
+    background-color: #E5E1DA;
+
 }
 
 .ad1 div{
@@ -231,6 +231,7 @@ a i{
     /* height: 450px; */
     object-fit: cover;
     margin: 30px;
+    border-radius: 3px;
 }
 
 

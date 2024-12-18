@@ -6,8 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile page</title>
     <link rel="stylesheet" href="../css/profile.css">
+    <script type="module" src="../js pages/profile.js"></script>
+    <script type="module" src="../js pages/ProfileDelete.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
 
 
 </head>
@@ -55,6 +58,22 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- -----------   ------   showpost popup -------------   ---------------          -->
+                    <div id="showPost">
+                        <button>back</button>
+                    </div>
+                    
+                    <div id="DeleteConfrim">
+                        <div class="DeleteConfrim">
+                            <div class="DeleteP">
+                                <p>Do You Want Delete Your Post ?</p>
+                                <button id="deleteOkay">Yes</button>
+                                <button id="deleteNo">No</button>
+                            </div>
+                        </div>
+                        
+                    </div>
                 </div>
                 <div>
                     <h1 class="postH1">Posts</h1>
@@ -63,7 +82,6 @@
             <div class="files">
                 <div id="fileDisplay"></div>
             </div>
-
         </main>
 
 
@@ -75,7 +93,7 @@
         </footer>
     </div>
 
-    <script type="module" src="../js pages/profile.js"></script>
+
 </body>
 
 </html>

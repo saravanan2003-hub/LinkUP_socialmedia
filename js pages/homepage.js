@@ -432,44 +432,53 @@ SearchBtn.addEventListener("dblclick", () =>{
 })
 
 
-SearchBtn.addEventListener("click" ,async() =>{
-    const SearchInp = document.getElementById("SearchInp");
-    const SearchVal = SearchInp.value.trim();
-    
+const SearchInp = document.getElementById("SearchInp");
+// Listen for input changes
+SearchInp.addEventListener("input", async () => {
+    const SearchVal = SearchInp.value.trim().toLowerCase();
+
+    if (SearchVal === "") {
+        searchDetails.innerHTML = ""; // Clear search results if input is empty
+        return;
+    }
 
     try {
-        const searchSnapshot = await getDocs(collection(db, "users"));
-        const searchDetails = document.getElementById("searchDetails");
-    
+        // Query Firestore where username starts with SearchVal
+        const q = query(
+            collection(db, "users"),
+            where("username", ">=", SearchVal), // Start range
+            where("username", "<=", SearchVal + "\uf8ff") // End range
+        );
+
+        const searchSnapshot = await getDocs(q);
+
         searchDetails.innerHTML = ""; // Clear previous search results
-    
+
+        if (searchSnapshot.empty) {
+            searchDetails.innerHTML = `<p>No results found</p>`;
+            return;
+        }
+
         searchSnapshot.forEach((doc) => {
-            const data = doc.data(); 
+            const data = doc.data();
             const name = data.username;
             const profileImg = data.profileimg;
-    
-            // Check if SearchVal includes the name
 
-            if (name && SearchVal.toLowerCase().includes(name.toLowerCase())){
-                // Append user details to the searchDetails div
-                const userDiv = document.createElement("div");
-                userDiv.classList.add("searchDiv")
-                userDiv.innerHTML = `
-                    <div>
+            // Append user details to the container
+            const userDiv = document.createElement("div");
+            userDiv.classList.add("searchDiv");
+            userDiv.innerHTML = `
+                <div>
                     <img src="${profileImg}" alt="ProfileImage" class="searchPro">
                     <p class="searchUser">${name}</p>
-                    </div>
-                `;
-                searchDetails.appendChild(userDiv);
-            }
+                </div>
+            `;
+            searchDetails.appendChild(userDiv);
         });
     } catch (error) {
         console.error("Error fetching user data:", error);
     }
-    
 });
-
-
 
 
 
