@@ -195,6 +195,9 @@ async function ShowLikedPeople(postId, postUID) {
         const ShowPostChildDiv = document.getElementById(`postImg-${postId}`);
         ShowPostChildDiv.style.display = "none"
 
+        const back = document.getElementById("back");
+        back.style.display = "block";
+
         // Fetch likes data for the post
         const likesDocRef = doc(db, "Likes", postId);
         const likesDocSnap = await getDoc(likesDocRef);
@@ -219,8 +222,7 @@ async function ShowLikedPeople(postId, postUID) {
                 const userProfile = userData.profileimg
 
                 /////   get back button here
-                const back = document.getElementById("back");
-                back.style.display = "block";
+                
 
                 const likedPeopleDiv = document.createElement("div");
                 likedPeopleDiv.classList.add("likedPeopleDiv")
@@ -418,7 +420,13 @@ Remove.addEventListener("click", async () => {
     }
 });
 
-
+const ProfileRemoveCancel = document.getElementById("ProfileRemoveCancel");
+ProfileRemoveCancel.addEventListener("click", () =>{
+    const settings = document.getElementsByClassName("settings");
+    if (settings[0].style.display === "block") {
+        settings[0].style.display = "none";
+    }
+})
 
 
 

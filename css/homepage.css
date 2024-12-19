@@ -6,7 +6,7 @@
 header{
     display: grid;
     grid-template-columns: 50% 50%;
-    background-color: #92C7CF;
+    background-color: #134B70;
     height: 10vh;
     width: 80%;
     margin-top: 0;
@@ -18,13 +18,14 @@ header{
 aside{
     height: 100vh;
     width: 20vw;
-    background-color: #92C7CF;
+    background-color: #134B70;
+    /* background-color: #; */
     margin-top: 0;
     top: 0;
     position: fixed;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: start;
     align-items: center;
     /* border-right: 2px solid black; */
     z-index: 2;
@@ -36,12 +37,13 @@ main{
     margin-left: 20%;
     height: 100vh;
     /* background-color: #FBF9F1; */
-    background-color: #E5E1DA;
+    background-color: #ffffff;
 }
 
 aside span img{
     height: 125px;
     width: 230px;
+    margin-top: 50px;
 }
 
 aside span img:hover {
@@ -64,13 +66,13 @@ aside span img:hover {
     justify-content: flex-start;
     align-items: center;
     margin-top: 10vh;
-    background-color: #E5E1DA;
+    background-color: #ffffff;
     
 }
     
 .ad{
     height: 90vh;
-    background-color: #E5E1DA;
+    background-color: #ffffff;
 }
 
 .ad1{
@@ -82,7 +84,7 @@ aside span img:hover {
     display: grid;
     grid-template-rows: 1fr 1fr;
     z-index: 1;
-    background-color: #E5E1DA;
+    background-color: #ffffff;
 
 }
 
@@ -103,12 +105,15 @@ i{
 }
 
 #Logout{
-    background-color: #E5E1DA;
-    padding: 15px 70px 15px 70px;
-    color: black;
+    /* background-color: #E5E1DA; */
+    /* padding: 15px 70px 15px 70px; */
+    background: none;
+    color: white;
     font-size: 25px;
     border-radius: 20px;
     border: none;
+    margin: 30px;
+    padding: 15px 50px 15px 50px;
 }
 .messageIcon{
     display: flex;
@@ -123,10 +128,10 @@ i{
 }
 
 .messageIcon  i{
-    margin-left: 5px;
+    margin-left: 20px;
     margin-right: 20px;
     font-size: 20px;
-    color: black;
+    color: white;
     z-index: 10;
 }
 
@@ -136,20 +141,21 @@ i{
 }
 
 .hello span{
-    margin-left: 10px;
-    font-size: 25px;
-    color: black;
+    font-size: 35px;
+    color: white;
 }
 
 
 aside a{
-    color: black;
+    color:white;
     text-decoration: none;
     font-size: 25px;
     box-sizing: border-box;
-    padding: 15px 70px 15px 70px;
-    background-color: #E5E1DA;
+    /* padding: 15px 70px 15px 70px; */
+    /* background-color: #E5E1DA; */
     border-radius: 20px;
+    margin: 30px;
+    padding: 15px 50px 15px 50px;
 }
 
 .popupPost{
@@ -200,21 +206,20 @@ aside a{
 
 
 a i{
-   color: black;
+   color: white;
    margin-right: 15px;
 }
 
 .box{
     /* height: 650px; */
     width: 600px;
-    background-color: #AAD7D9;
-    margin: 3px;
-    /* display: grid;
-    grid-template-rows: 13% 74% 13%; */
+    background-color: #ffffff;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content:flex-start;
     align-items: flex-start;
+    border-bottom: 2px solid black;
+
 }
 
 
@@ -230,19 +235,20 @@ a i{
     width: 500px;
     /* height: 450px; */
     object-fit: cover;
-    margin: 30px;
+    /* margin: 30px; */
     border-radius: 3px;
 }
 
 
 
 .profilePicture{
-    background-color:#AAD7D9 ;
+    /* background-color:#AAD7D9 ; */
     display: flex;
     justify-content: flex-start;
     align-items: center;
     margin-top: 20px;
-    margin-left: 30px;
+    margin-left: px;
+    margin-bottom: 10px;
 }
 
 
@@ -250,12 +256,14 @@ a i{
     margin-left: 20px;
 }
 .like{
-    background-color: #AAD7D9;
+    /* background-color: #AAD7D9; */
     display: flex;
     justify-content:flex-start;
     align-items: center;
-    margin-bottom: 20px;
-    margin-left: 30px;
+    /* margin-bottom: 20px; */
+    margin-left: 5px;
+    margin-bottom: 15px;
+
     
 }
 
@@ -350,20 +358,24 @@ a i{
 }
 
 aside a:hover{
+    padding: 15px 50px 15px 50px;
     box-shadow: 0 0 10px white, 0 0 60px white;
     transition: box-shadow 0.3s ease-in-out;
 }
 
 aside a:focus{
+    padding: 15px 50px 15px 50px;
     box-shadow: 0 0 10px white, 0 0 60px white;
     transition: box-shadow 0.3s ease-in-out;
 }
 
 #Logout:hover{
+    padding: 15px 50px 15px 50px;
     box-shadow: 0 0 10px white, 0 0 60px white;
     transition: box-shadow 0.3s ease-in-out;
 }
 #Logout :focus{
+    padding: 15px 50px 15px 50px;
     box-shadow: 0 0 10px white, 0 0 60px white ;
     transition: box-shadow 0.3s ease-in-out;
 }
@@ -453,11 +465,11 @@ footer{
     width: 300px;
     height: 20px;
     padding: 10px;
-    background-color: #AAD7D9;
+    background-color: #feffff;
     border: block;
     border-radius: 10px;
     position: relative;
-    left: 35px;
+    left: 45px;
     z-index: 1;
     display: none;
 }
@@ -508,10 +520,10 @@ footer{
     width: 330px;
     position:absolute;
     z-index: 10;
-    right: 30px;
+    right:60px;
     top: 10px;
     display: none;
-    background-color: #AAD7D9;
+    background-color: #f3f6f6;
     z-index: 10;
     border-radius: 10px;
     overflow-y: auto;
@@ -530,7 +542,39 @@ iframe{
     z-index: 1;
 }
 
+.EmptyLengthMsg{
+    position: absolute;
+    top: 250px;
+    left: 35px;
+    font-size: 25px;
+    z-index: 10;
+    color: red;
+    display: none;
+}
 
+
+.emptyCommentMsg{
+    display: none;
+
+}
+
+.emptyCommentMsg div{
+    position: absolute;
+    top: 280px;
+    left:120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: red;
+}
+
+.emptyCommentMsg p{
+    font-size: 30px;
+}
+
+.fa-comment-slash{
+    font-size: 30px;
+}
 
 
 

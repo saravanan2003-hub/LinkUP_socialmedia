@@ -280,7 +280,7 @@ footer{
     position:absolute;
     left:150px;
     top: 200px;
-    height: 150px;
+    height: 210px;
     width: 250px;
     background-color: #92C7CF;
     display: none;
@@ -336,13 +336,25 @@ footer{
 #Remove{
     height: 45px;
     width: 205px;
-    background-color:#E5E1DA;
-    color: black;
+    background-color: #4F7E83;
+    color: white;
     font-weight: bold;
     border: none;
     margin-right: 500px;
     border-radius: 10px;
     margin-top: 20px;
+
+}
+
+#ProfileRemoveCancel{
+    height: 45px;
+    width: 205px;
+    background-color: #4F7E83;
+    border: none;
+    margin-top: 20px;
+    border-radius: 10px;
+    font-weight: bold;
+    color: white;
 
 }
 
@@ -354,7 +366,7 @@ input[type="file"] {
 
 .files{
     margin-top: 30vh;
-    margin-left: 60px;
+    margin-left: 35px;
     height: 60vh;
     overflow-y: auto;
 }
@@ -552,6 +564,15 @@ input[type="file"] {
     border-radius: 10px;
 
 }
+
+
+#NoLikeShowDiv{
+    font-size: 20px;
+    color: red;
+}
+
+
+
 
 
 

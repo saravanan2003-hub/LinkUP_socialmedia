@@ -39,11 +39,22 @@
             <div class="main">
                 <div class="feed" id="feed">
                     <div id="likeShowPopup">
+                        <!-- <div class="EmptyLengthMsg">
+                            <h6>No One Like This Post</h6>
+                        </div> -->
                         <i class="fa-solid fa-xmark" id="xmark"></i>
+                       
                     </div>
                     <div class="comment">
                         <i class="fa-regular fa-circle-xmark" id="xmarkComment"></i>
-                        <div id="commentDisplay"></div>
+                        <div id="commentDisplay">
+                            <div class="emptyCommentMsg">
+                                <div>
+                                    <i class="fa-solid fa-comment-slash"></i>
+                                    <p>No comment Yet</p>
+                                </div>
+                            </div>
+                        </div>
                         <div class="commentIp">
                             <input type="text" id="commentText" placeholder="Enter Your Comment">
                             <button id="CommentSend">send</button>
