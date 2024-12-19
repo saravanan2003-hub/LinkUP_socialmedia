@@ -38,11 +38,10 @@ aside a{
 }
 
 main{
+    height: 100vh;
     margin-left: 20%;
     display: grid;
-    height: 100vh;
     grid-template-rows:1fr 2fr;
-    /* background-color: #FBF9F1; */
     background-color: #E5E1DA;
 }
 
@@ -91,13 +90,19 @@ aside a:focus{
     height: 300px;
     object-fit: cover;
     margin: 30px;
+    border-radius: 3px;
+    background-color: #92C7CF;
+    padding: 10px;
+    border-radius: 10px;
 }
 
 .setProfile{
-    position: fixed;
-    height: 40%;
-    width: 80%;
-    /* background-color:#FBF9F1; */
+    position:fixed;
+    /* position: relative; */
+    top: 0;
+    height: 40vh;
+    width: 80%; 
+    background-color: #E5E1DA;
     z-index: 1;
     display: flex;
     flex-direction: column;
@@ -140,12 +145,11 @@ aside a:focus{
 #fileDisplay{
     margin-top:10%;
     width: 100%;
-    height: 100%;
     align-content: center;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     background-color: #E5E1DA;
 }
 
@@ -276,7 +280,7 @@ footer{
     position:absolute;
     left:150px;
     top: 200px;
-    height: 150px;
+    height: 210px;
     width: 250px;
     background-color: #92C7CF;
     display: none;
@@ -332,13 +336,25 @@ footer{
 #Remove{
     height: 45px;
     width: 205px;
-    background-color:#E5E1DA;
-    color: black;
+    background-color: #4F7E83;
+    color: white;
     font-weight: bold;
     border: none;
     margin-right: 500px;
     border-radius: 10px;
     margin-top: 20px;
+
+}
+
+#ProfileRemoveCancel{
+    height: 45px;
+    width: 205px;
+    background-color: #4F7E83;
+    border: none;
+    margin-top: 20px;
+    border-radius: 10px;
+    font-weight: bold;
+    color: white;
 
 }
 
@@ -349,9 +365,222 @@ input[type="file"] {
   }
 
 .files{
-    /* margin-top:60vh; */
-    height: 100%;
+    margin-top: 30vh;
+    margin-left: 35px;
+    height: 60vh;
+    overflow-y: auto;
 }
+
+#showPost{
+    height: 690px;
+    width: 515px;
+    background-color: #92C7CF;  
+    position:absolute;
+    top: 100px;
+    right: 350px;
+    z-index: 10;
+    position: fixed;
+    display: none;
+}
+
+
+
+#showProfileXmark{
+    color: red;
+    font-size: 20px;
+    margin-left:20px;
+}
+
+.postImg{
+    height:650px;
+    width:475px;
+    margin: 20px;
+    background-color: #AAD7D9;
+    display: grid;
+    grid-template-rows: 10% 80% 10%;
+}
+
+.Delete{
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+}
+
+.showPostImage{
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    
+}
+
+.likeAndComment{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    font-size: 30px;
+
+}
+
+.showPostImage img{
+    border: 1px black solid;
+    height: 380px;
+    width: 380px;
+    object-fit: cover;
+    border-radius: 3px;
+}
+
+.fa-heart{
+    margin-left: 20px;
+    color: red;
+}
+
+.fa-comment{
+    margin-right: 20px;
+}
+
+.deleteBtn{
+    margin-right: 20px;
+    padding: 7px 30px;
+    border: none;
+    border-radius: 10px;
+    background-color:red;
+    color: white;
+
+}
+
+#DeleteConfrim{
+    background-color:#92C7CF;
+    height: 200px;
+    width: 300px;
+    position: absolute;
+    top: 350px;
+    right: 460px;
+    z-index: 20;
+    display: none;
+    border-radius: 10px;
+}
+
+
+
+.DeleteP{
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    font-size: 20px;
+}
+
+.DeleteP p {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.DeleteBtns{
+    height: 100px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#deleteOkay{
+    height: 35px;
+    width: 250px;
+    border: none;
+    background-color:#E5E1DA;
+    border-radius: 10px;
+}
+
+#deleteNo{
+    height: 35px;
+    width: 250px;
+    border: none;
+    background-color:#E5E1DA;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.successMsg{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.SuccessMsgP{
+    font-size: 20px;
+    font-weight: bold;
+    color: red;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+#deleteBack{
+    height: 30px;
+    width: 100px;
+    background-color: #E5E1DA;
+    border: none;
+    border-radius: 10px;
+}
+
+
+#LikedPeoplesShow{
+    height: 100px;
+    width: 100px;
+    background-color: aquamarine;
+}
+
+.LikedPeopleProfile{
+    height: 70px;
+    width: 70px;
+
+}
+
+.likedPeoplesName{
+    font-size: 20px;
+}
+
+#back{
+    display: none;
+    margin-top: 20px;
+    margin-left: 20px;
+    height: 30px;
+    width: 100px;
+    background-color: #E5E1DA;
+    border-radius: 10px;
+    position: sticky;
+    margin-bottom: 30px;
+}
+
+.likedPeopleDiv{
+    height: 100px;
+    width: 350px;
+    margin-left:80px;
+    margin-bottom: 20px;
+    z-index: 2;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #AAD7D9;
+    border-radius: 10px;
+
+}
+
+
+#NoLikeShowDiv{
+    font-size: 20px;
+    color: red;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
   

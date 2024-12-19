@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getFirestore, setDoc, doc, getDocs, getDoc, addDoc, collection, query, where } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getFirestore, setDoc, doc, getDocs, getDoc, addDoc, collection, query, where, orderBy  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject, listAll } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
@@ -76,7 +76,11 @@ async function fetchPosts() {
         }
 
         // Fetch all posts from the "Posts" collection
-        const postsSnapshot = await getDocs(query(collection(db, "Posts")));
+        // const postsSnapshot = await getDocs(query(collection(db, "Posts")));
+
+        const postsSnapshot = await getDocs(
+            query(collection(db, "Posts"), orderBy("postTime", "desc")) // "desc" for descending order
+        );
 
         if (postsSnapshot.empty) {
             console.warn("No posts found.");
@@ -136,7 +140,7 @@ async function fetchPosts() {
                 </div>
                 <div class="like">
                     <div class="LikeYes">
-                        <div><span class="postDes">${postDes}</span></div>
+                        <div class="postDesDiv"><span class="postDes">${postDes}</span></div>
                         <div class="like_count">
                             <i class="fa-${isLiked ? "solid" : "regular"} fa-heart heart" id="heart-${postid}"></i>
                             <span id="like-count-${postid}">${likeCount}</span>
@@ -223,13 +227,32 @@ async function fetchPosts() {
             /// show liked people function
             async function likePeople() {
                 try {
+                    const popmain = document.getElementById("likeShowPopup");
                     if (!likesData || !likesData.likedPeople) {
                         console.error("No likedPeople data available.");
+                        // const NoLikeShowDiv = document.createElement("div");
+                        // NoLikeShowDiv.textContent = "No one liked this post";
+                        // popmain.appendChild(NoLikeShowDiv)
                         return;
                     }
-            
+                    
+                    popmain.innerHTML = `<i id="xmark" class="fa-solid fa-xmark"></i>
+                    <div class="EmptyLengthMsg">
+                            <p>No One Like This Post</p>
+                    </div>
+                    `;
                     const likedPeoples = likesData.likedPeople; // Array of user IDs who liked the post
-                    const popmain = document.getElementById("likeShowPopup");
+                    if (likedPeoples.length === 0) {
+                        // Select the first element with the class "EmptyLengthMsg"
+                        const EmptyLengthMsg = document.querySelector(".EmptyLengthMsg");
+                        // Ensure the message is displayed
+                        if (EmptyLengthMsg) {
+                            EmptyLengthMsg.style.display = "block";
+                        } else {
+                            console.error("EmptyLengthMsg element not found!");
+                        }
+                    }                    
+                   
             
                     if (!popmain) {
                         console.error("likeShowPopup element not found.");
@@ -237,7 +260,7 @@ async function fetchPosts() {
                     }
             
                     // Clear existing content to avoid duplicates
-                    popmain.innerHTML = `<i id="xmark" class="fa-solid fa-xmark"></i>`;
+                   
             
                     // Fetch user details for each likedPeople
                     for (const userId of likedPeoples) {
@@ -400,6 +423,8 @@ async function fetchPosts() {
                 }
             } else {
                 console.log("No comments found for this post.");
+                const emptyCommentMsg = document.getElementsByClassName("emptyCommentMsg")[0];
+                emptyCommentMsg.style.display = "block"
             }
         } catch (error) {
             console.error("Error fetching comments:", error);
@@ -410,7 +435,77 @@ async function fetchPosts() {
 
 // Fetch posts when the page loads
 fetchPosts();
-fetchAndDisplayComments(postid) 
+
+
+
+//////////////////// search bar function /////////////////
+
+const SearchBtn = document.getElementById("SearchBtn");
+const searchDetails = document.getElementById("searchDetails");
+SearchBtn.addEventListener("click", () =>{
+    const SearchInp = document.getElementById("SearchInp");
+
+    if(SearchInp.style.display ==="none"){
+        SearchInp.style.display = "block"
+         searchDetails.style.display = "block"
+        SearchBtn.style.color = "black"
+    }else{
+        SearchInp.style.display = "none"
+         searchDetails.style.display = "none"
+         SearchBtn.style.color = "white"
+    }
+
+   
+})
+
+
+const SearchInp = document.getElementById("SearchInp");
+// Listen for input changes
+SearchInp.addEventListener("input", async () => {
+    const SearchVal = SearchInp.value.trim().toLowerCase();
+
+    if (SearchVal === "") {
+        searchDetails.innerHTML = ""; // Clear search results if input is empty
+        return;
+    }
+
+    try {
+        // Query Firestore where username starts with SearchVal
+        const q = query(
+            collection(db, "users"),
+            where("username", ">=", SearchVal), // Start range
+            where("username", "<=", SearchVal + "\uf8ff") // End range
+        );
+
+        const searchSnapshot = await getDocs(q);
+
+        searchDetails.innerHTML = ""; // Clear previous search results
+
+        if (searchSnapshot.empty) {
+            searchDetails.innerHTML = `<p>No results found</p>`;
+            return;
+        }
+
+        searchSnapshot.forEach((doc) => {
+            const data = doc.data();
+            const name = data.username;
+            const profileImg = data.profileimg;
+
+            // Append user details to the container
+            const userDiv = document.createElement("div");
+            userDiv.classList.add("searchDiv");
+            userDiv.innerHTML = `
+                <div>
+                    <img src="${profileImg}" alt="ProfileImage" class="searchPro">
+                    <p class="searchUser">${name}</p>
+                </div>
+            `;
+            searchDetails.appendChild(userDiv);
+        });
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+    }
+});
 
 
 
