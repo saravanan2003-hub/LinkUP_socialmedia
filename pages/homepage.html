@@ -15,9 +15,10 @@
     <div class="container">
         <aside>
             <span><img src="../assests/photos/LINK UP msg.png" alt=""></span>
-            <a href="./homepage.html" class="active"><i class="fa-solid fa-house"></i><span>Home</span></a>
-            <a href="./profile.html"><i class="fa-solid fa-user"></i><span>Profile</span></a>
+            <a href="./homepage.html" class="active"><i class="fa-solid fa-house" ></i><span>Home</span></a>
+            <a href="./profile.html" ><i class="fa-solid fa-user"></i><span>Profile</span></a>
             <a href="./post.html"><i class="fa-solid fa-photo-film"></i><span>Post</span></a>
+            <a href=""><i class="fa-solid fa-comments"></i><span>Chat</span></a>
             <button id="Logout"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></button>
         </aside>
 
@@ -31,7 +32,7 @@
                     
                     <input type="text" placeholder="Search..." id="SearchInp" >
                     <i class="fa-solid fa-magnifying-glass" id="SearchBtn"></i>
-                    <i class="fa-solid fa-comments"></i>
+                    <!-- <i class="fa-solid fa-comments"></i> -->
                     
                 </div>
             </header>
@@ -39,20 +40,16 @@
             <div class="main">
                 <div class="feed" id="feed">
                     <div id="likeShowPopup">
-                        <!-- <div class="EmptyLengthMsg">
-                            <h6>No One Like This Post</h6>
-                        </div> -->
                         <i class="fa-solid fa-xmark" id="xmark"></i>
                        
                     </div>
                     <div class="comment">
                         <i class="fa-regular fa-circle-xmark" id="xmarkComment"></i>
-                        <div id="commentDisplay">
-                            <div class="emptyCommentMsg">
-                                <div>
-                                    <i class="fa-solid fa-comment-slash"></i>
-                                    <p>No comment Yet</p>
-                                </div>
+                        <div id="commentDisplay"></div>
+                        <div class="emptyCommentMsg">
+                            <div>
+                                <i class="fa-solid fa-comment-slash"></i>
+                                <p>No comment Yet</p>
                             </div>
                         </div>
                         <div class="commentIp">
@@ -91,6 +88,22 @@
             <a href="./post.html"><i class="fa-solid fa-plus"></i></a>
             <button id="LogoutRes"><i class="fa-solid fa-right-from-bracket"></i></button>
         </footer>
+
+        <div id="othersProfilePageShow"> <div class="setProfile">
+            <div class="head">
+                <div>
+                    <img alt="" id="ProfileImg" src="../assests/photos/dummy-image.jpg">
+                </div>
+
+                <span id="nameDis"></span>        
+            </div>
+            <div>
+                <h1 class="postH1">Posts</h1>
+            </div>
+        </div>
+        <div class="files">
+            <div id="fileDisplay"></div>
+        </div>
 
     </div>
 

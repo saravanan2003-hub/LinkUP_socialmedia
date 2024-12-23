@@ -63,7 +63,6 @@ async function fetchDatas() {
         imgElement.addEventListener("dblclick", () => {
             const showPost = document.getElementById("showPost");
             showPost.innerHTML = `
-                <button id="back">Back</button>
                 <div id="postImg-${postId}" class="postImg">
                     <div class="Delete">
                         <i class="fa-regular fa-circle-xmark" id="showProfileXmark"></i>
@@ -71,10 +70,10 @@ async function fetchDatas() {
                     </div>
                     <div class="showPostImage">
                         <img  src="${postURL}"alt="Post Image" id="popupImg">
-                    </div>
-                    <div class="likeAndComment">
-                        <i class="fa-solid fa-heart" id="ShowImgLike-${postId}" ></i>
-                        <i class="fa-solid fa-comment" id="showImgComment${postId}"></i>
+                        <div>
+                            <i class="fa-solid fa-heart" id="ShowImgLike-${postId}" ></i>
+                            <i class="fa-solid fa-comment" id="showImgComment${postId}"></i>
+                        </div>
                     </div>
                 </div>
             `;
@@ -121,7 +120,7 @@ async function fetchDatas() {
 
             const showComments = document.getElementById(`showImgComment${postId}`);
             showComments.addEventListener("click", () => {
-                showComments(postId, postUID);
+                showComment(postId, postUID);
             })
 
 
@@ -191,12 +190,15 @@ async function deletePost(postURL, postId) {
 //////////// Show liked people function ///////
 async function ShowLikedPeople(postId, postUID) {
     try {
-       
-        const ShowPostChildDiv = document.getElementById(`postImg-${postId}`);
-        ShowPostChildDiv.style.display = "none"
+        const likeDisplayDiv = document.getElementById("likeDisplayDiv");
+        likeDisplayDiv.style.display = "block"
+        const likeDisplay = document.getElementById("likeDisplay");
+        const showPost = document.getElementById("showPost");
+        showPost.style.display = "none"
 
-        const back = document.getElementById("back");
-        back.style.display = "block";
+        const Back = document.getElementById("back");
+
+        
 
         // Fetch likes data for the post
         const likesDocRef = doc(db, "Likes", postId);
@@ -209,46 +211,138 @@ async function ShowLikedPeople(postId, postUID) {
             return;
         }
 
-
-        const showPost = document.getElementById("showPost");
-        for (const peoples of likedPeople) {
-            const userDocRef = doc(db, "users", peoples);
-            const docSnap = await getDoc(userDocRef);
-            const userData = docSnap.data() || {};
-            
-            if(docSnap.exists()){
+        if (likesData.likedPeople.length === 0) {
+            const emptyMsgDisplayDiv = document.getElementsByClassName("emptyMsgDisplayDiv")[0];
+            emptyMsgDisplayDiv.style.display = "block";
+            Back.addEventListener("click", () => {
+                likeDisplayDiv.style.display = "none";
+                showPost.style.display = "block"
+                likeDisplay.innerHTML = ""
+                emptyMsgDisplayDiv.style.display = "none";
+            })
+        }
+        else {
+            for (const peoples of likedPeople) {
+                const userDocRef = doc(db, "users", peoples);
+                const docSnap = await getDoc(userDocRef);
                 const userData = docSnap.data() || {};
-                const username = userData.username;
-                const userProfile = userData.profileimg
 
-                /////   get back button here
-                
+                if (docSnap.exists()) {
+                    const userData = docSnap.data() || {};
+                    const username = userData.username;
+                    const userProfile = userData.profileimg
 
-                const likedPeopleDiv = document.createElement("div");
-                likedPeopleDiv.classList.add("likedPeopleDiv")
-                likedPeopleDiv.innerHTML = `
+                    /////   get back button here
+
+
+                    const likedPeopleDiv = document.createElement("div");
+                    likedPeopleDiv.classList.add("likedPeopleDiv")
+                    likedPeopleDiv.innerHTML = `
                     <img src="${userProfile}" alt="Profile Img" class="LikedPeopleProfile">
                     <p class="likedPeoplesName">${username}</p>
                 `
-                
-                showPost.appendChild(likedPeopleDiv)
-                
 
-                back.addEventListener("click", () =>{
-                    const likedPeopleDiv = document.getElementsByClassName("likedPeopleDiv")[0];
-                    likedPeopleDiv.remove()
-                    ShowPostChildDiv.style.display = "block"
-                    back.remove()
+                    likeDisplay.appendChild(likedPeopleDiv)
 
-                })
+
+                    Back.addEventListener("click", () => {
+                        likeDisplayDiv.style.display = "none";
+                        showPost.style.display = "block"
+                        likeDisplay.innerHTML = ""
+                    })
+                    
+                }
             }
         }
     }
-    catch(error){
+    catch (error) {
         console.log("Error to Show liked peoples :" + error)
     }
 
 
+}
+
+///////////////////////////  show comments function /////////////
+async function showComment(postId, postUID) {
+    try {
+        const showPost = document.getElementById("showPost");
+        showPost.style.display = "none";
+
+        // Get the container for displaying comments
+        const commentsDisplayDiv = document.getElementById("commentsDisplayDiv");
+        commentsDisplayDiv.style.display = "block";
+        const commentsDisplay = document.getElementById("commentsDisplay");
+        const emptyCommentMsg = document.getElementsByClassName("emptyCommentMsg")[0];
+        emptyCommentMsg.style.display = "none"
+        const commentsBack = document.getElementById("commentsBack");
+
+        const commentsDocRef = doc(db, "Comments", postId);
+        const commentsDocSnap = await getDoc(commentsDocRef);
+
+
+
+        if (commentsDocSnap.exists()) {
+
+            const commentsData = commentsDocSnap.data();
+            const commentsArray = commentsData.comments || []; // Default to an empty array if no comments
+
+
+            // Fetch user data dynamically for each comment
+            for (const comment of commentsArray) {
+                try {
+                    const userDocRef = doc(db, "users", comment.userId);
+                    const docSnap = await getDoc(userDocRef);
+
+                    // Default values if user data is missing
+                    const userData = docSnap.exists() ? docSnap.data() : {};
+                    const username = userData.username || "Unknown User";
+                    const profileimg = userData.profileimg || "default-profile.png";
+
+                    // Create a new comment div
+                    const commentDiv = document.createElement("div");
+                    commentDiv.classList.add("comment-item");
+
+                    // Add comment content
+                    commentDiv.innerHTML = `
+                            <div class="comment_profileDiv">
+                                <small class="commentedTime">${new Date(comment.timestamp).toLocaleString()}</small>
+                                <img src="${profileimg}" class="comment-profile" alt="Profile Image">
+                                <p>${username}</p>
+                            </div>
+                            <div class="main_commentDiv">
+                                <p>${comment.comment}</p>
+                            </div>
+                        `;
+
+                    // Append to the container
+                    commentsDisplay.appendChild(commentDiv)
+
+                    commentsBack.addEventListener("click", () => {
+                        commentsDisplayDiv.style.display = "none";
+                        showPost.style.display = "block"
+                        commentsDisplay.innerHTML = ""
+                    })
+
+                } catch (userError) {
+                    console.error("Error fetching user data for comment:", comment, userError);
+                }
+            }
+        } else {
+            console.log("No comments found for this post.");
+
+            // Show "No Comments Yet" if the comments document doesn't exist
+            const emptyCommentMsg = document.getElementsByClassName("emptyCommentMsg")[0];
+            emptyCommentMsg.style.display = "block"
+
+            commentsBack.addEventListener("click", () => {
+                commentsDisplayDiv.style.display = "none";
+                showPost.style.display = "block"
+                commentsDisplay.innerHTML = ""
+            })
+        }
+    } catch (error) {
+        console.error("Error fetching comments:", error);
+    }
 }
 
 
@@ -421,7 +515,7 @@ Remove.addEventListener("click", async () => {
 });
 
 const ProfileRemoveCancel = document.getElementById("ProfileRemoveCancel");
-ProfileRemoveCancel.addEventListener("click", () =>{
+ProfileRemoveCancel.addEventListener("click", () => {
     const settings = document.getElementsByClassName("settings");
     if (settings[0].style.display === "block") {
         settings[0].style.display = "none";
