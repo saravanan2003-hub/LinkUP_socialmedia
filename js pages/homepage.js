@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getFirestore, setDoc, doc, getDocs, getDoc, addDoc, collection, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getFirestore, setDoc, doc, getDocs, getDoc, addDoc, collection, query, where, orderBy,limit } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject, listAll } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
@@ -75,9 +75,6 @@ async function fetchPosts() {
             return;
         }
 
-        // Fetch all posts from the "Posts" collection
-        // const postsSnapshot = await getDocs(query(collection(db, "Posts")));
-
         const postsSnapshot = await getDocs(
             query(collection(db, "Posts"), orderBy("postTime", "desc")) // "desc" for descending order
         );
@@ -129,7 +126,7 @@ async function fetchPosts() {
             box.innerHTML = `
                 <div class="profilePicture">
                     <div>
-                        <img src="${profileimg}" alt="Profile Image" class="userPhoto" id="userPhoto-${postid}" class="userID-${postUID}">
+                        <img src="${profileimg}" alt="Profile Image" class="userPhoto ${postUID}" id="userPhoto-${postid}" >
                     </div>
                     <div>
                         <p class="username" id="username-${postid}">${username}</p>
@@ -201,8 +198,10 @@ async function fetchPosts() {
             // Add event listeners for user profile redirection
             const userPhoto = box.querySelector(`#userPhoto-${postid}`);
             const usernameEl = box.querySelector(`#username-${postid}`);
-            const postUid = document.getElementsByClassName(`userID-${postUID}`)[0];
-            console.log(postUid)
+            const postUid = document.getElementsByClassName(`${postUID}`)[0];
+            const sli = postUid.className.slice(10);
+            
+            // console.log(sli)
 
             
 
@@ -214,8 +213,11 @@ async function fetchPosts() {
             
                 [userPhoto, usernameEl].forEach((element) => {
                     element.addEventListener("click", () => {
-                        if(PostUidClass == useruid ){
+                        if(sli == useruid ){
                             window.location.href = "./profile.html";
+                        }
+                        else{
+                            userProfilePageDisplay(sli);
                         }
                     });
                 });
@@ -458,7 +460,53 @@ async function fetchAndDisplayComments(postid) {
 }
 
 
+/////////////////////////  user  Profile Page Display function ///////////////////
 
+async function userProfilePageDisplay(otheruserUID){
+    const userDocRef = doc(db, "users", otheruserUID);
+    const docSnap = await getDoc(userDocRef);
+    const userData = docSnap.data() || {};
+    const username = userData.username || "Unknown User";
+    const profileimg = userData.profileimg || "default-profile.png";
+    
+    //  get elements from HTML 
+    const main = document.getElementsByClassName("main")[0];
+    main.style.display = "none";
+    const othersProfilePageShow = document.getElementById("othersProfilePageShow");
+    othersProfilePageShow.style.display = "block"
+    const ProfileImg = document.getElementById("ProfileImg");
+    const nameDis = document.getElementById("nameDis");
+    nameDis.textContent = username;
+    ProfileImg.setAttribute("src" ,profileimg);
+    const fileDisplay = document.getElementById("fileDisplay");
+
+
+
+
+
+     const querySnapshot = await getDocs(query(collection(db, "Posts"), where("uid", "==", otheruserUID)));
+    
+        console.log(querySnapshot)
+    
+        querySnapshot.forEach((doc) => {
+    
+            console.log("Document Data:", doc.data());
+    
+            // Create and configure the image element
+            const postId = doc.id;
+            const postURL = doc.data().postURL
+            // console.log(postURL)
+            const imgElement = document.createElement("img");
+            imgElement.classList.add("post-image");
+            imgElement.setAttribute("id", postId)
+            imgElement.src = doc.data().postURL;
+            
+
+
+        // Append the image element to the container
+        fileDisplay.appendChild(imgElement);
+        })
+}
 
 
 
@@ -486,6 +534,7 @@ SearchBtn.addEventListener("click", () => {
 
 const SearchInp = document.getElementById("SearchInp");
 // Listen for input changes
+
 SearchInp.addEventListener("input", async () => {
     const SearchVal = SearchInp.value.trim().toLowerCase();
 
@@ -498,8 +547,9 @@ SearchInp.addEventListener("input", async () => {
         // Query Firestore where username starts with SearchVal
         const q = query(
             collection(db, "users"),
-            where("username", ">=", SearchVal), // Start range
-            where("username", "<=", SearchVal + "\uf8ff") // End range
+            where("username", ">=", SearchVal),
+            where("username", "<=", SearchVal + "\uf8ff"),
+            limit(100) // Adjust the limit as needed
         );
 
         const searchSnapshot = await getDocs(q);
@@ -511,26 +561,89 @@ SearchInp.addEventListener("input", async () => {
             return;
         }
 
+        // Display fetched user data
         searchSnapshot.forEach((doc) => {
             const data = doc.data();
-            const name = data.username;
-            const profileImg = data.profileimg;
+            const userid = doc.id;
+            const name = data.username || "Unknown User";
+            const profileImg = data.profileimg || "default-profile.png";
 
             // Append user details to the container
             const userDiv = document.createElement("div");
             userDiv.classList.add("searchDiv");
             userDiv.innerHTML = `
                 <div>
-                    <img src="${profileImg}" alt="ProfileImage" class="searchPro">
+                    <img src="${profileImg}" alt="Profile Image" class="searchPro">
                     <p class="searchUser">${name}</p>
+                    <button id="followBtn-${userid}" class="followBtn" >follow</button>
                 </div>
             `;
             searchDetails.appendChild(userDiv);
+
+            const followbtn = document.getElementById(`followBtn-${userid}`);
+            followbtn.addEventListener("click", () =>{
+                followersAdd(userid);
+            })
+
         });
     } catch (error) {
         console.error("Error fetching user data:", error);
+        searchDetails.innerHTML = `<p class="error">An error occurred while fetching data. Please try again later.</p>`;
     }
 });
+
+
+
+async function followersAdd(userid){
+
+    try {
+        const followDocRef = doc(db, "followers", userid); // Reference to the document
+        const userUID = localStorage.getItem("uid"); // Current user's UID
+        const followBtn = document.getElementById(`followBtn-${userid}`);
+    
+        if (!userUID) {
+            console.error("User UID not found.");
+            return;
+        }
+    
+        // Get the current data of the document
+        const followDocSnap = await getDoc(followDocRef);
+        const followers = followDocSnap.exists()
+            ? followDocSnap.data().followers || []
+            : []; // Fallback to an empty array if the document doesn't exist
+    
+            if (followers.includes(userUID)) {
+                // Unfollow: Remove the user from followers
+                await setDoc(followDocRef, { followers: followers.filter((uid) => uid !== userUID) });
+                console.log(`User ${userUID} unfollowed ${userid}`);
+        
+                // Update UI for unfollow
+                followBtn.classList.remove("unFollowBtn");
+                followBtn.classList.add("followBtn");
+                followBtn.textContent = "Follow";
+            } else {
+                // Follow: Add the user to followers
+                followers.push(userUID);
+                await setDoc(followDocRef, { followers });
+                console.log(`User ${userUID} followed ${userid}`);
+        
+                // Update UI for follow
+                followBtn.classList.remove("followBtn");
+                followBtn.classList.add("unFollowBtn");
+                followBtn.textContent = "Unfollow";
+            }
+        
+    } catch (error) {
+        console.error("Error toggling follow status:", error);
+    }
+    
+
+    
+}
+
+
+
+
 
 
 
