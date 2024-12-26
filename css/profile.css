@@ -97,7 +97,7 @@ aside a:focus{
     object-fit: cover;
     margin: 30px;
     border-radius: 3px;
-    background-color: #92C7CF;
+    background-color: #134B70;
     padding: 10px;
     border-radius: 10px;
 }
@@ -692,6 +692,18 @@ input[type="file"] {
 }
 
 .fa-comment-slash{
+    font-size: 30px;
+}
+
+.followDiv{
+   margin-top: 40px
+}
+
+#followers{
+    font-size: 30px;
+}
+#following{
+    margin-left: 40px;
     font-size: 30px;
 }
 

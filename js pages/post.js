@@ -32,7 +32,7 @@ async function uploadImage(){
 
 
     if(!file){
-        console.log("No file Selected");
+        alert("No Photo/Image selected");
         return;
     }
 
@@ -64,7 +64,7 @@ async function  insertPost(downloadURL){
 
     const postData = {
         postURL : downloadURL,
-        postTime : new Date().getTime().toString(),
+        postTime : new Date().toISOString(),
         postName :file.name,
         uid :localStorage.getItem("uid"),
         postDes : captionVal

@@ -22,8 +22,10 @@ const auth = getAuth(app);
 const folderRef = ref(storage, 'Posts')
 
 
+
 /////////////////////////////////////////////     user name fetch function    /////////////////////////////////////////////////////////////
 async function getUsername() {
+    
     const nameDis = document.getElementById("nameDisplay");
 
     // Get the UID from localStorage
@@ -164,6 +166,7 @@ async function fetchPosts() {
                         // Unlike the post
                         const updatedLikedPeople = likedPeople.filter((uid) => uid !== userUID);
                         await setDoc(likesDocRef, { likedPeople: updatedLikedPeople });
+                        likePeople()
 
 
                         // Update UI
@@ -171,12 +174,14 @@ async function fetchPosts() {
                         heart.classList.add("fa-regular");
                         likeCountEl.textContent = updatedLikedPeople.length;
                         console.log(`User ${userUID} unliked the post.`);
-                        likePeople()
+                       
 
                     } else {
                         // Like the post
+                        
                         likedPeople.push(userUID);
                         await setDoc(likesDocRef, { likedPeople });
+                        likePeople()
 
 
                         // Update UI
@@ -184,7 +189,7 @@ async function fetchPosts() {
                         heart.classList.add("fa-solid");
                         likeCountEl.textContent = likedPeople.length;
                         console.log(`User ${userUID} liked the post.`);
-                        likePeople()
+                       
 
                     }
                 } catch (error) {
@@ -533,10 +538,9 @@ SearchBtn.addEventListener("click", () => {
 
 
 const SearchInp = document.getElementById("SearchInp");
-// Listen for input changes
 
 SearchInp.addEventListener("input", async () => {
-    const SearchVal = SearchInp.value.trim().toLowerCase();
+    const SearchVal = SearchInp.value.trim().toLowerCase(); // Convert the input to lowercase
 
     if (SearchVal === "") {
         searchDetails.innerHTML = ""; // Clear search results if input is empty
@@ -544,14 +548,8 @@ SearchInp.addEventListener("input", async () => {
     }
 
     try {
-        // Query Firestore where username starts with SearchVal
-        const q = query(
-            collection(db, "users"),
-            where("username", ">=", SearchVal),
-            where("username", "<=", SearchVal + "\uf8ff"),
-            limit(100) // Adjust the limit as needed
-        );
-
+        // Query Firestore to get all users (be cautious with large datasets)
+        const q = query(collection(db, "users"));
         const searchSnapshot = await getDocs(q);
 
         searchDetails.innerHTML = ""; // Clear previous search results
@@ -561,30 +559,49 @@ SearchInp.addEventListener("input", async () => {
             return;
         }
 
-        // Display fetched user data
+        // Filter users by case-insensitive match
+        let filteredUsers = [];
         searchSnapshot.forEach((doc) => {
             const data = doc.data();
             const userid = doc.id;
-            const name = data.username || "Unknown User";
-            const profileImg = data.profileimg || "default-profile.png";
+            const username = data.username || "Unknown User";
 
-            // Append user details to the container
+            // Check if the username matches the search input, case-insensitively
+            if (username.toLowerCase().includes(SearchVal)) {
+                filteredUsers.push({
+                    userid,
+                    username,
+                    profileImg: data.profileimg || "default-profile.png",
+                });
+            }
+        });
+
+        if (filteredUsers.length === 0) {
+            searchDetails.innerHTML = `<p>No results found</p>`;
+            return;
+        }
+
+        // Display the filtered results
+        filteredUsers.forEach((user) => {
+            const { userid, username, profileImg } = user;
+
             const userDiv = document.createElement("div");
             userDiv.classList.add("searchDiv");
             userDiv.innerHTML = `
                 <div>
                     <img src="${profileImg}" alt="Profile Image" class="searchPro">
-                    <p class="searchUser">${name}</p>
-                    <button id="followBtn-${userid}" class="followBtn" >follow</button>
+                    <p class="searchUser">${username}</p>
+                    <button id="followBtn-${userid}" class="followBtn"></button>
                 </div>
             `;
             searchDetails.appendChild(userDiv);
 
-            const followbtn = document.getElementById(`followBtn-${userid}`);
-            followbtn.addEventListener("click", () =>{
-                followersAdd(userid);
-            })
+            checkFun(userid);
 
+            const followbtn = document.getElementById(`followBtn-${userid}`);
+            followbtn.addEventListener("click", () => {
+                followersAdd(userid);
+            });
         });
     } catch (error) {
         console.error("Error fetching user data:", error);
@@ -592,10 +609,43 @@ SearchInp.addEventListener("input", async () => {
     }
 });
 
+async function checkFun(userid) {
+    try {
+        const followDocRef = doc(db, "followers", userid); // Reference to the document
+        const userUID = localStorage.getItem("uid"); // Current user's UID
+        const followBtn = document.getElementById(`followBtn-${userid}`);
+    
+        if (!userUID) {
+            console.error("User UID not found.");
+            return;
+        }
+    
+        // Get the current data of the document
+        const followDocSnap = await getDoc(followDocRef);
+        const followers = followDocSnap.exists()
+            ? followDocSnap.data().followers || []
+            : []; // Fallback to an empty array if the document doesn't exist
+    
+            if (followers.includes(userUID)) {
+                // Update UI for unfollow
+                followBtn.classList.remove("followBtn");
+                followBtn.classList.add("unFollowBtn");
+                followBtn.textContent = "Unfollow";
+               
+            } else {
+                // Update UI for follow
+                followBtn.classList.remove("unFollowBtn");
+                followBtn.classList.add("followBtn");
+                followBtn.textContent = "Follow";
+            }
+        
+    } catch (error) {
+        console.error("Error toggling follow status:", error);
+    }    
+}
 
 
 async function followersAdd(userid){
-
     try {
         const followDocRef = doc(db, "followers", userid); // Reference to the document
         const userUID = localStorage.getItem("uid"); // Current user's UID
@@ -637,21 +687,7 @@ async function followersAdd(userid){
         console.error("Error toggling follow status:", error);
     }
     
-
-    
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

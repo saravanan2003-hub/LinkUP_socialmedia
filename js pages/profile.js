@@ -198,7 +198,7 @@ async function ShowLikedPeople(postId, postUID) {
 
         const Back = document.getElementById("back");
 
-        
+
 
         // Fetch likes data for the post
         const likesDocRef = doc(db, "Likes", postId);
@@ -250,7 +250,7 @@ async function ShowLikedPeople(postId, postUID) {
                         showPost.style.display = "block"
                         likeDisplay.innerHTML = ""
                     })
-                    
+
                 }
             }
         }
@@ -564,6 +564,63 @@ async function getUsername() {
 }
 
 getUsername();
+
+
+async function followers() {
+    try {
+        const userUID = localStorage.getItem("uid");
+        // const docRef = doc(db, "followers", "0FJTHXq7PoSvgySnSiQRodX259w1");
+        const docRef = doc(db, "followers",userUID);
+        const docSnap = await getDoc(docRef);
+        const followers = docSnap.data().followers;
+        if (!followers) {
+            console.error("No one follow this User")
+        }
+        else {
+            const followPeople = document.getElementById("followers");
+            followPeople.textContent = `${followers.length} followers`;
+            for (const people of followers) {
+                console.log(people);
+            }
+        }
+    }
+    catch (error) {
+        console.error(error);
+    }
+}
+followers();
+
+async function following(){
+    const userUID = localStorage.getItem("uid");
+    var followingCount = 0;
+    try{
+        const followingquerySnapshot = await getDocs(query(collection(db, "followers")));
+        followingquerySnapshot.forEach(doc => {
+            const array = doc.data().followers;
+            console.log(array)
+            if(array.includes(userUID)){
+                followingCount++;
+                console.log(followingCount);
+            }
+            else{
+                console.log("no one");
+                
+            }
+       });
+      
+
+       const following = document.getElementById("following");
+       following.textContent = `${followingCount} following`
+       
+        
+    }
+    catch(error){
+        console.error(error)
+    }
+}
+
+following()
+
 
 // logout function
 const LogoutPost = document.getElementById("ProfileLogout");
