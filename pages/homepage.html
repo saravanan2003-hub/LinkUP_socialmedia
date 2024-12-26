@@ -18,6 +18,7 @@
             <a href="./homepage.html" class="active"><i class="fa-solid fa-house"></i><span>Home</span></a>
             <a href="./profile.html"><i class="fa-solid fa-user"></i><span>Profile</span></a>
             <a href="./post.html"><i class="fa-solid fa-photo-film"></i><span>Post</span></a>
+            <a href=""><i class="fa-solid fa-comments"></i><span>Chat</span></a>
             <button id="Logout"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></button>
         </aside>
 
@@ -28,31 +29,27 @@
                 </div>
 
                 <div class="messageIcon">
-                    
-                    <input type="text" placeholder="Search..." id="SearchInp" >
+
+                    <input type="text" placeholder="Search..." id="SearchInp">
                     <i class="fa-solid fa-magnifying-glass" id="SearchBtn"></i>
-                    <i class="fa-solid fa-comments"></i>
-                    
+                    <!-- <i class="fa-solid fa-comments"></i> -->
+
                 </div>
             </header>
 
             <div class="main">
                 <div class="feed" id="feed">
                     <div id="likeShowPopup">
-                        <!-- <div class="EmptyLengthMsg">
-                            <h6>No One Like This Post</h6>
-                        </div> -->
                         <i class="fa-solid fa-xmark" id="xmark"></i>
-                       
+
                     </div>
                     <div class="comment">
                         <i class="fa-regular fa-circle-xmark" id="xmarkComment"></i>
-                        <div id="commentDisplay">
-                            <div class="emptyCommentMsg">
-                                <div>
-                                    <i class="fa-solid fa-comment-slash"></i>
-                                    <p>No comment Yet</p>
-                                </div>
+                        <div id="commentDisplay"></div>
+                        <div class="emptyCommentMsg">
+                            <div>
+                                <i class="fa-solid fa-comment-slash"></i>
+                                <p>No comment Yet</p>
                             </div>
                         </div>
                         <div class="commentIp">
@@ -61,21 +58,21 @@
                         </div>
                     </div>
                 </div>
-                
 
-                <div class="ad"> 
+
+                <div class="ad">
                     <div class="ad1">
                         <div><iframe style="border-radius:12px"
-                            src="https://open.spotify.com/embed/playlist/37i9dQZF1DX4Im4BTs2WMg?utm_source=generator"
-                            width="100%" height="90%" frameBorder="0" allowfullscreen=""
-                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                            loading="lazy" ></iframe>
+                                src="https://open.spotify.com/embed/playlist/37i9dQZF1DX4Im4BTs2WMg?utm_source=generator"
+                                width="100%" height="90%" frameBorder="0" allowfullscreen=""
+                                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                                loading="lazy"></iframe>
                         </div>
                         <div><iframe style="border-radius:12px"
-                            src="https://open.spotify.com/embed/playlist/37i9dQZF1DZ06evO2GbnbB?utm_source=generator"
-                            width="100%" height="90%" frameBorder="0" allowfullscreen=""
-                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                            loading="lazy" class="spotify"></iframe>
+                                src="https://open.spotify.com/embed/playlist/37i9dQZF1DZ06evO2GbnbB?utm_source=generator"
+                                width="100%" height="90%" frameBorder="0" allowfullscreen=""
+                                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                                loading="lazy" class="spotify"></iframe>
                         </div>
 
                         <div id="searchDetails"></div>
@@ -92,6 +89,26 @@
             <button id="LogoutRes"><i class="fa-solid fa-right-from-bracket"></i></button>
         </footer>
 
+        <div id="othersProfilePageShow">
+            <div class="setProfile">
+
+                <div class="head">
+                    <div>
+                        <img alt="" id="ProfileImg" src="../assests/photos/dummy-image.jpg">
+                    </div>
+
+                    <span id="nameDis"></span>
+                </div>
+                <div>
+                    <h1 class="postH1">Posts</h1>
+                </div>
+                <div class="files">
+                    <div id="fileDisplay"></div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 
 
@@ -99,8 +116,3 @@
 </body>
 
 </html>
-
-
-
-
-

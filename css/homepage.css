@@ -46,6 +46,10 @@ aside span img{
     margin-top: 50px;
 }
 
+.active{
+    border-bottom: 2px solid white;
+}
+
 aside span img:hover {
     filter: drop-shadow(0 10px 10px white);
     transition: filter 0.3s ease-in-out;
@@ -105,8 +109,6 @@ i{
 }
 
 #Logout{
-    /* background-color: #E5E1DA; */
-    /* padding: 15px 70px 15px 70px; */
     background: none;
     color: white;
     font-size: 25px;
@@ -114,6 +116,7 @@ i{
     border: none;
     margin: 30px;
     padding: 15px 50px 15px 50px;
+
 }
 .messageIcon{
     display: flex;
@@ -151,8 +154,6 @@ aside a{
     text-decoration: none;
     font-size: 25px;
     box-sizing: border-box;
-    /* padding: 15px 70px 15px 70px; */
-    /* background-color: #E5E1DA; */
     border-radius: 20px;
     margin: 30px;
     padding: 15px 50px 15px 50px;
@@ -189,7 +190,7 @@ aside a{
     width: 300px;
     top: 200px;
     left: 500px;
-    background-color: #92C7CF;
+    background-color: #134B70;
     /* display: flex;
     justify-content:center;
     align-items: flex-start; */
@@ -201,6 +202,7 @@ aside a{
     left: 270px;
     top: 5px;
     font-size: 30px;
+    color: red;
 }
 
 
@@ -282,7 +284,7 @@ a i{
     width: 500px;
     top: 200px;
     left: 450px;
-    background-color:#E5E1DA;
+    background-color:#134B70;
     position: fixed;
     padding: 10px;
     border-radius: 10px;
@@ -341,7 +343,7 @@ a i{
 #showlike{
     padding: 5px 20px;
     border: none;
-    background-color: #E5E1DA;
+    background-color: #134B70;
     color: black;
 }
 
@@ -403,7 +405,7 @@ footer{
     overflow-y: auto;
     height: 480px;
     width: 480px;
-    background-color:#92C7CF;
+    background-color:#ffffff;
 }
 
 .comment-item {
@@ -411,7 +413,7 @@ footer{
     padding: 5px 0;
     display: grid;
     grid-template-columns: 1fr 2fr;
-    background-color: #AAD7D9;
+    background-color: #134B70;
     margin: 10px;
     border-radius: 20px;
     
@@ -419,10 +421,11 @@ footer{
 
 .comment-item p {
     margin: 5px 0;
+    color: #ffffff;
 }
 
 .comment-item small {
-    color: #777;
+    color: whitesmoke;
     font-size: 12px;
 }
 
@@ -497,7 +500,7 @@ footer{
 
 .searchDiv div{
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     height: 100px;
     width:300px;
@@ -506,6 +509,22 @@ footer{
     margin-bottom: 5px;
     margin-top: 5px;
 
+}
+
+.followBtn{
+    height: 30px;
+    width: 60px;
+    background-color: blue;
+    color: white;
+    border: none;
+}
+
+.unFollowBtn{
+    height: 30px;
+    width: 60px;
+    background-color: white;
+    color: black;
+    border: none; 
 }
 
 
@@ -520,7 +539,7 @@ footer{
     width: 330px;
     position:absolute;
     z-index: 10;
-    right:60px;
+    right: 0;
     top: 10px;
     display: none;
     background-color: #f3f6f6;
@@ -555,7 +574,7 @@ iframe{
 
 .emptyCommentMsg{
     display: none;
-
+    z-index: 10;
 }
 
 .emptyCommentMsg div{
@@ -577,6 +596,80 @@ iframe{
 }
 
 
+#othersProfilePageShow{
+    display: none;
+    /* position: fixed; */
+    margin-left: 20vw;
+    height: 100vh;
+    width: 80vw;
+    position:absolute;
+    top: 0;
+    background-color:#ffffff;
+    z-index: 3;
+    
+}
+
+
+
+.head{
+    display: flex;
+    justify-content:flex-start;
+    align-items: center;
+}
+
+#ProfileImg{
+    border-radius: 50%;
+    height: 200px;
+    width: 200px;
+    border: 10px solid #134B70;
+    padding: 5px;
+    margin: 20px; 
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    margin: 30px;
+    cursor: pointer;
+
+}
+
+#nameDis{
+    font-size: 50px;
+    color: black;
+}
+
+.postH1{
+    margin-left: 20px;
+    border-bottom: 2px solid #92C7CF;
+}
+
+.files{
+    /* margin-top: 30vh; */
+    margin-left: 35px;
+    height: 70vh;
+    overflow-y: auto;
+}
+
+#fileDisplay{
+    /* margin-top:10%; */
+    width: 100%;
+    align-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #ffffff;
+}
+
+.post-image{
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    margin: 30px;
+    border-radius: 3px;
+    background-color: #92C7CF;
+    padding: 10px;
+    border-radius: 10px;
+}
 
 /* Media Query for Mobile Devices (max-width: 720px) */
 @media screen and (max-width: 720px) {

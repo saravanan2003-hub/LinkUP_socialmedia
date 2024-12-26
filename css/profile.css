@@ -8,13 +8,13 @@
 aside{
     height: 100vh;
     width: 20vw;
-    background-color:#92C7CF;
+    background-color:#134B70;
     margin-top: 0;
     top: 0;
     position: fixed;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content:flex-start;
     align-items: center;
     z-index: 2;
 
@@ -25,16 +25,17 @@ aside{
 aside span img{
     height: 125px;
     width: 230px;
+    margin-top: 50px;
 }
 
 aside a{
-    color: black;
+    color: white;
     text-decoration: none;
     font-size: 25px;
     box-sizing: border-box;
-    padding: 15px 70px 15px 70px;
-    background-color: #E5E1DA;
     border-radius: 20px;
+    margin: 30px;
+    padding: 15px 50px 15px 50px;
 }
 
 main{
@@ -42,11 +43,11 @@ main{
     margin-left: 20%;
     display: grid;
     grid-template-rows:1fr 2fr;
-    background-color: #E5E1DA;
+    background-color:#ffffff;
 }
 
 a i{
-   color: black;
+   color: white;
    margin-right: 15px;
 }
 
@@ -74,15 +75,20 @@ aside a:focus{
 
 
 #ProfileLogout{
-    background-color: #E5E1DA;
-    padding: 15px 70px 15px 70px;
-    color: black;
+    
+    padding: 15px 50px 15px 50px;
+    color:white;
     font-size: 25px;
     border-radius: 20px;
     border: none;
     cursor: pointer;
+    background: none;
+    margin: 30px;
 }
 
+.active{
+    border-bottom: 2px solid white;
+}
 
 
 .post-image{
@@ -91,7 +97,7 @@ aside a:focus{
     object-fit: cover;
     margin: 30px;
     border-radius: 3px;
-    background-color: #92C7CF;
+    background-color: #134B70;
     padding: 10px;
     border-radius: 10px;
 }
@@ -102,7 +108,7 @@ aside a:focus{
     top: 0;
     height: 40vh;
     width: 80%; 
-    background-color: #E5E1DA;
+    background-color: #ffffff;
     z-index: 1;
     display: flex;
     flex-direction: column;
@@ -114,7 +120,7 @@ aside a:focus{
     border-radius: 50%;
     height: 200px;
     width: 200px;
-    border: 10px solid #92C7CF;
+    border: 10px solid #134B70;
     padding: 5px;
     margin: 20px; 
     width: 200px;
@@ -150,7 +156,7 @@ aside a:focus{
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-start;
-    background-color: #E5E1DA;
+    background-color: #ffffff;
 }
 
 
@@ -162,7 +168,7 @@ aside a:focus{
     height: 350px;
     width: 350px;
     z-index: 10;
-    background-color: #92C7CF;
+    background-color: #134B70;
     display: none;
     border-top-right-radius: 20px;
     border-bottom-left-radius: 20px;
@@ -367,16 +373,16 @@ input[type="file"] {
 .files{
     margin-top: 30vh;
     margin-left: 35px;
-    height: 60vh;
+    height: 70vh;
     overflow-y: auto;
 }
 
 #showPost{
-    height: 690px;
-    width: 515px;
-    background-color: #92C7CF;  
+    height: 500px;
+    width: 450px;
+    background-color: #134B70;  
     position:absolute;
-    top: 100px;
+    top: 200px;
     right: 350px;
     z-index: 10;
     position: fixed;
@@ -388,38 +394,33 @@ input[type="file"] {
 #showProfileXmark{
     color: red;
     font-size: 20px;
-    margin-left:20px;
+    margin-left:35px;
 }
 
 .postImg{
-    height:650px;
-    width:475px;
-    margin: 20px;
-    background-color: #AAD7D9;
+    height:460px;
+    width:450px;
+    /* margin: 20px; */
+    /* background-color: #AAD7D9; */
     display: grid;
-    grid-template-rows: 10% 80% 10%;
+    grid-template-rows: 20% 80%;
 }
 
 .Delete{
     display: flex;
     justify-content:space-between;
     align-items: center;
+    margin-right: 10px;
 }
 
 .showPostImage{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items:center;
-    
 }
 
-.likeAndComment{
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    font-size: 30px;
 
-}
 
 .showPostImage img{
     border: 1px black solid;
@@ -430,12 +431,21 @@ input[type="file"] {
 }
 
 .fa-heart{
-    margin-left: 20px;
+    /* margin-left: 20px; */
     color: red;
+    font-size: 30px;
+    margin-top: 10px;
+    /* margin-right: 310px; */
+    position: relative;
+    right:150px ;
 }
 
 .fa-comment{
     margin-right: 20px;
+    font-size: 30px;
+    margin-top: 10px;
+    position: relative;
+    right:120px ;
 }
 
 .deleteBtn{
@@ -540,7 +550,7 @@ input[type="file"] {
 }
 
 #back{
-    display: none;
+    /* display: none; */
     margin-top: 20px;
     margin-left: 20px;
     height: 30px;
@@ -554,7 +564,7 @@ input[type="file"] {
 .likedPeopleDiv{
     height: 100px;
     width: 350px;
-    margin-left:80px;
+    margin-left:50px;
     margin-bottom: 20px;
     z-index: 2;
     display: flex;
@@ -571,6 +581,131 @@ input[type="file"] {
     color: red;
 }
 
+#likeDisplayDiv{
+    height: 500px;
+    width: 450px;
+    background-color: #134B70;  
+    position:absolute;
+    top: 200px;
+    right: 350px;
+    z-index: 10;
+    position: fixed;
+    display: none; 
+}
+
+
+.emptyMsgDisplayDiv{
+    display: none;
+    color: red;
+    font-size: 20px;
+    position: relative;
+    top: 180px;
+    left: 130px;
+}
+
+#commentsDisplayDiv{
+    height: 500px;
+    width: 450px;
+    background-color: #134B70;  
+    position:absolute;
+    top: 200px;
+    right: 350px;
+    z-index: 10;
+    position: fixed;
+    display: none; 
+}
+
+#commentsBack{
+    margin-top: 20px;
+    margin-left: 20px;
+    height: 30px;
+    width: 100px;
+    background-color: #E5E1DA;
+    border-radius: 10px;
+    position: sticky;
+    margin-bottom: 30px;
+}
+
+.comment-item {
+    /* border-bottom: 1px solid #ddd; */
+    padding: 5px 0;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    background-color: #134B70;
+    margin: 10px;
+    border-radius: 20px;
+    
+}
+
+.comment-item p {
+    margin: 5px 0;
+    color: #ffffff;
+}
+
+.comment-item small {
+    color: whitesmoke;
+    font-size: 12px;
+}
+
+
+.comment_profileDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.commentedTime{
+    margin-bottom: 10px;
+}
+
+.comment-profile{
+    height: 75px;
+    width: 75px;
+    border-radius: 50%;
+    object-fit: cover;
+
+}
+
+.main_commentDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.emptyCommentMsg{
+    display: none;
+    z-index: 10;
+}
+
+.emptyCommentMsg div{
+    position: absolute;
+    top: 250px;
+    left:100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: red;
+}
+
+.emptyCommentMsg p{
+    font-size: 30px;
+}
+
+.fa-comment-slash{
+    font-size: 30px;
+}
+
+.followDiv{
+   margin-top: 40px
+}
+
+#followers{
+    font-size: 30px;
+}
+#following{
+    margin-left: 40px;
+    font-size: 30px;
+}
 
 
 

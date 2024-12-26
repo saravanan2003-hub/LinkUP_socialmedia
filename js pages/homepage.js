@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getFirestore, setDoc, doc, getDocs, getDoc, addDoc, collection, query, where, orderBy  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getFirestore, setDoc, doc, getDocs, getDoc, addDoc, collection, query, where, orderBy,limit } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject, listAll } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
@@ -22,8 +22,10 @@ const auth = getAuth(app);
 const folderRef = ref(storage, 'Posts')
 
 
+
 /////////////////////////////////////////////     user name fetch function    /////////////////////////////////////////////////////////////
 async function getUsername() {
+    
     const nameDis = document.getElementById("nameDisplay");
 
     // Get the UID from localStorage
@@ -66,7 +68,7 @@ getUsername();
 
 async function fetchPosts() {
 
-   
+
     try {
         const feed = document.getElementById("feed");
 
@@ -74,9 +76,6 @@ async function fetchPosts() {
             console.error("Feed element not found in the DOM.");
             return;
         }
-
-        // Fetch all posts from the "Posts" collection
-        // const postsSnapshot = await getDocs(query(collection(db, "Posts")));
 
         const postsSnapshot = await getDocs(
             query(collection(db, "Posts"), orderBy("postTime", "desc")) // "desc" for descending order
@@ -129,7 +128,7 @@ async function fetchPosts() {
             box.innerHTML = `
                 <div class="profilePicture">
                     <div>
-                        <img src="${profileimg}" alt="Profile Image" class="userPhoto" id="userPhoto-${postid}">
+                        <img src="${profileimg}" alt="Profile Image" class="userPhoto ${postUID}" id="userPhoto-${postid}" >
                     </div>
                     <div>
                         <p class="username" id="username-${postid}">${username}</p>
@@ -167,27 +166,30 @@ async function fetchPosts() {
                         // Unlike the post
                         const updatedLikedPeople = likedPeople.filter((uid) => uid !== userUID);
                         await setDoc(likesDocRef, { likedPeople: updatedLikedPeople });
-    
+                        likePeople()
+
 
                         // Update UI
                         heart.classList.remove("fa-solid");
                         heart.classList.add("fa-regular");
                         likeCountEl.textContent = updatedLikedPeople.length;
                         console.log(`User ${userUID} unliked the post.`);
-                        likePeople()
+                       
 
                     } else {
                         // Like the post
+                        
                         likedPeople.push(userUID);
                         await setDoc(likesDocRef, { likedPeople });
-                        
+                        likePeople()
+
 
                         // Update UI
                         heart.classList.remove("fa-regular");
                         heart.classList.add("fa-solid");
                         likeCountEl.textContent = likedPeople.length;
                         console.log(`User ${userUID} liked the post.`);
-                        likePeople()
+                       
 
                     }
                 } catch (error) {
@@ -201,12 +203,34 @@ async function fetchPosts() {
             // Add event listeners for user profile redirection
             const userPhoto = box.querySelector(`#userPhoto-${postid}`);
             const usernameEl = box.querySelector(`#username-${postid}`);
+            const postUid = document.getElementsByClassName(`${postUID}`)[0];
+            const sli = postUid.className.slice(10);
+            
+            // console.log(sli)
 
-            [userPhoto, usernameEl].forEach((element) => {
-                element.addEventListener("click", () => {
-                    window.location.href = "./profile.html";
+            
+
+            
+            const useruid = localStorage.getItem("uid"); 
+
+            
+          
+            
+                [userPhoto, usernameEl].forEach((element) => {
+                    element.addEventListener("click", () => {
+                        if(sli == useruid ){
+                            window.location.href = "./profile.html";
+                        }
+                        else{
+                            userProfilePageDisplay(sli);
+                        }
+                    });
                 });
-            });
+
+                
+                
+            
+            
 
 
 
@@ -235,7 +259,7 @@ async function fetchPosts() {
                         // popmain.appendChild(NoLikeShowDiv)
                         return;
                     }
-                    
+
                     popmain.innerHTML = `<i id="xmark" class="fa-solid fa-xmark"></i>
                     <div class="EmptyLengthMsg">
                             <p>No One Like This Post</p>
@@ -251,28 +275,28 @@ async function fetchPosts() {
                         } else {
                             console.error("EmptyLengthMsg element not found!");
                         }
-                    }                    
-                   
-            
+                    }
+
+
                     if (!popmain) {
                         console.error("likeShowPopup element not found.");
                         return;
                     }
-            
+
                     // Clear existing content to avoid duplicates
-                   
-            
+
+
                     // Fetch user details for each likedPeople
                     for (const userId of likedPeoples) {
                         try {
                             const userDocRef = doc(db, "users", userId);
                             const userDocSnap = await getDoc(userDocRef);
-            
+
                             if (userDocSnap.exists()) {
                                 const userData = userDocSnap.data();
                                 const username = userData.username || "Unknown User";
                                 const profileimg = userData.profileimg || "default-profile.png";
-            
+
                                 // Create and append child popup
                                 const childPopup = document.createElement("div");
                                 childPopup.classList.add("childPopup");
@@ -288,7 +312,7 @@ async function fetchPosts() {
                             console.error(`Error fetching data for userId: ${userId}`, userError);
                         }
                     }
-            
+
                     // Close popup on xmark click
                     const xmark = document.getElementById("xmark");
                     if (xmark) {
@@ -302,7 +326,7 @@ async function fetchPosts() {
                     console.error("Error in likePeople function:", error);
                 }
             }
-            
+
 
 
             const commentButton = document.getElementById(`comment-${postid}`); // Button for showing the comment section
@@ -314,55 +338,55 @@ async function fetchPosts() {
                     commentDiv.style.display = "none"; // Hide the comment section
                 }
 
-                
+
                 const CommentSend = document.getElementById("CommentSend");
-                CommentSend.addEventListener("click", async() =>{
+                CommentSend.addEventListener("click", async () => {
                     try {
 
                         //comment disabled
-                        
+
 
                         const commentText = document.getElementById("commentText").value;
                         const commentsDocRef = doc(db, "Comments", postid);
                         const commentsDocSnap = await getDoc(commentsDocRef);
                         const commentsData = commentsDocSnap.data() || { comments: [] }; // Initialize if document doesn't exist
-                    
+
                         // Ensure commentsData.comments is an array
                         if (!Array.isArray(commentsData.comments)) {
                             commentsData.comments = [];
                         }
-                    
+
                         const newComment = {
                             comment: commentText, // The comment text
                             userId: userUID,      // ID of the user making the comment
                             timestamp: new Date().toISOString() // Timestamp of the comment
                         };
                         document.getElementById("commentText").value = "";
-                    
+
                         // Add the new comment to the comments array
                         commentsData.comments.push(newComment);
-                    
+
                         // Update the document in Firestore
                         await setDoc(commentsDocRef, commentsData);
-                    
+
                         console.log("Comment added successfully!");
-                        
+
                     } catch (error) {
                         console.error("Error in comment function:", error);
                     }
-                    
-                    
+
+
                 })
 
                 const xmarkComment = document.getElementById("xmarkComment");
-                xmarkComment.addEventListener("click", () =>{
+                xmarkComment.addEventListener("click", () => {
                     const commentDiv = document.getElementsByClassName("comment")[0]; // Select the comment div
-                if (commentDiv.style.display === "block") {
-                    commentDiv.style.display = "none"; // Show the comment section
-                }
+                    if (commentDiv.style.display === "block") {
+                        commentDiv.style.display = "none"; // Show the comment section
+                    }
                 })
 
-                
+
                 fetchAndDisplayComments(postid)
             });
 
@@ -374,67 +398,121 @@ async function fetchPosts() {
         console.error("Error fetching posts:", error);
     }
 
-
-    async function fetchAndDisplayComments(postid) {
-        try {
-            const commentsDocRef = doc(db, "Comments", postid);
-            const commentsDocSnap = await getDoc(commentsDocRef);
-    
-            if (commentsDocSnap.exists()) {
-                const commentsData = commentsDocSnap.data();
-                const commentsArray = commentsData.comments || []; // Default to an empty array if no comments
-    
-                // Get the container for displaying comments
-                const commentsContainer = document.getElementById("commentDisplay");
-                commentsContainer.innerHTML = ""; // Clear existing comments
-    
-                // Fetch user data dynamically for each comment
-                for (const comment of commentsArray) {
-                    try {
-                        const userDocRef = doc(db, "users", comment.userId);
-                        const docSnap = await getDoc(userDocRef);
-    
-                        // Default values if user data is missing
-                        const userData = docSnap.exists() ? docSnap.data() : {};
-                        const username = userData.username || "Unknown User";
-                        const profileimg = userData.profileimg || "default-profile.png";
-    
-                        // Create a new comment div
-                        const commentDiv = document.createElement("div");
-                        commentDiv.classList.add("comment-item");
-    
-                        // Add comment content
-                        commentDiv.innerHTML = `
-                            <div class="comment_profileDiv">
-                                <small class="commentedTime">${new Date(comment.timestamp).toLocaleString()}</small>
-                                <img src="${profileimg}" class="comment-profile" alt="Profile Image">
-                                <p>${username}</p>
-                            </div>
-                            <div class="main_commentDiv">
-                                <p>${comment.comment}</p>
-                            </div>
-                        `;
-    
-                        // Append to the container
-                        commentsContainer.appendChild(commentDiv);
-                    } catch (userError) {
-                        console.error("Error fetching user data for comment:", comment, userError);
-                    }
-                }
-            } else {
-                console.log("No comments found for this post.");
-                const emptyCommentMsg = document.getElementsByClassName("emptyCommentMsg")[0];
-                emptyCommentMsg.style.display = "block"
-            }
-        } catch (error) {
-            console.error("Error fetching comments:", error);
-        }
-    }
-   
 }
 
-// Fetch posts when the page loads
 fetchPosts();
+
+async function fetchAndDisplayComments(postid) {
+    try {
+        const commentsDocRef = doc(db, "Comments", postid);
+        const commentsDocSnap = await getDoc(commentsDocRef);
+
+        // Get the container for displaying comments
+        const commentsContainer = document.getElementById("commentDisplay");
+        commentsContainer.innerHTML = ""; // Clear existing comments
+
+        const emptyCommentMsg = document.getElementsByClassName("emptyCommentMsg")[0];
+        emptyCommentMsg.style.display = "none"
+
+        if (commentsDocSnap.exists()) {
+            const commentsData = commentsDocSnap.data();
+            const commentsArray = commentsData.comments || []; // Default to an empty array if no comments
+
+
+            // Fetch user data dynamically for each comment
+            for (const comment of commentsArray) {
+                try {
+                    const userDocRef = doc(db, "users", comment.userId);
+                    const docSnap = await getDoc(userDocRef);
+
+                    // Default values if user data is missing
+                    const userData = docSnap.exists() ? docSnap.data() : {};
+                    const username = userData.username || "Unknown User";
+                    const profileimg = userData.profileimg || "default-profile.png";
+
+                    // Create a new comment div
+                    const commentDiv = document.createElement("div");
+                    commentDiv.classList.add("comment-item");
+
+                    // Add comment content
+                    commentDiv.innerHTML = `
+                        <div class="comment_profileDiv">
+                            <small class="commentedTime">${new Date(comment.timestamp).toLocaleString()}</small>
+                            <img src="${profileimg}" class="comment-profile" alt="Profile Image">
+                            <p>${username}</p>
+                        </div>
+                        <div class="main_commentDiv">
+                            <p>${comment.comment}</p>
+                        </div>
+                    `;
+
+                    // Append to the container
+                    commentsContainer.appendChild(commentDiv);
+                } catch (userError) {
+                    console.error("Error fetching user data for comment:", comment, userError);
+                }
+            }
+        } else {
+            console.log("No comments found for this post.");
+
+            // Show "No Comments Yet" if the comments document doesn't exist
+            const emptyCommentMsg = document.getElementsByClassName("emptyCommentMsg")[0];
+            emptyCommentMsg.style.display = "block"
+        }
+    } catch (error) {
+        console.error("Error fetching comments:", error);
+    }
+}
+
+
+/////////////////////////  user  Profile Page Display function ///////////////////
+
+async function userProfilePageDisplay(otheruserUID){
+    const userDocRef = doc(db, "users", otheruserUID);
+    const docSnap = await getDoc(userDocRef);
+    const userData = docSnap.data() || {};
+    const username = userData.username || "Unknown User";
+    const profileimg = userData.profileimg || "default-profile.png";
+    
+    //  get elements from HTML 
+    const main = document.getElementsByClassName("main")[0];
+    main.style.display = "none";
+    const othersProfilePageShow = document.getElementById("othersProfilePageShow");
+    othersProfilePageShow.style.display = "block"
+    const ProfileImg = document.getElementById("ProfileImg");
+    const nameDis = document.getElementById("nameDis");
+    nameDis.textContent = username;
+    ProfileImg.setAttribute("src" ,profileimg);
+    const fileDisplay = document.getElementById("fileDisplay");
+
+
+
+
+
+     const querySnapshot = await getDocs(query(collection(db, "Posts"), where("uid", "==", otheruserUID)));
+    
+        console.log(querySnapshot)
+    
+        querySnapshot.forEach((doc) => {
+    
+            console.log("Document Data:", doc.data());
+    
+            // Create and configure the image element
+            const postId = doc.id;
+            const postURL = doc.data().postURL
+            // console.log(postURL)
+            const imgElement = document.createElement("img");
+            imgElement.classList.add("post-image");
+            imgElement.setAttribute("id", postId)
+            imgElement.src = doc.data().postURL;
+            
+
+
+        // Append the image element to the container
+        fileDisplay.appendChild(imgElement);
+        })
+}
+
 
 
 
@@ -442,27 +520,27 @@ fetchPosts();
 
 const SearchBtn = document.getElementById("SearchBtn");
 const searchDetails = document.getElementById("searchDetails");
-SearchBtn.addEventListener("click", () =>{
+SearchBtn.addEventListener("click", () => {
     const SearchInp = document.getElementById("SearchInp");
 
-    if(SearchInp.style.display ==="none"){
+    if (SearchInp.style.display === "none") {
         SearchInp.style.display = "block"
-         searchDetails.style.display = "block"
+        searchDetails.style.display = "block"
         SearchBtn.style.color = "black"
-    }else{
+    } else {
         SearchInp.style.display = "none"
-         searchDetails.style.display = "none"
-         SearchBtn.style.color = "white"
+        searchDetails.style.display = "none"
+        SearchBtn.style.color = "white"
     }
 
-   
+
 })
 
 
 const SearchInp = document.getElementById("SearchInp");
-// Listen for input changes
+
 SearchInp.addEventListener("input", async () => {
-    const SearchVal = SearchInp.value.trim().toLowerCase();
+    const SearchVal = SearchInp.value.trim().toLowerCase(); // Convert the input to lowercase
 
     if (SearchVal === "") {
         searchDetails.innerHTML = ""; // Clear search results if input is empty
@@ -470,13 +548,8 @@ SearchInp.addEventListener("input", async () => {
     }
 
     try {
-        // Query Firestore where username starts with SearchVal
-        const q = query(
-            collection(db, "users"),
-            where("username", ">=", SearchVal), // Start range
-            where("username", "<=", SearchVal + "\uf8ff") // End range
-        );
-
+        // Query Firestore to get all users (be cautious with large datasets)
+        const q = query(collection(db, "users"));
         const searchSnapshot = await getDocs(q);
 
         searchDetails.innerHTML = ""; // Clear previous search results
@@ -486,34 +559,135 @@ SearchInp.addEventListener("input", async () => {
             return;
         }
 
+        // Filter users by case-insensitive match
+        let filteredUsers = [];
         searchSnapshot.forEach((doc) => {
             const data = doc.data();
-            const name = data.username;
-            const profileImg = data.profileimg;
+            const userid = doc.id;
+            const username = data.username || "Unknown User";
 
-            // Append user details to the container
+            // Check if the username matches the search input, case-insensitively
+            if (username.toLowerCase().includes(SearchVal)) {
+                filteredUsers.push({
+                    userid,
+                    username,
+                    profileImg: data.profileimg || "default-profile.png",
+                });
+            }
+        });
+
+        if (filteredUsers.length === 0) {
+            searchDetails.innerHTML = `<p>No results found</p>`;
+            return;
+        }
+
+        // Display the filtered results
+        filteredUsers.forEach((user) => {
+            const { userid, username, profileImg } = user;
+
             const userDiv = document.createElement("div");
             userDiv.classList.add("searchDiv");
             userDiv.innerHTML = `
                 <div>
-                    <img src="${profileImg}" alt="ProfileImage" class="searchPro">
-                    <p class="searchUser">${name}</p>
+                    <img src="${profileImg}" alt="Profile Image" class="searchPro">
+                    <p class="searchUser">${username}</p>
+                    <button id="followBtn-${userid}" class="followBtn"></button>
                 </div>
             `;
             searchDetails.appendChild(userDiv);
+
+            checkFun(userid);
+
+            const followbtn = document.getElementById(`followBtn-${userid}`);
+            followbtn.addEventListener("click", () => {
+                followersAdd(userid);
+            });
         });
     } catch (error) {
         console.error("Error fetching user data:", error);
+        searchDetails.innerHTML = `<p class="error">An error occurred while fetching data. Please try again later.</p>`;
     }
 });
 
+async function checkFun(userid) {
+    try {
+        const followDocRef = doc(db, "followers", userid); // Reference to the document
+        const userUID = localStorage.getItem("uid"); // Current user's UID
+        const followBtn = document.getElementById(`followBtn-${userid}`);
+    
+        if (!userUID) {
+            console.error("User UID not found.");
+            return;
+        }
+    
+        // Get the current data of the document
+        const followDocSnap = await getDoc(followDocRef);
+        const followers = followDocSnap.exists()
+            ? followDocSnap.data().followers || []
+            : []; // Fallback to an empty array if the document doesn't exist
+    
+            if (followers.includes(userUID)) {
+                // Update UI for unfollow
+                followBtn.classList.remove("followBtn");
+                followBtn.classList.add("unFollowBtn");
+                followBtn.textContent = "Unfollow";
+               
+            } else {
+                // Update UI for follow
+                followBtn.classList.remove("unFollowBtn");
+                followBtn.classList.add("followBtn");
+                followBtn.textContent = "Follow";
+            }
+        
+    } catch (error) {
+        console.error("Error toggling follow status:", error);
+    }    
+}
 
 
-
-
-
-
-
+async function followersAdd(userid){
+    try {
+        const followDocRef = doc(db, "followers", userid); // Reference to the document
+        const userUID = localStorage.getItem("uid"); // Current user's UID
+        const followBtn = document.getElementById(`followBtn-${userid}`);
+    
+        if (!userUID) {
+            console.error("User UID not found.");
+            return;
+        }
+    
+        // Get the current data of the document
+        const followDocSnap = await getDoc(followDocRef);
+        const followers = followDocSnap.exists()
+            ? followDocSnap.data().followers || []
+            : []; // Fallback to an empty array if the document doesn't exist
+    
+            if (followers.includes(userUID)) {
+                // Unfollow: Remove the user from followers
+                await setDoc(followDocRef, { followers: followers.filter((uid) => uid !== userUID) });
+                console.log(`User ${userUID} unfollowed ${userid}`);
+        
+                // Update UI for unfollow
+                followBtn.classList.remove("unFollowBtn");
+                followBtn.classList.add("followBtn");
+                followBtn.textContent = "Follow";
+            } else {
+                // Follow: Add the user to followers
+                followers.push(userUID);
+                await setDoc(followDocRef, { followers });
+                console.log(`User ${userUID} followed ${userid}`);
+        
+                // Update UI for follow
+                followBtn.classList.remove("followBtn");
+                followBtn.classList.add("unFollowBtn");
+                followBtn.textContent = "Unfollow";
+            }
+        
+    } catch (error) {
+        console.error("Error toggling follow status:", error);
+    }
+    
+}
 
 
 
@@ -564,7 +738,7 @@ logout1.addEventListener('click', () => {
             });
     } else {
         // If user clicks "Cancel", just log that the logout was canceled
-       
+
     }
 });
 

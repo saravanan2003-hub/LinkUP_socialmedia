@@ -19,9 +19,10 @@
     <div class="container">
         <aside>
             <span><img src="../assests/photos/LINK UP msg.png" alt=""></span>
-            <a href="./homepage.html" class="active"><i class="fa-solid fa-house"></i><span>Home</span></a>
-            <a href="./profile.html"><i class="fa-solid fa-user"></i><span>Profile</span></a>
+            <a href="./homepage.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+            <a href="./profile.html" class="active"><i class="fa-solid fa-user"></i><span>Profile</span></a>
             <a href="./post.html"><i class="fa-solid fa-photo-film"></i><span>Post</span></a>
+            <a href=""><i class="fa-solid fa-comments"></i><span>Chat</span></a>
             <button id="ProfileLogout"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></button>
         </aside>
 
@@ -40,9 +41,15 @@
                             <button id="ProfileRemoveCancel">Cancel</button>
                         </div>
                     </div>
+                    <div class="top">
+                        <span id="nameDis"></span>
 
-                    <span id="nameDis"></span>
-                    <span id="pen"><i class="fa-solid fa-user-pen"></i></span>
+                        <span id="pen"><i class="fa-solid fa-user-pen"></i></span>
+                        <div class="followDiv">
+                            <span id="followers">0 followers</span>
+                            <span id="following">0 following</span>
+                        </div>
+                    </div>
                     <div class="popUp">
                         <div class="popupDiv">
                             <div>
@@ -61,10 +68,30 @@
                     </div>
 
                     <!-- -----------   ------   showpost popup -------------   ---------------          -->
-                    <div id="showPost">
-                        <button>back</button>
+                    <div id="showPost"></div>
+
+                    <!-- -----------------  --------  display liked people ----- - -- - - - - - -- - - - -->
+                    <div id="likeDisplayDiv">
+                        <button id="back">Back</button>
+                        <div id="likeDisplay"></div>
+                        <div class="emptyMsgDisplayDiv">No One Liked This Post</div>
                     </div>
-                    
+
+                    <!-- ----------------- - display comments    -------------------------------------- -->
+                    <div id="commentsDisplayDiv">
+                        <div>
+                            <button id="commentsBack">Back</button>
+                            <div id="commentsDisplay"></div>
+                            <div class="emptyCommentMsg">
+                                <div>
+                                    <i class="fa-solid fa-comment-slash"></i>
+                                    <p>No comment Yet</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- -----------------------------------    delete popup -->
                     <div id="DeleteConfrim">
                         <div class="DeleteConfrim">
                             <div class="DeleteP">

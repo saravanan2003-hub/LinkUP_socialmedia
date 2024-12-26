@@ -145,13 +145,13 @@ function validateInputs() {
         passwordError.textContent = "Password is required";
         isValid = false;
     } 
-    else if(!strongPasswordRegex.test(passwordVal)){
-        passwordError.textContent = "include's special char, 3 numbers, CAPS letter"
-        isValid = false
-    }
     else if (passwordVal.length < 12) {
         passwordError.textContent = "Password must be at least 12 characters";
         isValid = false;
+    }
+    else if(!strongPasswordRegex.test(passwordVal)){
+        passwordError.textContent = "include's special char, 3 numbers, CAPS letter"
+        isValid = false
     } 
     else {
         passwordError.textContent = ""; // Clear error if valid

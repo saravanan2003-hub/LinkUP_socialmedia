@@ -3,32 +3,16 @@
     padding: 0;
 }
 
-header{
-    display: grid;
-    grid-template-columns: 50% 50%; 
-    /* background-color: #252734; */
-    height: 7vh;
-    width: 80vw;
-    margin-top: 0;
-    top: 0;
-    position: fixed;
-    margin-left: 2px;
-    border-bottom: 2px solid white;
-    margin-left: 20vw;
-    
-}
-
-
 aside{
     height: 100vh;
     width: 20vw;
-    background-color: #92C7CF;
+    background-color:#134B70;
     margin-top: 0;
     top: 0;
     position: fixed;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content:flex-start;
     align-items: center;
 
 }
@@ -37,60 +21,25 @@ aside{
     margin-top:7vh;
 }
 
-.messageIcon{
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.hello{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-#nameDisplay{
-    margin-left: 40px;
-}
-.messageIcon button{
-    
-    margin-right: 20px;
-    background: none;
-    border: none;
-    color: black;
-}
-
-.messageIcon button i{
-    color:black;
-    font-size: 20px;
-    z-index: 1;
-}
-
-
-
-.hello span{
-    margin-left: 10px;
-    font-size: 25px;
-    color: black;
-}
 
 aside span img{
     height: 125px;
     width: 230px;
+    margin-top: 50px;
 }
 
 aside a{
-    color: black;
+    color: white;
     text-decoration: none;
     font-size: 25px;
     box-sizing: border-box;
-    padding: 15px 70px 15px 70px;
-    background-color: #E5E1DA;
+    padding: 15px 50px 15px 50px;
     border-radius: 20px;
+    margin: 30px;
 }
 
 a i{
-   color: black;
+   color: white;
    margin-right: 15px;
 }
 
@@ -138,13 +87,14 @@ aside a:focus{
 
 
 #LogoutPost{
-    background-color: #E5E1DA;
-    padding: 15px 70px 15px 70px;
-    color: black;
+    padding: 15px 50px 15px 50px;
+    color:white;
     font-size: 25px;
     border-radius: 20px;
     border: none;
     cursor: pointer;
+    background: none;
+    margin: 30px;
 }
 
 .fa-check-to-slot{
@@ -170,7 +120,7 @@ main{
     margin-left: 20vw;
     height: 100vh;
     width: 80vw;
-    background-color:#FBF9F1;
+    background-color:#ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -180,7 +130,7 @@ main{
 .postSection{
     height: 80vh;
     width: 50%;
-    background-color:#92C7CF ;
+    background-color:#134B70 ;
     display: flex;
     flex-direction: column;
     justify-content:space-evenly;
@@ -192,8 +142,11 @@ main{
     width:90%;
     height: 65%;
     padding: 10px;
-    background-color:#E5E1DA ;
+    /* background-color:#ffffff ; */
     padding: 10px;
+}
+.active{
+    border-bottom: 2px solid white;
 }
 
 #PostCaption{
@@ -215,7 +168,7 @@ main{
 
 #upload-label {
     display: inline-block;
-    background-color: #E5E1DA;
+    background-color: #ffffff;
     color: black;
     font-family: Arial, sans-serif;
     font-size: 16px;
@@ -234,15 +187,19 @@ main{
 
 #uploadBtn{
     padding: 15px 220px;
-    background-color: #E5E1DA;
+    background-color: #ffffff;
     cursor: pointer;
     border-radius: 10px;
     border: none;
     color: black;
     font-weight: bolder;
-
 }
-
+.imagePerview{
+    position: absolute;
+    top: 330px;
+    font-size: 20px;
+    z-index: 0;
+}
 #uploadBtn:hover{
     background-color: #54b1d0;
     box-shadow: 0 0 10px #54b1d0, 0 0 60px #54b1d0;   
