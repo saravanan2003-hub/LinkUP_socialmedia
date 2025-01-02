@@ -139,13 +139,14 @@ async function fetchPosts() {
                 </div>
                 <div class="like">
                     <div class="LikeYes">
-                        <div class="postDesDiv"><span class="postDes">${postDes}</span></div>
+                        
                         <div class="like_count">
                             <i class="fa-${isLiked ? "solid" : "regular"} fa-heart heart" id="heart-${postid}"></i>
                             <span id="like-count-${postid}">${likeCount}</span>
                             <button id="showlike-${postid}" class="viewLike">View Likes</button>
                             <i class="fa-solid fa-comment" id="comment-${postid}"></i>
                         </div>
+                        <div class="postDesDiv"><p class="postDes">${postDes}</p></div>
                     </div>
                 </div>
             `;
@@ -577,7 +578,7 @@ SearchInp.addEventListener("input", async () => {
         });
 
         if (filteredUsers.length === 0) {
-            searchDetails.innerHTML = `<p>No results found</p>`;
+            searchDetails.innerHTML = `<p class="SearchbarNoResultMsg">No results found !!</p>`;
             return;
         }
 
@@ -597,6 +598,8 @@ SearchInp.addEventListener("input", async () => {
             searchDetails.appendChild(userDiv);
 
             checkFun(userid);
+
+            // const FollowButtons = [`followBtn-${userid}`,"ProfileFollow"]
 
             const followbtn = document.getElementById(`followBtn-${userid}`);
             followbtn.addEventListener("click", () => {

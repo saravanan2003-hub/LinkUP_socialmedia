@@ -707,6 +707,73 @@ input[type="file"] {
     font-size: 30px;
 }
 
+#showFollowers{
+    height: 300px;
+    width: 500px;
+    background-color:#134B70;
+    position:absolute;
+    top: 350px;
+    left: 350px;
+    border-radius: 20px;
+    display: none;
+}
+
+#followersXmark{
+    color: red;
+    font-size: 30px;
+    position: relative;
+    bottom: 30px;
+    right: 30px;
+}
+
+.noneMsg{
+    position: relative;
+    bottom: 150px;
+    left: 90px;
+    font-size: 30px;
+    color: white;
+}
+
+.displayFollowers{
+    height: 250px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    overflow-y: auto;
+}
+
+.showFollowerPeople{
+    height: 110px;
+    width: 400px;
+    background-color: #608BC1;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 10px;
+
+}
+
+.followersProfile{
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+}
+
+.followersName{
+    font-size: 20px;
+    color: white;
+
+}
+
+
+
+
+
+
+
+
 
 
 

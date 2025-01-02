@@ -326,8 +326,6 @@ a i{
     background: none;
     border: none;
     margin-left: 20px;
-    
-   
 }
 
 .heart{
@@ -384,18 +382,37 @@ aside a:focus{
 
 footer{
     display: none;
-   bottom: 0;
-   height:7vh;
-   width: 10vw;
-   background-color: #252734;
+    bottom: 0;
+    height:7vh;
+    width: 10vw;
+    background-color: #252734;
 }
 
-.postDes{
+/* .postDes{
     font-size: 20px;
     color: black;
+    width: 500px;
+    height: auto;
 }
 .postDesDiv{
     margin-bottom: 10px;
+    width:500px;
+    height: auto;
+} */
+
+
+.postDesDiv {
+    margin-bottom: 10px;
+    width: 500px;
+    height: auto; 
+}
+
+.postDes {
+    font-size: 20px;
+    color: black;
+    width: 100%; 
+    height: auto;
+    word-wrap: break-word; 
 }
 
 #commentDisplay {
@@ -671,6 +688,16 @@ iframe{
     border-radius: 10px;
 }
 
+.SearchbarNoResultMsg{
+    font-size: 20px;
+    color: red;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    top: 110px;
+
+}
+
 /* Media Query for Mobile Devices (max-width: 720px) */
 @media screen and (max-width: 720px) {
 
@@ -693,7 +720,7 @@ iframe{
         top: 0;
         left: 0;
         position: fixed;
-        z-indx: 10;
+        z-index: 10;
         display: flex;
         justify-content: space-between;
         align-items: center;

@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getFirestore, setDoc, doc, getDocs, getDoc, addDoc, collection, query, where, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getFirestore, setDoc, doc, getDocs, getDoc, addDoc, collection, query, where, deleteDoc, updateDoc, orderBy } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
@@ -38,6 +38,7 @@ if (localStorage.getItem("src")) {
 async function fetchDatas() {
     const userPostContainer = document.getElementById("fileDisplay");
     const querySnapshot = await getDocs(query(collection(db, "Posts"), where("uid", "==", localStorage.getItem("uid"))));
+
 
     console.log(querySnapshot)
 
@@ -567,22 +568,54 @@ getUsername();
 
 
 async function followers() {
+    const followPeople = document.getElementById("followers");
+    const showFollowers = document.getElementById("showFollowers");
     try {
         const userUID = localStorage.getItem("uid");
         // const docRef = doc(db, "followers", "0FJTHXq7PoSvgySnSiQRodX259w1");
-        const docRef = doc(db, "followers",userUID);
+        const docRef = doc(db, "followers", userUID);
         const docSnap = await getDoc(docRef);
         const followers = docSnap.data().followers;
         if (!followers) {
-            console.error("No one follow this User")
+            console.error("no one follow this")
         }
         else {
-            const followPeople = document.getElementById("followers");
             followPeople.textContent = `${followers.length} followers`;
-            for (const people of followers) {
-                console.log(people);
-            }
+            followPeople.addEventListener("click", async () => {
+                followPeople.style.opacity = "0.5"; // Make it appear dimmed
+                followPeople.style.pointerEvents = "none"; // Disable interaction
+                 
+                if (followers.length === 0) {
+                    showFollowers.style.display = "block";
+                    const noneMsg = document.createElement("div");
+                    noneMsg.classList.add("noneMsg");
+                    noneMsg.textContent = "No one follow this person";
+                    showFollowers.appendChild(noneMsg);
+                }
+                else {
+                    const displayFollowers = document.getElementsByClassName("displayFollowers")[0];
+                    showFollowers.style.display = "block";
+                    for (const people of followers) {
+                        const docRef = doc(db, "users", people);
+                        const docSnap = await getDoc(docRef);
+                        const userData = docSnap.data();
+                        const username = userData.username;
+                        const userProfile = userData.profileimg;
+                        const showFollowerPeople = document.createElement("div");
+                        showFollowerPeople.classList.add("showFollowerPeople")
+                        showFollowerPeople.innerHTML = `
+                            <img src="${userProfile}" alt="Profile Image" class="followersProfile">
+                            <p class="followersName">${username}</p>
+                        `
+                        displayFollowers.appendChild(showFollowerPeople)
+
+                    }
+                }
+            });
+
         }
+
+
     }
     catch (error) {
         console.error(error);
@@ -590,36 +623,79 @@ async function followers() {
 }
 followers();
 
-async function following(){
+const followersXmark = document.getElementById("followersXmark");
+followersXmark.addEventListener("click", () => {
+    const showFollowers = document.getElementById("showFollowers");
+    const followPeople = document.getElementById("followers");
+    const following = document.getElementById("following");
+    const displayFollowers = document.getElementsByClassName("displayFollowers")[0];
+    const noneMsg = document.getElementsByClassName("noneMsg")[0];
+    // noneMsg.remove()
+    showFollowers.style.display = "none";
+    displayFollowers.innerHTML = ""
+    followPeople.style.opacity = "1"; // Make it appear dimmed
+    followPeople.style.pointerEvents = "auto";
+    following.style.opacity = "1"; // Make it appear dimmed
+    following.style.pointerEvents = "auto";
+})
+
+async function following() {
     const userUID = localStorage.getItem("uid");
     var followingCount = 0;
-    try{
+    const following = document.getElementById("following");
+   
+    try {
         const followingquerySnapshot = await getDocs(query(collection(db, "followers")));
         followingquerySnapshot.forEach(doc => {
             const array = doc.data().followers;
             console.log(array)
-            if(array.includes(userUID)){
+            if (array.includes(userUID)) {
                 followingCount++;
                 console.log(followingCount);
+                const followingPeopleId = doc.id;
+                following.addEventListener("click", async() =>{
+                    following.style.opacity = "0.5"; // Make it appear dimmed
+                    following.style.pointerEvents = "none";
+                    showFollowingPeople(followingPeopleId);
+                })
             }
-            else{
+            else {
                 console.log("no one");
-                
             }
-       });
-      
-
-       const following = document.getElementById("following");
-       following.textContent = `${followingCount} following`
-       
-        
+        });
+        following.textContent = `${followingCount} following`;
     }
-    catch(error){
+    catch (error) {
         console.error(error)
     }
 }
 
 following()
+
+async function showFollowingPeople(followingPeopleId) {
+    const displayFollowers = document.getElementsByClassName("displayFollowers")[0];
+    const showFollowers = document.getElementById("showFollowers")
+    showFollowers.style.display = "block";
+    const docRef = doc(db, "users", followingPeopleId);
+    const docSnap = await getDoc(docRef);
+    const userData = docSnap.data();
+    const username = userData.username;
+    const userProfile = userData.profileimg;
+    console.log(username);
+    console.log(userProfile);
+    const showFollowerPeople = document.createElement("div");
+    showFollowerPeople.classList.add("showFollowerPeople")
+    showFollowerPeople.innerHTML = `
+    <img src="${userProfile}" alt="Profile Image" class="followersProfile">
+    <p class="followersName">${username}</p>
+    `
+    displayFollowers.appendChild(showFollowerPeople)
+    
+    
+}
+
+
+
 
 
 // logout function
