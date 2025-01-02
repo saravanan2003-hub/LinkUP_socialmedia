@@ -22,7 +22,7 @@
             <a href="./homepage.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
             <a href="./profile.html" class="active"><i class="fa-solid fa-user"></i><span>Profile</span></a>
             <a href="./post.html"><i class="fa-solid fa-photo-film"></i><span>Post</span></a>
-            <a href=""><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+            <a href="./chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
             <button id="ProfileLogout"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></button>
         </aside>
 
@@ -42,13 +42,23 @@
                         </div>
                     </div>
                     <div class="top">
-                        <span id="nameDis"></span>
-
-                        <span id="pen"><i class="fa-solid fa-user-pen"></i></span>
+                        <div>
+                            <span id="nameDis"></span>
+                            <span id="pen"><i class="fa-solid fa-user-pen"></i></span>
+                        </div>
+                        
                         <div class="followDiv">
                             <span id="followers">0 followers</span>
                             <span id="following">0 following</span>
                         </div>
+                        <div>
+                            <p class="Bio">User Bio</p>
+                            <div class="bioInputDIv">
+                                <span><input type="text" id="bioInput"></span>
+                                <span><i class="fa-solid fa-check"></i></span>
+                            </div>
+                        </div>
+                        
 
                         <div id="showFollowers">
                             <i class="fa-regular fa-circle-xmark" id="followersXmark"></i>

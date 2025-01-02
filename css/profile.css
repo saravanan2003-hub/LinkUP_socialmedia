@@ -696,7 +696,7 @@ input[type="file"] {
 }
 
 .followDiv{
-   margin-top: 40px
+   margin-top:30px
 }
 
 #followers{
@@ -755,6 +755,13 @@ input[type="file"] {
 
 }
 
+.top{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
 .followersProfile{
     height: 80px;
     width: 80px;
@@ -767,8 +774,28 @@ input[type="file"] {
 
 }
 
+#bioInput{
+    height:15px;
+    width: 200px;
+    border-radius: 10px;
+    padding: 10px;
+}
 
+.Bio{
+    font-size: 30px;
+    margin-top: 30px;
+}
 
+.bioInputDIv{
+    display: none;
+    margin-top: 30px;
+}
+
+.fa-check{
+    font-size:30px;
+    margin-top: 10px;
+    margin-left: 20px;
+}
 
 
 

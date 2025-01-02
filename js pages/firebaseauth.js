@@ -68,6 +68,7 @@ form.addEventListener('submit', (event) => {
                     username: userVal,
                     email: emailVal,
                     profileimg :"../assests/photos/dummy-image.jpg",
+                    userBio : "User Bio"
 
                 };
                 // Store user data in Firestore

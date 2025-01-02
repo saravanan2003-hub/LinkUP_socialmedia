@@ -529,7 +529,7 @@ ProfileRemoveCancel.addEventListener("click", () => {
 // user name fetch function
 async function getUsername() {
     const nameDis = document.getElementById("nameDis");
-
+    const bio = document.getElementsByClassName("Bio")[0];
     // Get the UID from localStorage
     const userUID = localStorage.getItem("uid");
     console.log("UID:", userUID);
@@ -554,6 +554,7 @@ async function getUsername() {
 
             // Display the username
             nameDis.textContent = userData.username || "No username found.";
+            bio.textContent = userData.userBio
         } else {
             console.log("No matching user document found.");
             nameDis.textContent = "User not found.";
@@ -690,9 +691,34 @@ async function showFollowingPeople(followingPeopleId) {
     <p class="followersName">${username}</p>
     `
     displayFollowers.appendChild(showFollowerPeople)
-    
-    
 }
+
+////////////////  Bio set function //////////////////////////
+const bio = document.getElementsByClassName("Bio")[0];
+const bioInputDIv = document.getElementsByClassName("bioInputDIv")[0];
+bio.addEventListener("click", () =>{
+    bio.style.display = "none"
+    bioInputDIv.style.display = "block";
+})
+
+const BioSetButton = document.getElementsByClassName("fa-check")[0];
+BioSetButton.addEventListener("click" ,() =>{
+    const bioInput = document.getElementById("bioInput").value.trim();
+    if(bioInput.length === 0){
+        bioInputDIv.style.display = "none";
+        bio.style.display = "block";
+    }
+    else{
+        const documentRef = doc(db, "users",localStorage.getItem("uid"));
+        updateDoc(documentRef, {
+            userBio:bioInput // Replace with your field name and value
+        })
+        bio.textContent = bioInput;
+        bioInputDIv.style.display = "none";
+        bio.style.display = "block";
+    }
+
+})
 
 
 
