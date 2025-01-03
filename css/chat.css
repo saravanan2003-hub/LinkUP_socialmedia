@@ -1,0 +1,91 @@
+*{
+    padding:0;
+    margin: 0;
+}
+
+aside{
+    height: 100vh;
+    width: 30vw;
+    background-color: #134B70;
+    margin-top: 0;
+    top: 0;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    z-index: 2;
+}
+
+#chat{
+    position:absolute;
+    left: 30%;
+    bottom: 0;
+    height: 7vh;
+    width: 70vw;
+   
+}
+
+.fa-arrow-left{
+    font-size: 30px;
+    position: relative;
+    right: 190px;
+    top: 20px;
+
+
+}
+
+#chat div{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 7vh;
+    background-color: #ffffff;
+    background-color: #608BC1;
+}
+
+.fa-paper-plane{
+    font-size: 30px;
+}
+
+
+#chatInput{
+    padding: 10px;
+    height: 20px;
+    width: 60vw;
+    border: 1px solid #134B70;
+    border-radius: 10px;
+}
+
+#send{
+    height: 45px; 
+    width: 60px;
+    border: none;
+    background: none;
+}
+
+.showFollowerPeople{
+    height: 110px;
+    width: 400px;
+    background-color: #608BC1;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 10px;
+}
+
+.followersProfile{
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+}
+
+.followersName{
+    font-size: 20px;
+    color: white;
+
+}
+
+#showUsersDiv{
+    margin-top: 25px;
+}

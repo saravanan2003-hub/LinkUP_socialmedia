@@ -139,13 +139,14 @@ async function fetchPosts() {
                 </div>
                 <div class="like">
                     <div class="LikeYes">
-                        <div class="postDesDiv"><span class="postDes">${postDes}</span></div>
+                        
                         <div class="like_count">
                             <i class="fa-${isLiked ? "solid" : "regular"} fa-heart heart" id="heart-${postid}"></i>
                             <span id="like-count-${postid}">${likeCount}</span>
                             <button id="showlike-${postid}" class="viewLike">View Likes</button>
                             <i class="fa-solid fa-comment" id="comment-${postid}"></i>
                         </div>
+                        <div class="postDesDiv"><p class="postDes">${postDes}</p></div>
                     </div>
                 </div>
             `;
@@ -473,6 +474,8 @@ async function userProfilePageDisplay(otheruserUID){
     const userData = docSnap.data() || {};
     const username = userData.username || "Unknown User";
     const profileimg = userData.profileimg || "default-profile.png";
+    const Bio = userData.userBio;
+    console.log(Bio)
     
     //  get elements from HTML 
     const main = document.getElementsByClassName("main")[0];
@@ -484,6 +487,10 @@ async function userProfilePageDisplay(otheruserUID){
     nameDis.textContent = username;
     ProfileImg.setAttribute("src" ,profileimg);
     const fileDisplay = document.getElementById("fileDisplay");
+    const othersBio = document.getElementById("othersBio");
+    othersBio.textContent = Bio
+    followers(otheruserUID);
+    following(otheruserUID)
 
 
 
@@ -577,7 +584,7 @@ SearchInp.addEventListener("input", async () => {
         });
 
         if (filteredUsers.length === 0) {
-            searchDetails.innerHTML = `<p>No results found</p>`;
+            searchDetails.innerHTML = `<p class="SearchbarNoResultMsg">No results found !!</p>`;
             return;
         }
 
@@ -597,6 +604,8 @@ SearchInp.addEventListener("input", async () => {
             searchDetails.appendChild(userDiv);
 
             checkFun(userid);
+
+            // const FollowButtons = [`followBtn-${userid}`,"ProfileFollow"]
 
             const followbtn = document.getElementById(`followBtn-${userid}`);
             followbtn.addEventListener("click", () => {
@@ -688,6 +697,251 @@ async function followersAdd(userid){
     }
     
 }
+
+
+async function followers(otheruserUID) {
+    const followPeople = document.getElementById("followers");
+    const showFollowers = document.getElementById("showFollowers");
+    try {
+        const userUID = localStorage.getItem("uid");
+        // const docRef = doc(db, "followers", "0FJTHXq7PoSvgySnSiQRodX259w1");
+        const docRef = doc(db, "followers", otheruserUID);
+        const docSnap = await getDoc(docRef);
+        const followers = docSnap.data().followers;
+        if (!followers) {
+            console.error("no one follow this")
+        }
+        else {
+            followPeople.textContent = `${followers.length} followers`;
+            followPeople.addEventListener("click", async () => {
+                followPeople.style.opacity = "0.5"; // Make it appear dimmed
+                followPeople.style.pointerEvents = "none"; // Disable interaction
+                 
+                if (followers.length === 0) {
+                    showFollowers.style.display = "block";
+                    const noneMsg = document.createElement("div");
+                    noneMsg.classList.add("noneMsg");
+                    noneMsg.textContent = "No one follow this person";
+                    showFollowers.appendChild(noneMsg);
+                }
+                else {
+                    const displayFollowers = document.getElementsByClassName("displayFollowers")[0];
+                    showFollowers.style.display = "block";
+                    for (const people of followers) {
+                        const docRef = doc(db, "users", people);
+                        const docSnap = await getDoc(docRef);
+                        const userData = docSnap.data();
+                        const username = userData.username;
+                        const userProfile = userData.profileimg;
+                        const showFollowerPeople = document.createElement("div");
+                        showFollowerPeople.classList.add("showFollowerPeople")
+                        showFollowerPeople.innerHTML = `
+                            <img src="${userProfile}" alt="Profile Image" class="followersProfile">
+                            <p class="followersName">${username}</p>
+                        `
+                        displayFollowers.appendChild(showFollowerPeople)
+
+                    }
+                }
+            });
+
+        }
+
+
+    }
+    catch (error) {
+        console.error(error);
+    }
+}
+followers();
+
+const followersXmark = document.getElementById("followersXmark");
+followersXmark.addEventListener("click", () => {
+    const showFollowers = document.getElementById("showFollowers");
+    const followPeople = document.getElementById("followers");
+    const following = document.getElementById("following");
+    const displayFollowers = document.getElementsByClassName("displayFollowers")[0];
+    const noneMsg = document.getElementsByClassName("noneMsg")[0];
+    // noneMsg.remove()
+    showFollowers.style.display = "none";
+    displayFollowers.innerHTML = ""
+    followPeople.style.opacity = "1"; // Make it appear dimmed
+    followPeople.style.pointerEvents = "auto";
+    following.style.opacity = "1"; // Make it appear dimmed
+    following.style.pointerEvents = "auto";
+})
+
+async function following(otheruserUID) {
+    const userUID = localStorage.getItem("uid");
+    var followingCount = 0;
+    const following = document.getElementById("following");
+   
+    try {
+        const followingquerySnapshot = await getDocs(query(collection(db, "followers")));
+        followingquerySnapshot.forEach(doc => {
+            const array = doc.data().followers;
+            console.log(array)
+            if (array.includes(otheruserUID)) {
+                followingCount++;
+                console.log(followingCount);
+                const followingPeopleId = doc.id;
+                following.addEventListener("click", async() =>{
+                    following.style.opacity = "0.5"; // Make it appear dimmed
+                    following.style.pointerEvents = "none";
+                    showFollowingPeople(followingPeopleId);
+                })
+            }
+            else {
+                console.log("no one");
+            }
+        });
+        following.textContent = `${followingCount} following`;
+    }
+    catch (error) {
+        console.error(error)
+    }
+}
+
+following()
+
+async function showFollowingPeople(followingPeopleId) {
+    const displayFollowers = document.getElementsByClassName("displayFollowers")[0];
+    const showFollowers = document.getElementById("showFollowers")
+    showFollowers.style.display = "block";
+    const docRef = doc(db, "users", followingPeopleId);
+    const docSnap = await getDoc(docRef);
+    const userData = docSnap.data();
+    const username = userData.username;
+    const userProfile = userData.profileimg;
+    console.log(username);
+    console.log(userProfile);
+    const showFollowerPeople = document.createElement("div");
+    showFollowerPeople.classList.add("showFollowerPeople")
+    showFollowerPeople.innerHTML = `
+    <img src="${userProfile}" alt="Profile Image" class="followersProfile">
+    <p class="followersName">${username}</p>
+    `
+    displayFollowers.appendChild(showFollowerPeople)
+}
+
+////////////// other user profilepage bac arrow function ///////////
+const backArrow = document.getElementsByClassName("fa-arrow-left")[0];
+backArrow.addEventListener("click", ()=>{
+    const othersProfilePageShow = document.getElementById("othersProfilePageShow");
+    othersProfilePageShow.style.display = "none";
+    window.location.reload(true);
+})
+
+
+
+//////////////////// comment microphone function ///////////
+// const microphone = document.getElementById("microphone")
+// const audioElement = document.getElementById("audio");
+// microphone.addEventListener("click", async() => {
+//     if (microphone.classList.contains("fa-microphone")) {
+//         microphone.classList.add("fa-microphone-slash");
+//         microphone.classList.remove("fa-microphone");
+//         microphone.setAttribute("aria-label", "Muted");
+
+//         var mediaRecorder;
+//         let audioChunks = [];
+
+//         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+//             // recordButton.addEventListener('click', async () => {
+//                 try {
+//                     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+//                     mediaRecorder = new MediaRecorder(stream);
+
+//                     mediaRecorder.onstart = () => {
+//                         audioChunks = [];
+                       
+//                     };
+
+//                     mediaRecorder.ondataavailable = (event) => {
+//                         if (event.data.size > 0) {
+//                             audioChunks.push(event.data);
+//                         }
+//                     };
+
+//                     mediaRecorder.onstop = () => {
+//                         const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+//                         const audioUrl = URL.createObjectURL(audioBlob);
+//                         audioElement.src = audioUrl;
+//                         downloadButton.href = audioUrl;
+//                         downloadButton.download = 'recording.wav';
+                        
+//                     };
+
+//                     mediaRecorder.start();
+//                 } catch (error) {
+//                     console.error('Error accessing microphone:', error);
+//                     alert('Microphone access is required to record audio.');
+//                 }
+//         } else {
+//             alert('Your browser does not support audio recording. Please use the latest version of Chrome or Edge.');
+//         }
+
+       
+//     } else {
+//         microphone.classList.add("fa-microphone");
+//         microphone.classList.remove("fa-microphone-slash");
+//         microphone.setAttribute("aria-label", "Unmuted");
+
+//         if (mediaRecorder) {
+//             mediaRecorder.stop();
+//         }
+//     }
+// });
+
+const microphone = document.getElementById("microphone");
+const commentText = document.getElementById("commentText");
+microphone.addEventListener("click", async () => {
+    let recognition;
+
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+
+            // Tamil (India) - Supports both Tamil and English (Thanglish)
+            recognition.lang = 'en-IN','ta-IN';
+
+            recognition.onstart = () => {
+                output.innerHTML += '<p>Listening in Thanglish...</p>';
+                microphone.classList.remove("fa-microphone");
+                microphone.classList.add("fa-microphone-slash");
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = Array.from(event.results)
+                    .map(result => result[0].transcript)
+                    .join('');
+                output.innerHTML = `<p>${transcript}</p>`;
+            };
+
+            recognition.onerror = (event) => {
+                output.innerHTML += `<p style="color: red;">Error: ${event.error}</p>`;
+            };
+
+            recognition.onend = () => {
+                startButton.disabled = false;
+                stopButton.disabled = true;
+                output.innerHTML += '<p>Stopped listening.</p>';
+            };
+        } else {
+            alert('Your browser does not support Speech Recognition. Please use Google Chrome.');
+        }
+
+        // Start Listening
+        startButton.addEventListener('click', () => {
+            if (recognition) recognition.start();
+        });
+
+        // Stop Listening
+        stopButton.addEventListener('click', () => {
+            if (recognition) recognition.stop();
+        });
+});
 
 
 

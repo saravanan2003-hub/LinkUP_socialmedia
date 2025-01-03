@@ -18,7 +18,7 @@
             <a href="./homepage.html" class="active"><i class="fa-solid fa-house"></i><span>Home</span></a>
             <a href="./profile.html"><i class="fa-solid fa-user"></i><span>Profile</span></a>
             <a href="./post.html"><i class="fa-solid fa-photo-film"></i><span>Post</span></a>
-            <a href=""><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+            <a href="./chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
             <button id="Logout"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></button>
         </aside>
 
@@ -54,6 +54,7 @@
                         </div>
                         <div class="commentIp">
                             <input type="text" id="commentText" placeholder="Enter Your Comment">
+                            <i class="fa-solid fa-microphone" id="microphone"></i>
                             <button id="CommentSend">send</button>
                         </div>
                     </div>
@@ -93,11 +94,29 @@
             <div class="setProfile">
 
                 <div class="head">
+                    <i class="fa-solid fa-arrow-left"></i>
                     <div>
                         <img alt="" id="ProfileImg" src="../assests/photos/dummy-image.jpg">
                     </div>
+                    <div claas="otherUserNameDiv">
+                        <div>
+                            <span id="nameDis"></span>
+                        </div>
+                        <div>
+                            <span id="followers">0 followers</span>
+                            <span id="following">0 following</span>
+                        </div>
+                        <div>
+                            <span><p id="othersBio">User Bio</p></span>
+                           
+                        </div>
 
-                    <span id="nameDis"></span>
+                        <div id="showFollowers">
+                            <i class="fa-regular fa-circle-xmark" id="followersXmark"></i>
+                            <div class="displayFollowers"></div>
+                        </div>
+                    <!-- <button id="ProfileFollow"></button> -->
+                     </div>
                 </div>
                 <div>
                     <h1 class="postH1">Posts</h1>

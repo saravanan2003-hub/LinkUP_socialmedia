@@ -1,0 +1,246 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio to Text</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        #start, #stop {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+        }
+        #output {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 15px;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            height: 150px;
+            overflow-y: auto;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Audio to Text Converter</h1>
+    <button id="start">Start Listening</button>
+    <button id="stop" disabled>Stop</button>
+    <div id="output"></div>
+
+    <script>
+        const startButton = document.getElementById('start');
+        const stopButton = document.getElementById('stop');
+        const output = document.getElementById('output');
+
+        let recognition;
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
+            recognition.lang = 'ta-IN'
+
+            recognition.onstart = () => {
+                output.innerHTML += '<p>Listening...</p>';
+                startButton.disabled = true;
+                stopButton.disabled = false;
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = Array.from(event.results)
+                    .map(result => result[0].transcript)
+                    .join('');
+                output.innerHTML = `<p>${transcript}</p>`;
+            };
+
+            recognition.onerror = (event) => {
+                output.innerHTML += `<p style="color: red;">Error: ${event.error}</p>`;
+            };
+
+            recognition.onend = () => {
+                startButton.disabled = false;
+                stopButton.disabled = true;
+                output.innerHTML += '<p>Stopped listening.</p>';
+            };
+        } else {
+            alert('Your browser does not support Speech Recognition. Please use Google Chrome.');
+        }
+
+        startButton.addEventListener('click', () => {
+            if (recognition) recognition.start();
+        });
+
+        stopButton.addEventListener('click', () => {
+            if (recognition) recognition.stop();
+        });
+    </script>
+</body>
+</html> -->
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Recorder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        #record, #stop, #download {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+        }
+        audio {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Audio Recorder</h1>
+    <button id="record">Start Recording</button>
+    <button id="stop" disabled>Stop Recording</button>
+    <button id="download" disabled>Download</button>
+    <audio id="audio" controls></audio>
+
+    <script>
+        const recordButton = document.getElementById('record');
+        const stopButton = document.getElementById('stop');
+        const downloadButton = document.getElementById('download');
+        const audioElement = document.getElementById('audio');
+
+        let mediaRecorder;
+        let audioChunks = [];
+
+        // Check for browser support
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            recordButton.addEventListener('click', async () => {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+
+                    mediaRecorder.onstart = () => {
+                        audioChunks = [];
+                        recordButton.disabled = true;
+                        stopButton.disabled = false;
+                        downloadButton.disabled = true;
+                    };
+
+                    mediaRecorder.ondataavailable = (event) => {
+                        if (event.data.size > 0) {
+                            audioChunks.push(event.data);
+                        }
+                    };
+
+                    mediaRecorder.onstop = () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        audioElement.src = audioUrl;
+                        downloadButton.href = audioUrl;
+                        downloadButton.download = 'recording.wav';
+                        downloadButton.disabled = false;
+                        recordButton.disabled = false;
+                        stopButton.disabled = true;
+                    };
+
+                    mediaRecorder.start();
+                } catch (error) {
+                    console.error('Error accessing microphone:', error);
+                    alert('Microphone access is required to record audio.');
+                }
+            });
+
+            stopButton.addEventListener('click', () => {
+                if (mediaRecorder) {
+                    mediaRecorder.stop();
+                }
+            });
+        } else {
+            alert('Your browser does not support audio recording. Please use the latest version of Chrome or Edge.');
+        }
+    </script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanglish Speech Recognition</title>
+</head>
+<body>
+
+    <button id="start">Start Listening</button>
+    <button id="stop" disabled>Stop Listening</button>
+
+    <div id="output"></div>
+
+    <script>
+        const startButton = document.getElementById('start');
+        const stopButton = document.getElementById('stop');
+        const output = document.getElementById('output');
+
+        let recognition;
+
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+
+            // Tamil (India) - Supports both Tamil and English (Thanglish)
+            recognition.lang = 'en-IN','ta-IN';
+
+            recognition.onstart = () => {
+                output.innerHTML += '<p>Listening in Thanglish...</p>';
+                startButton.disabled = true;
+                stopButton.disabled = false;
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = Array.from(event.results)
+                    .map(result => result[0].transcript)
+                    .join('');
+                output.innerHTML = `<p>${transcript}</p>`;
+            };
+
+            recognition.onerror = (event) => {
+                output.innerHTML += `<p style="color: red;">Error: ${event.error}</p>`;
+            };
+
+            recognition.onend = () => {
+                startButton.disabled = false;
+                stopButton.disabled = true;
+                output.innerHTML += '<p>Stopped listening.</p>';
+            };
+        } else {
+            alert('Your browser does not support Speech Recognition. Please use Google Chrome.');
+        }
+
+        // Start Listening
+        startButton.addEventListener('click', () => {
+            if (recognition) recognition.start();
+        });
+
+        // Stop Listening
+        stopButton.addEventListener('click', () => {
+            if (recognition) recognition.stop();
+        });
+    </script>
+
+</body>
+</html>
+
