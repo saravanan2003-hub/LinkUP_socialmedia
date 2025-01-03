@@ -217,6 +217,9 @@ footer{
     display: none;
 }
 
+.no-pointer {
+    cursor: none; /* Hide the cursor */
+}
 @media screen and (max-width: 720px) {
         /* Hide the aside (sidebar) section */
         aside {

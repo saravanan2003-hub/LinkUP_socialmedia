@@ -326,6 +326,26 @@ a i{
     border: none;
 }
 
+
+.recordMsgDiv{
+    display: none;
+    height: 100px;
+    width: 300px;
+    background-color:#608BC1;
+    position: absolute;
+    top:250px;
+    left: 100px;
+}
+
+.recordMsg{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100px;
+    width: 300px;
+}
+
 .like button{
     margin-left: 20px;
 }
