@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getFirestore, setDoc, doc, getDocs, getDoc, addDoc, collection, query, where, orderBy,limit } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getFirestore, setDoc, doc, getDocs, getDoc, addDoc, collection, query, where, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject, listAll } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
@@ -25,7 +25,7 @@ const folderRef = ref(storage, 'Posts')
 
 /////////////////////////////////////////////     user name fetch function    /////////////////////////////////////////////////////////////
 async function getUsername() {
-    
+
     const nameDis = document.getElementById("nameDisplay");
 
     // Get the UID from localStorage
@@ -175,11 +175,11 @@ async function fetchPosts() {
                         heart.classList.add("fa-regular");
                         likeCountEl.textContent = updatedLikedPeople.length;
                         console.log(`User ${userUID} unliked the post.`);
-                       
+
 
                     } else {
                         // Like the post
-                        
+
                         likedPeople.push(userUID);
                         await setDoc(likesDocRef, { likedPeople });
                         likePeople()
@@ -190,7 +190,7 @@ async function fetchPosts() {
                         heart.classList.add("fa-solid");
                         likeCountEl.textContent = likedPeople.length;
                         console.log(`User ${userUID} liked the post.`);
-                       
+
 
                     }
                 } catch (error) {
@@ -206,32 +206,32 @@ async function fetchPosts() {
             const usernameEl = box.querySelector(`#username-${postid}`);
             const postUid = document.getElementsByClassName(`${postUID}`)[0];
             const sli = postUid.className.slice(10);
-            
+
             // console.log(sli)
 
-            
 
-            
-            const useruid = localStorage.getItem("uid"); 
 
-            
-          
-            
-                [userPhoto, usernameEl].forEach((element) => {
-                    element.addEventListener("click", () => {
-                        if(sli == useruid ){
-                            window.location.href = "./profile.html";
-                        }
-                        else{
-                            userProfilePageDisplay(sli);
-                        }
-                    });
+
+            const useruid = localStorage.getItem("uid");
+
+
+
+
+            [userPhoto, usernameEl].forEach((element) => {
+                element.addEventListener("click", () => {
+                    if (sli == useruid) {
+                        window.location.href = "./profile.html";
+                    }
+                    else {
+                        userProfilePageDisplay(sli);
+                    }
                 });
+            });
 
-                
-                
-            
-            
+
+
+
+
 
 
 
@@ -333,10 +333,13 @@ async function fetchPosts() {
             const commentButton = document.getElementById(`comment-${postid}`); // Button for showing the comment section
             commentButton.addEventListener("click", () => {
                 const commentDiv = document.getElementsByClassName("comment")[0]; // Select the comment div
+                commentButton.style.pointerEvents = "none"
                 if (commentDiv.style.display === "none") {
-                    commentDiv.style.display = "block"; // Show the comment section
+                    commentDiv.style.display = "block";
+                    commentButton.style.pointerEvents = "none" // Show the comment section
                 } else {
                     commentDiv.style.display = "none"; // Hide the comment section
+                    commentButton.style.pointerEvents = "auto"
                 }
 
 
@@ -351,26 +354,27 @@ async function fetchPosts() {
                         const commentsDocRef = doc(db, "Comments", postid);
                         const commentsDocSnap = await getDoc(commentsDocRef);
                         const commentsData = commentsDocSnap.data() || { comments: [] }; // Initialize if document doesn't exist
+                        if (commentText.length != 0) {
+                            // Ensure commentsData.comments is an array
+                            if (!Array.isArray(commentsData.comments)) {
+                                commentsData.comments = [];
+                            }
 
-                        // Ensure commentsData.comments is an array
-                        if (!Array.isArray(commentsData.comments)) {
-                            commentsData.comments = [];
+                            const newComment = {
+                                comment: commentText, // The comment text
+                                userId: userUID,      // ID of the user making the comment
+                                timestamp: new Date().toISOString() // Timestamp of the comment
+                            };
+                            document.getElementById("commentText").value = "";
+
+                            // Add the new comment to the comments array
+                            commentsData.comments.push(newComment);
+
+                            // Update the document in Firestore
+                            await setDoc(commentsDocRef, commentsData);
+
+                            console.log("Comment added successfully!");
                         }
-
-                        const newComment = {
-                            comment: commentText, // The comment text
-                            userId: userUID,      // ID of the user making the comment
-                            timestamp: new Date().toISOString() // Timestamp of the comment
-                        };
-                        document.getElementById("commentText").value = "";
-
-                        // Add the new comment to the comments array
-                        commentsData.comments.push(newComment);
-
-                        // Update the document in Firestore
-                        await setDoc(commentsDocRef, commentsData);
-
-                        console.log("Comment added successfully!");
 
                     } catch (error) {
                         console.error("Error in comment function:", error);
@@ -382,6 +386,7 @@ async function fetchPosts() {
                 const xmarkComment = document.getElementById("xmarkComment");
                 xmarkComment.addEventListener("click", () => {
                     const commentDiv = document.getElementsByClassName("comment")[0]; // Select the comment div
+                    commentButton.style.pointerEvents = "auto";
                     if (commentDiv.style.display === "block") {
                         commentDiv.style.display = "none"; // Show the comment section
                     }
@@ -468,7 +473,7 @@ async function fetchAndDisplayComments(postid) {
 
 /////////////////////////  user  Profile Page Display function ///////////////////
 
-async function userProfilePageDisplay(otheruserUID){
+async function userProfilePageDisplay(otheruserUID) {
     const userDocRef = doc(db, "users", otheruserUID);
     const docSnap = await getDoc(userDocRef);
     const userData = docSnap.data() || {};
@@ -476,7 +481,7 @@ async function userProfilePageDisplay(otheruserUID){
     const profileimg = userData.profileimg || "default-profile.png";
     const Bio = userData.userBio;
     console.log(Bio)
-    
+
     //  get elements from HTML 
     const main = document.getElementsByClassName("main")[0];
     main.style.display = "none";
@@ -485,7 +490,7 @@ async function userProfilePageDisplay(otheruserUID){
     const ProfileImg = document.getElementById("ProfileImg");
     const nameDis = document.getElementById("nameDis");
     nameDis.textContent = username;
-    ProfileImg.setAttribute("src" ,profileimg);
+    ProfileImg.setAttribute("src", profileimg);
     const fileDisplay = document.getElementById("fileDisplay");
     const othersBio = document.getElementById("othersBio");
     othersBio.textContent = Bio
@@ -496,28 +501,28 @@ async function userProfilePageDisplay(otheruserUID){
 
 
 
-     const querySnapshot = await getDocs(query(collection(db, "Posts"), where("uid", "==", otheruserUID)));
-    
-        console.log(querySnapshot)
-    
-        querySnapshot.forEach((doc) => {
-    
-            console.log("Document Data:", doc.data());
-    
-            // Create and configure the image element
-            const postId = doc.id;
-            const postURL = doc.data().postURL
-            // console.log(postURL)
-            const imgElement = document.createElement("img");
-            imgElement.classList.add("post-image");
-            imgElement.setAttribute("id", postId)
-            imgElement.src = doc.data().postURL;
-            
+    const querySnapshot = await getDocs(query(collection(db, "Posts"), where("uid", "==", otheruserUID)));
+
+    console.log(querySnapshot)
+
+    querySnapshot.forEach((doc) => {
+
+        console.log("Document Data:", doc.data());
+
+        // Create and configure the image element
+        const postId = doc.id;
+        const postURL = doc.data().postURL
+        // console.log(postURL)
+        const imgElement = document.createElement("img");
+        imgElement.classList.add("post-image");
+        imgElement.setAttribute("id", postId)
+        imgElement.src = doc.data().postURL;
+
 
 
         // Append the image element to the container
         fileDisplay.appendChild(imgElement);
-        })
+    })
 }
 
 
@@ -623,79 +628,79 @@ async function checkFun(userid) {
         const followDocRef = doc(db, "followers", userid); // Reference to the document
         const userUID = localStorage.getItem("uid"); // Current user's UID
         const followBtn = document.getElementById(`followBtn-${userid}`);
-    
+
         if (!userUID) {
             console.error("User UID not found.");
             return;
         }
-    
+
         // Get the current data of the document
         const followDocSnap = await getDoc(followDocRef);
         const followers = followDocSnap.exists()
             ? followDocSnap.data().followers || []
             : []; // Fallback to an empty array if the document doesn't exist
-    
-            if (followers.includes(userUID)) {
-                // Update UI for unfollow
-                followBtn.classList.remove("followBtn");
-                followBtn.classList.add("unFollowBtn");
-                followBtn.textContent = "Unfollow";
-               
-            } else {
-                // Update UI for follow
-                followBtn.classList.remove("unFollowBtn");
-                followBtn.classList.add("followBtn");
-                followBtn.textContent = "Follow";
-            }
-        
+
+        if (followers.includes(userUID)) {
+            // Update UI for unfollow
+            followBtn.classList.remove("followBtn");
+            followBtn.classList.add("unFollowBtn");
+            followBtn.textContent = "Unfollow";
+
+        } else {
+            // Update UI for follow
+            followBtn.classList.remove("unFollowBtn");
+            followBtn.classList.add("followBtn");
+            followBtn.textContent = "Follow";
+        }
+
     } catch (error) {
         console.error("Error toggling follow status:", error);
-    }    
+    }
 }
 
 
-async function followersAdd(userid){
+async function followersAdd(userid) {
     try {
         const followDocRef = doc(db, "followers", userid); // Reference to the document
         const userUID = localStorage.getItem("uid"); // Current user's UID
         const followBtn = document.getElementById(`followBtn-${userid}`);
-    
+
         if (!userUID) {
             console.error("User UID not found.");
             return;
         }
-    
+
         // Get the current data of the document
         const followDocSnap = await getDoc(followDocRef);
         const followers = followDocSnap.exists()
             ? followDocSnap.data().followers || []
             : []; // Fallback to an empty array if the document doesn't exist
-    
-            if (followers.includes(userUID)) {
-                // Unfollow: Remove the user from followers
-                await setDoc(followDocRef, { followers: followers.filter((uid) => uid !== userUID) });
-                console.log(`User ${userUID} unfollowed ${userid}`);
-        
-                // Update UI for unfollow
-                followBtn.classList.remove("unFollowBtn");
-                followBtn.classList.add("followBtn");
-                followBtn.textContent = "Follow";
-            } else {
-                // Follow: Add the user to followers
-                followers.push(userUID);
-                await setDoc(followDocRef, { followers });
-                console.log(`User ${userUID} followed ${userid}`);
-        
-                // Update UI for follow
-                followBtn.classList.remove("followBtn");
-                followBtn.classList.add("unFollowBtn");
-                followBtn.textContent = "Unfollow";
-            }
-        
+
+        if (followers.includes(userUID)) {
+            // Unfollow: Remove the user from followers
+            await setDoc(followDocRef, { followers: followers.filter((uid) => uid !== userUID) });
+            console.log(`User ${userUID} unfollowed ${userid}`);
+
+            // Update UI for unfollow
+            followBtn.classList.remove("unFollowBtn");
+            followBtn.classList.add("followBtn");
+            followBtn.textContent = "Follow";
+        } else {
+            // Follow: Add the user to followers
+            followers.push(userUID);
+            await setDoc(followDocRef, { followers });
+            console.log(`User ${userUID} followed ${userid}`);
+
+            // Update UI for follow
+            followBtn.classList.remove("followBtn");
+            followBtn.classList.add("unFollowBtn");
+            followBtn.textContent = "Unfollow";
+        }
+
     } catch (error) {
         console.error("Error toggling follow status:", error);
     }
-    
+
 }
 
 
@@ -716,7 +721,7 @@ async function followers(otheruserUID) {
             followPeople.addEventListener("click", async () => {
                 followPeople.style.opacity = "0.5"; // Make it appear dimmed
                 followPeople.style.pointerEvents = "none"; // Disable interaction
-                 
+
                 if (followers.length === 0) {
                     showFollowers.style.display = "block";
                     const noneMsg = document.createElement("div");
@@ -775,7 +780,7 @@ async function following(otheruserUID) {
     const userUID = localStorage.getItem("uid");
     var followingCount = 0;
     const following = document.getElementById("following");
-   
+
     try {
         const followingquerySnapshot = await getDocs(query(collection(db, "followers")));
         followingquerySnapshot.forEach(doc => {
@@ -785,7 +790,7 @@ async function following(otheruserUID) {
                 followingCount++;
                 console.log(followingCount);
                 const followingPeopleId = doc.id;
-                following.addEventListener("click", async() =>{
+                following.addEventListener("click", async () => {
                     following.style.opacity = "0.5"; // Make it appear dimmed
                     following.style.pointerEvents = "none";
                     showFollowingPeople(followingPeopleId);
@@ -826,121 +831,67 @@ async function showFollowingPeople(followingPeopleId) {
 
 ////////////// other user profilepage bac arrow function ///////////
 const backArrow = document.getElementsByClassName("fa-arrow-left")[0];
-backArrow.addEventListener("click", ()=>{
+backArrow.addEventListener("click", () => {
     const othersProfilePageShow = document.getElementById("othersProfilePageShow");
     othersProfilePageShow.style.display = "none";
     window.location.reload(true);
 })
 
 
-
-//////////////////// comment microphone function ///////////
-// const microphone = document.getElementById("microphone")
-// const audioElement = document.getElementById("audio");
-// microphone.addEventListener("click", async() => {
-//     if (microphone.classList.contains("fa-microphone")) {
-//         microphone.classList.add("fa-microphone-slash");
-//         microphone.classList.remove("fa-microphone");
-//         microphone.setAttribute("aria-label", "Muted");
-
-//         var mediaRecorder;
-//         let audioChunks = [];
-
-//         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-//             // recordButton.addEventListener('click', async () => {
-//                 try {
-//                     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-//                     mediaRecorder = new MediaRecorder(stream);
-
-//                     mediaRecorder.onstart = () => {
-//                         audioChunks = [];
-                       
-//                     };
-
-//                     mediaRecorder.ondataavailable = (event) => {
-//                         if (event.data.size > 0) {
-//                             audioChunks.push(event.data);
-//                         }
-//                     };
-
-//                     mediaRecorder.onstop = () => {
-//                         const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-//                         const audioUrl = URL.createObjectURL(audioBlob);
-//                         audioElement.src = audioUrl;
-//                         downloadButton.href = audioUrl;
-//                         downloadButton.download = 'recording.wav';
-                        
-//                     };
-
-//                     mediaRecorder.start();
-//                 } catch (error) {
-//                     console.error('Error accessing microphone:', error);
-//                     alert('Microphone access is required to record audio.');
-//                 }
-//         } else {
-//             alert('Your browser does not support audio recording. Please use the latest version of Chrome or Edge.');
-//         }
-
-       
-//     } else {
-//         microphone.classList.add("fa-microphone");
-//         microphone.classList.remove("fa-microphone-slash");
-//         microphone.setAttribute("aria-label", "Unmuted");
-
-//         if (mediaRecorder) {
-//             mediaRecorder.stop();
-//         }
-//     }
-// });
-
+////////////////////////  comment microphone function ////////////////////////
 const microphone = document.getElementById("microphone");
 const commentText = document.getElementById("commentText");
-microphone.addEventListener("click", async () => {
-    let recognition;
 
-        if ('webkitSpeechRecognition' in window) {
-            recognition = new webkitSpeechRecognition();
-            recognition.continuous = true;
-            recognition.interimResults = true;
+let recognition;
 
-            // Tamil (India) - Supports both Tamil and English (Thanglish)
-            recognition.lang = 'en-IN','ta-IN';
+if ('webkitSpeechRecognition' in window) {
+    recognition = new webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    const recordMsgDiv = document.getElementsByClassName("recordMsgDiv")[0];
+    const recordMsg = document.getElementsByClassName("recordMsg")[0];
 
-            recognition.onstart = () => {
-                output.innerHTML += '<p>Listening in Thanglish...</p>';
-                microphone.classList.remove("fa-microphone");
-                microphone.classList.add("fa-microphone-slash");
-            };
+    // Set language to Tamil (India) which can also recognize English words
+    recognition.lang = 'en-IN', 'ta-IN';
 
-            recognition.onresult = (event) => {
-                const transcript = Array.from(event.results)
-                    .map(result => result[0].transcript)
-                    .join('');
-                output.innerHTML = `<p>${transcript}</p>`;
-            };
+    recognition.onstart = () => {
+        recordMsgDiv.style.display = "block";
+        recordMsg.innerHTML += '<p>Listening in Thanglish...</p>';
+    };
 
-            recognition.onerror = (event) => {
-                output.innerHTML += `<p style="color: red;">Error: ${event.error}</p>`;
-            };
+    recognition.onresult = (event) => {
+        const transcript = Array.from(event.results)
+            .map(result => result[0].transcript)
+            .join('');
+        commentText.value = transcript;
+    };
 
-            recognition.onend = () => {
-                startButton.disabled = false;
-                stopButton.disabled = true;
-                output.innerHTML += '<p>Stopped listening.</p>';
-            };
-        } else {
-            alert('Your browser does not support Speech Recognition. Please use Google Chrome.');
-        }
+    recognition.onerror = (event) => {
+        recordMsg.innerHTML += `<p style="color: red;">Error: ${event.error}</p>`;
+    };
 
-        // Start Listening
-        startButton.addEventListener('click', () => {
-            if (recognition) recognition.start();
-        });
+    recognition.onend = () => {
+        recordMsg.innerHTML += '<p>Stopped listening.</p>';
+        setTimeout(() => {
+            recordMsgDiv.style.display = "none";
+            recordMsg.innerHTML = ""
+        }, 3000);
+    };
+} else {
+    alert('Your browser does not support Speech Recognition. Please use Google Chrome.');
+}
 
-        // Stop Listening
-        stopButton.addEventListener('click', () => {
-            if (recognition) recognition.stop();
-        });
+// Start/Stop Listening on Microphone Button Click
+microphone.addEventListener('click', () => {
+    if (microphone.classList.contains("fa-microphone")) {
+        microphone.classList.add("fa-microphone-slash");
+        microphone.classList.remove("fa-microphone");
+        if (recognition) recognition.start();
+    } else {
+        if (recognition) recognition.stop();
+        microphone.classList.add("fa-microphone");
+        microphone.classList.remove("fa-microphone-slash");
+    }
 });
 
 
