@@ -45,6 +45,7 @@
             recognition.continuous = true;
             recognition.interimResults = true;
             recognition.lang = 'en-US';
+            recognition.lang = 'ta-IN'
 
             recognition.onstart = () => {
                 output.innerHTML += '<p>Listening...</p>';
@@ -85,7 +86,7 @@
 
 
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -171,4 +172,75 @@
         }
     </script>
 </body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanglish Speech Recognition</title>
+</head>
+<body>
+
+    <button id="start">Start Listening</button>
+    <button id="stop" disabled>Stop Listening</button>
+
+    <div id="output"></div>
+
+    <script>
+        const startButton = document.getElementById('start');
+        const stopButton = document.getElementById('stop');
+        const output = document.getElementById('output');
+
+        let recognition;
+
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+
+            // Tamil (India) - Supports both Tamil and English (Thanglish)
+            recognition.lang = 'en-IN','ta-IN';
+
+            recognition.onstart = () => {
+                output.innerHTML += '<p>Listening in Thanglish...</p>';
+                startButton.disabled = true;
+                stopButton.disabled = false;
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = Array.from(event.results)
+                    .map(result => result[0].transcript)
+                    .join('');
+                output.innerHTML = `<p>${transcript}</p>`;
+            };
+
+            recognition.onerror = (event) => {
+                output.innerHTML += `<p style="color: red;">Error: ${event.error}</p>`;
+            };
+
+            recognition.onend = () => {
+                startButton.disabled = false;
+                stopButton.disabled = true;
+                output.innerHTML += '<p>Stopped listening.</p>';
+            };
+        } else {
+            alert('Your browser does not support Speech Recognition. Please use Google Chrome.');
+        }
+
+        // Start Listening
+        startButton.addEventListener('click', () => {
+            if (recognition) recognition.start();
+        });
+
+        // Stop Listening
+        stopButton.addEventListener('click', () => {
+            if (recognition) recognition.stop();
+        });
+    </script>
+
+</body>
 </html>
+

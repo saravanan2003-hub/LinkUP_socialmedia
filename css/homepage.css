@@ -317,6 +317,15 @@ a i{
     margin-left: 15px;
 }
 
+#microphone{
+    position: absolute;
+    right: 90px;
+    font-size: 20px;
+    top: 12px;
+    background:none;
+    border: none;
+}
+
 .like button{
     margin-left: 20px;
 }
@@ -635,6 +644,7 @@ iframe{
 }
 
 #ProfileImg{
+    margin-left: 60px;
     border-radius: 50%;
     height: 200px;
     width: 200px;
@@ -662,7 +672,7 @@ iframe{
 .files{
     /* margin-top: 30vh; */
     margin-left: 35px;
-    height: 70vh;
+    height: 60vh;
     overflow-y: auto;
 }
 
@@ -698,6 +708,81 @@ iframe{
 
 }
 
+.otherUserNameDiv{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items:center;
+}
+
+
+#showFollowers{
+    height: 300px;
+    width: 500px;
+    background-color:#134B70;
+    position:absolute;
+    top: 350px;
+    left: 350px;
+    border-radius: 20px;
+    display: none;
+}
+
+#followersXmark{
+    color: red;
+    font-size: 30px;
+    position: relative;
+    bottom: 30px;
+    right: 30px;
+}
+
+.noneMsg{
+    position: relative;
+    bottom: 150px;
+    left: 90px;
+    font-size: 30px;
+    color: white;
+}
+
+.displayFollowers{
+    height: 250px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    overflow-y: auto;
+}
+
+.showFollowerPeople{
+    height: 110px;
+    width: 400px;
+    background-color: #608BC1;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 10px;
+
+}
+
+.followersProfile{
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+}
+
+.followersName{
+    font-size: 20px;
+    color: white;
+
+}
+
+.fa-arrow-left{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 30px;
+
+}
 /* Media Query for Mobile Devices (max-width: 720px) */
 @media screen and (max-width: 720px) {
 

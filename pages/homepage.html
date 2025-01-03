@@ -54,6 +54,7 @@
                         </div>
                         <div class="commentIp">
                             <input type="text" id="commentText" placeholder="Enter Your Comment">
+                            <i class="fa-solid fa-microphone" id="microphone"></i>
                             <button id="CommentSend">send</button>
                         </div>
                     </div>
@@ -93,12 +94,29 @@
             <div class="setProfile">
 
                 <div class="head">
+                    <i class="fa-solid fa-arrow-left"></i>
                     <div>
                         <img alt="" id="ProfileImg" src="../assests/photos/dummy-image.jpg">
                     </div>
+                    <div claas="otherUserNameDiv">
+                        <div>
+                            <span id="nameDis"></span>
+                        </div>
+                        <div>
+                            <span id="followers">0 followers</span>
+                            <span id="following">0 following</span>
+                        </div>
+                        <div>
+                            <span><p id="othersBio">User Bio</p></span>
+                           
+                        </div>
 
-                    <span id="nameDis"></span>
-                    <button id="ProfileFollow"></button>
+                        <div id="showFollowers">
+                            <i class="fa-regular fa-circle-xmark" id="followersXmark"></i>
+                            <div class="displayFollowers"></div>
+                        </div>
+                    <!-- <button id="ProfileFollow"></button> -->
+                     </div>
                 </div>
                 <div>
                     <h1 class="postH1">Posts</h1>

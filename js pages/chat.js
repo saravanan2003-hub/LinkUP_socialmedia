@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getFirestore, setDoc, doc, getDocs, getDoc, addDoc, collection, query, where, orderBy,limit } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject, listAll } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
+import { getStorage, uploadBytes, getDownloadURL, deleteObject, listAll } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 import {getDatabase,get,ref,onValue,set,remove,} from "https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js";
 
 // Your web app's Firebase configuration
