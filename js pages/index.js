@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword,sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -106,7 +106,7 @@ const validateEmail = (email) => {
 // Event listener for login form submission
 const loginForm = document.getElementById("form");
 loginForm.addEventListener("submit", (event) => {
-    event.preventDefault(); // Prevent default form submission
+    event.preventDefault();
 
     if (validateLoginInputs()) {
         const email = document.getElementById("Login-Email").value.trim();
@@ -130,6 +130,8 @@ loginForm.addEventListener("submit", (event) => {
             });
     }
 });
+
+
 
 
 

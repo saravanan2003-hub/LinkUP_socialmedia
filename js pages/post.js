@@ -56,27 +56,7 @@ async function uploadImage() {
 
 }
 
-// const postCaption = document.getElementById("PostCaption");
-// const captionVal = postCaption.value
-// postCaption.addEventListener("input", () => {
-//     if (postCaption.value.length >= 250) {
-//         var captionValValitaion = postCaption.value
-//         postCaption.style.cursor = "text"
-//     }
-//     else {
-//         postCaption.style.cursor = "none"
-//     }
-// });
 
-const postCaption = document.getElementById("PostCaption");
-
-        postCaption.addEventListener("input", () => {
-            if (postCaption.value.length >= 10) {
-                alert("you croos your limit") // Show pointer
-            } else {
-                postCaption.classList.add("no-pointer"); // Hide pointer
-            }
-        });
 
 
 
@@ -84,13 +64,15 @@ async function insertPost(downloadURL) {
    
     const uploadInput = document.getElementById("upload");
     const file = uploadInput.files[0];
+    const postCaption = document.getElementById("PostCaption");
+    const captionVal = postCaption.value
 
     const postData = {
         postURL: downloadURL,
         postTime: new Date().toISOString(),
         postName: file.name,
         uid: localStorage.getItem("uid"),
-        postDes: captionValValitaion
+        postDes: captionVal
     };
 
 

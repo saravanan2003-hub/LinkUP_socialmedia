@@ -695,20 +695,21 @@ async function showFollowingPeople(followingPeopleId) {
 
 ////////////////  Bio set function //////////////////////////
 const bio = document.getElementsByClassName("Bio")[0];
+const setBioBtn = document.getElementById("setBio");
 const bioInputDIv = document.getElementsByClassName("bioInputDIv")[0];
-bio.addEventListener("click", () =>{
+setBioBtn.addEventListener("click", () =>{
     bio.style.display = "none"
     bioInputDIv.style.display = "block";
 })
 
 const BioSetButton = document.getElementsByClassName("fa-check")[0];
-BioSetButton.addEventListener("click" ,() =>{
+BioSetButton.addEventListener("click",() =>{
     const bioInput = document.getElementById("bioInput").value.trim();
     if(bioInput.length === 0){
         bioInputDIv.style.display = "none";
         bio.style.display = "block";
     }
-    else{
+    else if(bioInput.length>=5 && bioInput.length<=45){
         const documentRef = doc(db, "users",localStorage.getItem("uid"));
         updateDoc(documentRef, {
             userBio:bioInput // Replace with your field name and value
@@ -716,6 +717,9 @@ BioSetButton.addEventListener("click" ,() =>{
         bio.textContent = bioInput;
         bioInputDIv.style.display = "none";
         bio.style.display = "block";
+    }
+    else{
+        alert("Bio length must be 5 to 45 letters")
     }
 
 })
