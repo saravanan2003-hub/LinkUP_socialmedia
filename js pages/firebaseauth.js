@@ -45,6 +45,32 @@ const username = document.querySelector('#username');
 const emailInput = document.querySelector('#Email');
 const password = document.querySelector('#password');
 const Cpass = document.getElementById("CPass");
+const GenderVal = document.getElementById("Gender")
+
+
+function checkGender() {
+    // Get the selected value inside the function every time it is called
+    const GenderVal = document.getElementById("Gender").value;
+    
+    if (GenderVal === "Male") {
+        return "../assests/photos/dummy-image.jpg";
+    } 
+    else if (GenderVal === "Female") {
+        return "../assests/photos/GirlsDummy.jpg";
+    } 
+    else if (GenderVal === "Others") {
+        return "../assests/photos/dummy-image.jpg";
+    }
+    else {
+        console.log("not Selected");
+        return null; // In case no option is selected
+    }
+}
+
+document.getElementById("Gender").addEventListener("change", function gender() {
+   var res = GenderVal.value;
+   return res
+});
 
 // Add event listener to the form
 form.addEventListener('submit', (event) => {
@@ -67,9 +93,8 @@ form.addEventListener('submit', (event) => {
                 const userData = { 
                     username: userVal,
                     email: emailVal,
-                    profileimg :"../assests/photos/dummy-image.jpg",
-                    userBio : "User Bio"
-
+                    profileimg : checkGender(),
+                    userBio : "User Bio",
                 };
                 // Store user data in Firestore
                 const docRef = doc(db, "users", user.uid);
@@ -103,6 +128,7 @@ function validateInputs() {
     const emailVal = emailInput.value.trim();
     const passwordVal = password.value.trim();
     const CPassVal = Cpass.value.trim();
+    const genderVal = GenderVal.value
 
 
    
@@ -113,6 +139,7 @@ function validateInputs() {
     const emailError = document.getElementById("emailError");
     const passwordError = document.getElementById("passwordError");
     const CpassError = document.getElementById("cPassError");
+    const GenderError = document.getElementById("GenderError");
 
     // Username validation
     if (usernameVal === '') {
@@ -163,7 +190,10 @@ function validateInputs() {
         CpassError.textContent = "please enter correct & same password"
         isValid = false  
     }
-
+    else{
+        isValid = true
+        CpassError.textContent = ""
+    }
     
     return isValid; // Return overall validity
 }

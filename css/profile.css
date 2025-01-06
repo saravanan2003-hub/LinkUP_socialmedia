@@ -701,6 +701,7 @@ input[type="file"] {
 
 #followers{
     font-size: 30px;
+    
 }
 #following{
     margin-left: 40px;
@@ -795,6 +796,18 @@ input[type="file"] {
     font-size:30px;
     margin-top: 10px;
     margin-left: 20px;
+}
+
+#setBio{
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    height: 30px;
+    width: 100px;
+    background-color: #134B70;
+    color: white;
+    border-radius: 10px;
+    border: none;
 }
 
 
