@@ -191,9 +191,7 @@ aside a{
     top: 200px;
     left: 500px;
     background-color: #134B70;
-    /* display: flex;
-    justify-content:center;
-    align-items: flex-start; */
+    
     position: fixed;
 }
 
@@ -416,18 +414,6 @@ footer{
     width: 10vw;
     background-color: #252734;
 }
-
-/* .postDes{
-    font-size: 20px;
-    color: black;
-    width: 500px;
-    height: auto;
-}
-.postDesDiv{
-    margin-bottom: 10px;
-    width:500px;
-    height: auto;
-} */
 
 
 .postDesDiv {
@@ -803,21 +789,32 @@ iframe{
     font-size: 30px;
 
 }
-/* Media Query for Mobile Devices (max-width: 720px) */
-@media screen and (max-width: 720px) {
 
-    /* Hide the aside (sidebar) section */
+.ProfileFollow{
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    border: none;
+    background-color: blue;
+    color: white;
+    border-radius: 10px;
+    height: 40px;
+    width: 150px;
+}
+
+@media screen and (max-width: 500px) {
+
+    
     aside {
         display: none;
     }
 
-    /* Hide ad section */
     
     .ad1 {
         display: none;
     }
 
-    /* Full-width header for mobile view */
+    
     header {
         height: 10vh;
         width: 100%;
@@ -832,23 +829,31 @@ iframe{
         padding: 0 10px;
     }
 
-    /* Adjust the main content for mobile view */
-    main{
+
+    main {
         margin: 0;
-        margin-top: 5vh;
         margin-bottom: 10vh;
-       }
-       main .feed{
-       display: grid;
-       }
-    
-       .container{
+        width: 100%;
+    }
+
+    main .feed {
+        display: grid;
+        margin-bottom: 15%;
+        width: 100%;
+    }
+
+    .main{
+        width: 100%;
+    }
+
+
+    .container {
         display: grid;
         grid-template-rows: 7% 83% 10%;
         grid-template-columns: none;
-       }
+    }
 
-    /* Footer as a bottom navigation bar */
+
     footer {
         position: fixed;
         bottom: 0;
@@ -862,14 +867,12 @@ iframe{
         border-top: 1px solid white;
     }
 
-    /* Footer navigation links */
+
     footer a {
         display: block;
         color: white;
         font-size: 25px;
         text-decoration: none;
-        background: none;
-        border: none;
     }
 
     #LogoutRes {
@@ -877,38 +880,90 @@ iframe{
         color: white;
         border: none;
         background: none;
-        display: block; /* Ensure it is visible */
+        display: block;
+    }
+
+    .box {
+        width: 100%;
+
+    }
+
+    .profilePicture{
+        width: 100%;
+
+    }
+
+    .mainPicture{
+        width: 100%;
+    }
+    .like{
+        width: 100%;
+    }
+    .postImg {
+        width: 100%;
     }
 
 
-    /* Footer icon styling */
-    footer a i {
+    footer a i, 
+    footer button i {
         font-size: 25px;
         color: white;
     }
 
-    footer button i{
-        font-size: 25px;
-        color: white;  
+
+    aside a:hover, 
+    aside a:focus,
+    #Logout:hover,
+    #Logout:focus {
+        box-shadow: none;
     }
 
-    /* Remove hover effect on mobile */
-    a:hover {
-        background: none;
+
+    #ProfileImg {
+        height: 150px;
+        width: 150px;
+        margin: 20px auto;
     }
 
-    /* Logout button adjustments */
-    #Logout:hover {
-        background: none;
+
+    .comment {
+        height: 400px;
+        width: 90%;
+        left: 5%;
+        top: 20vh;
     }
 
-    /* Hide unnecessary hover effects */
-    aside a:hover {
-        display: none;
+    #commentDisplay {
+        width: 100%;
+        height: 300px;
     }
 
-    .feed{
-        border: 0;
+    .commentIp input {
+        width: 70%;
+    }
+
+    .commentIp button {
+        width: 25%;
+    }
+
+
+    #SearchInp {
+        width: 90%;
+        left: 5%;
+        top: 5%;
+    }
+
+    .searchDiv div {
+        width: 100%;
+    }
+
+    .searchUser {
+        font-size: 18px;
+    }
+
+    .EmptyLengthMsg {
+        left: 50%;
+        transform: translateX(-50%);
     }
 }
 
@@ -916,8 +971,8 @@ iframe{
 
 
 
-   
 
+   
 
 
 
