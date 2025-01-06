@@ -136,7 +136,8 @@ async function fetchPosts() {
                     </div>
                 </div>
                 <div class="mainPicture">
-                    <img src="${postURL}" alt="Post Image" class="postImg">
+                    <img src="${postURL}" alt="Post Image" class="postImg" id="postImg-${postid}">
+                    <i class="fa-solid fa-face-grin-hearts emoji" id="emoji-${postid}"></i>
                 </div>
                 <div class="like">
                     <div class="LikeYes">
@@ -159,6 +160,13 @@ async function fetchPosts() {
             const likeCountEl = box.querySelector(`#like-count-${postid}`);
 
             heart.addEventListener("click", async () => {
+                likeFunction();
+
+            });
+
+
+
+            async function likeFunction() {
                 try {
                     const likesDocSnap = await getDoc(likesDocRef);
                     const likesData = likesDocSnap.data() || { likedPeople: [] };
@@ -181,12 +189,10 @@ async function fetchPosts() {
 
 
                     } else {
-                        // Like the post
 
                         likedPeople.push(userUID);
                         await setDoc(likesDocRef, { likedPeople });
                         likePeople()
-
 
                         // Update UI
                         heart.classList.remove("fa-regular");
@@ -199,7 +205,7 @@ async function fetchPosts() {
                 } catch (error) {
                     console.error("Error toggling like status:", error);
                 }
-            });
+            }
 
             // Append box to the feed
             feed.appendChild(box);
@@ -232,6 +238,11 @@ async function fetchPosts() {
             });
 
 
+            const post = document.getElementById(`postImg-${postid}`);
+            post.addEventListener("dblclick", () => {
+                likeFunction();
+            })
+
 
 
 
@@ -258,9 +269,6 @@ async function fetchPosts() {
                     const popmain = document.getElementById("likeShowPopup");
                     if (!likesData || !likesData.likedPeople) {
                         console.error("No likedPeople data available.");
-                        // const NoLikeShowDiv = document.createElement("div");
-                        // NoLikeShowDiv.textContent = "No one liked this post";
-                        // popmain.appendChild(NoLikeShowDiv)
                         return;
                     }
 
@@ -269,11 +277,11 @@ async function fetchPosts() {
                             <p>No One Like This Post</p>
                     </div>
                     `;
-                    const likedPeoples = likesData.likedPeople; // Array of user IDs who liked the post
+                    const likedPeoples = likesData.likedPeople;
                     if (likedPeoples.length === 0) {
-                        // Select the first element with the class "EmptyLengthMsg"
+
                         const EmptyLengthMsg = document.querySelector(".EmptyLengthMsg");
-                        // Ensure the message is displayed
+
                         if (EmptyLengthMsg) {
                             EmptyLengthMsg.style.display = "block";
                         } else {
@@ -400,8 +408,6 @@ async function fetchPosts() {
             });
 
 
-
-
         }
     } catch (error) {
         console.error("Error fetching posts:", error);
@@ -501,11 +507,12 @@ async function userProfilePageDisplay(otheruserUID) {
     const ProfileFollowbtn = document.createElement("button");
     ProfileFollowbtn.setAttribute("id", `profileFollow-${otheruserUID}`)
     ProfileFollowbtn.classList.add("followBtn");
-    othersProfilePageShow.appendChild(ProfileFollowbtn)
+    const ProfileFollowDiv = document.getElementsByClassName("ProfileFollowDiv")[0];
+    ProfileFollowDiv.appendChild(ProfileFollowbtn)
 
 
 
-    checkFun(otheruserUID,`profileFollow-${otheruserUID}`);
+    checkFun(otheruserUID, `profileFollow-${otheruserUID}`);
 
 
     const querySnapshot = await getDocs(query(collection(db, "Posts"), where("uid", "==", otheruserUID)));
@@ -532,8 +539,8 @@ async function userProfilePageDisplay(otheruserUID) {
     })
 
     const othersPageFollowBtn = document.getElementById(`profileFollow-${otheruserUID}`);
-    othersPageFollowBtn.addEventListener("click",()=>{
-        checkFun(otheruserUID,`profileFollow-${otheruserUID}`);
+    othersPageFollowBtn.addEventListener("click", () => {
+        checkFun(otheruserUID, `profileFollow-${otheruserUID}`);
         followersAdd(otheruserUID);
     })
 }
@@ -565,10 +572,10 @@ SearchBtn.addEventListener("click", () => {
 const SearchInp = document.getElementById("SearchInp");
 
 SearchInp.addEventListener("input", async () => {
-    const SearchVal = SearchInp.value.trim().toLowerCase(); 
+    const SearchVal = SearchInp.value.trim().toLowerCase();
 
     if (SearchVal === "") {
-        searchDetails.innerHTML = ""; 
+        searchDetails.innerHTML = "";
         return;
     }
 
@@ -577,7 +584,7 @@ SearchInp.addEventListener("input", async () => {
         const q = query(collection(db, "users"));
         const searchSnapshot = await getDocs(q);
 
-        searchDetails.innerHTML = ""; 
+        searchDetails.innerHTML = "";
 
         if (searchSnapshot.empty) {
             searchDetails.innerHTML = `<p>No results found</p>`;
@@ -621,7 +628,7 @@ SearchInp.addEventListener("input", async () => {
             `;
             searchDetails.appendChild(userDiv);
 
-            checkFun(userid,`followBtn-${userid}`);
+            checkFun(userid, `followBtn-${userid}`);
 
             // const FollowButtons = [`followBtn-${userid}`,"ProfileFollow"]
 
@@ -632,15 +639,15 @@ SearchInp.addEventListener("input", async () => {
 
             const searchprofile = document.getElementById(`SearchProfile-${userid}`);
             const searchUsername = document.getElementById(`searchUsername${userid}`)
-            
+
             const searchprofileID = searchprofile.getAttribute("id").slice(14);
-            searchprofile.addEventListener("click", ()=>{
+            searchprofile.addEventListener("click", () => {
                 userProfilePageDisplay(searchprofileID);
             })
-            searchUsername.addEventListener("click",()=>{
+            searchUsername.addEventListener("click", () => {
                 userProfilePageDisplay(searchprofileID);
             })
-           
+
         });
     } catch (error) {
         console.error("Error fetching user data:", error);
@@ -648,7 +655,7 @@ SearchInp.addEventListener("input", async () => {
     }
 });
 
-async function checkFun(userid,btnId) {
+async function checkFun(userid, btnId) {
     try {
         const followDocRef = doc(db, "followers", userid); // Reference to the document
         const userUID = localStorage.getItem("uid"); // Current user's UID
@@ -671,7 +678,7 @@ async function checkFun(userid,btnId) {
             followBtn.classList.add("unFollowBtn");
             followBtn.textContent = "Unfollow";
 
-        } else if(!followers.includes(userUID)){
+        } else if (!followers.includes(userUID)) {
             // Update UI for follow
             followBtn.classList.remove("unFollowBtn");
             followBtn.classList.add("followBtn");
@@ -713,10 +720,10 @@ async function followersAdd(userid) {
             followBtn.classList.remove("unFollowBtn");
             followBtn.classList.add("followBtn");
             followBtn.textContent = "Follow";
-            // othersPageFollowBtn.classList.remove("unFollowBtn");
-            // othersPageFollowBtn.classList.add("followBtn");
-            // othersPageFollowBtn.textContent = "Follow"
-            
+            othersPageFollowBtn.classList.remove("unFollowBtn");
+            othersPageFollowBtn.classList.add("followBtn");
+            othersPageFollowBtn.textContent = "Follow"
+
         } else {
             // Follow: Add the user to followers
             followers.push(userUID);
@@ -727,9 +734,9 @@ async function followersAdd(userid) {
             followBtn.classList.remove("followBtn");
             followBtn.classList.add("unFollowBtn");
             followBtn.textContent = "Unfollow";
-            // othersPageFollowBtn.classList.remove("followBtn");
-            // othersPageFollowBtn.classList.add("unFollowBtn");
-            // othersPageFollowBtn.textContent = "Unfollow"
+            othersPageFollowBtn.classList.remove("followBtn");
+            othersPageFollowBtn.classList.add("unFollowBtn");
+            othersPageFollowBtn.textContent = "Unfollow"
         }
 
     } catch (error) {

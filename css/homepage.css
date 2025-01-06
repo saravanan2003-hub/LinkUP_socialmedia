@@ -554,7 +554,7 @@ footer{
 .unFollowBtn{
     height: 30px;
     width: 60px;
-    background-color: white;
+    background-color: burlywood;
     color: black;
     border: none; 
 }
@@ -790,17 +790,17 @@ iframe{
 
 }
 
-.ProfileFollow{
+.ProfileFollowDiv {
     position: absolute;
     right: 20px;
     top: 20px;
-    border: none;
-    background-color: blue;
-    color: white;
-    border-radius: 10px;
-    height: 40px;
-    width: 150px;
 }
+
+
+
+
+
+
 
 @media screen and (max-width: 500px) {
 
