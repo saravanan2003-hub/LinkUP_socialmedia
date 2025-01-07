@@ -811,6 +811,18 @@ input[type="file"] {
 }
 
 
+.PostEmptyMsg{
+    font-size: 50px;
+    opacity: 0.5;
+    color: red;
+}
+
+.noPostMsgDiv{
+    position: relative;
+    top: 180px;
+    left: 450px;
+}
+
 
 
 

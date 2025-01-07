@@ -21,6 +21,13 @@
             <a href="./chat.html"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
             <button id="Logout"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></button>
         </aside>
+        <div class="loading">
+            <div class="loading-container">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
 
         <main>
             <header>
@@ -40,8 +47,11 @@
             <div class="main">
                 <div class="feed" id="feed">
                     <div id="likeShowPopup">
-                        <i class="fa-solid fa-xmark" id="xmark"></i>
-
+                        <i id="xmark" class="fa-solid fa-xmark"></i>
+                        <div class="ShowLikedPeopleDiv"></div>
+                        <div class="EmptyLengthMsg">
+                            <span><i class="fa-solid fa-heart-crack"></i></span><span>No One Like This Post</span>
+                        </div>
                     </div>
                     <div class="comment">
                         <i class="fa-regular fa-circle-xmark" id="xmarkComment"></i>
@@ -105,20 +115,22 @@
                         <div>
                             <span id="nameDis"></span>
                         </div>
-                        <div>
+                        <div class="followDivDiv">
                             <span id="followers">0 followers</span>
                             <span id="following">0 following</span>
                         </div>
                         <div>
-                            <span><p id="othersBio">User Bio</p></span>
-                           
+                            <span>
+                                <p id="othersBio">User Bio</p>
+                            </span>
+
                         </div>
 
                         <div id="showFollowers">
                             <i class="fa-regular fa-circle-xmark" id="followersXmark"></i>
                             <div class="displayFollowers"></div>
                         </div>
-                     </div>
+                    </div>
                 </div>
                 <div>
                     <h1 class="postH1">Posts</h1>
