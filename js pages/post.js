@@ -22,6 +22,7 @@ const auth = getAuth(app);
 const uploadBtn = document.getElementById("uploadBtn");
 
 uploadBtn.addEventListener("click", () => {
+    uploadBtn.style.pointerEvents = "none";
     uploadImage();
 });
 
@@ -47,8 +48,10 @@ async function uploadImage() {
         console.log(downloadURL);
         insertPost(downloadURL);
         messageShow.style.display = "block";
+         
         setTimeout(() => {
             window.location.href = "./homepage.html"
+            uploadBtn.style.pointerEvents = "auto";
         }, 2000);
     } catch (error) {
         console.error("Error:", error);

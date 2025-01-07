@@ -18,53 +18,50 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth();
 
-
+// DOM Elements
 const resetPasswordForm = document.getElementById("forgotPasswordForm");
 const emailInput = document.getElementById("email");
 const messageDiv = document.getElementById("message");
+const emailError = document.getElementById("emailErr");
 
-function emailvalitation(){
-    const emailError = document.getElementById("emailErr");
-    const emailVal = document.getElementById("email").value;
-    let isValid = true;
-    
-    if (emailVal === '') {
+// Validate email format
+const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+// Validate form input
+const validateForm = () => {
+    const emailVal = emailInput.value.trim();
+    if (!emailVal) {
         emailError.textContent = "Email is required";
-        isValid = false;
+        return false;
     } else if (!validateEmail(emailVal)) {
-        emailError.textContent = "Please check your email";
-        isValid = false;
+        emailError.textContent = "Invalid email format. Please check and try again.";
+        return false;
     } else {
-        emailError.textContent = ""; // Clear error if valid
-        isValid = true;
+        emailError.textContent = ""; // Clear any previous errors
+        return true;
     }
-}
-
-const validateEmail = (email) => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simplified email regex
-    return emailPattern.test(email);
 };
 
-resetPasswordForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+// Display feedback messages
+const displayMessage = (message, color) => {
+    messageDiv.innerHTML = `<p style="color: ${color};">${message}</p>`;
+};
 
-    if (emailvalitation()) {
+// Handle form submission
+resetPasswordForm.addEventListener("submit", async (e) => {
+    e.preventDefault(); // Prevent form from refreshing page
+
+    if (validateForm()) {
         const email = emailInput.value.trim();
 
-        if (!email) {
-            messageDiv.innerHTML = `<p style="color: red;">Please enter a valid email address.</p>`;
-            return;
-        }
-
         try {
-            // Sending password reset email
+            // Send password reset email
             await sendPasswordResetEmail(auth, email);
             console.log(`Password reset email sent to: ${email}`);
-            messageDiv.innerHTML = `<p style="color:#00FF9C;">Password reset email sent! Check your inbox.</p>`;
+            displayMessage("Password reset email sent! Check your inbox.", "#00FF9C");
+            emailInput.value = ""; // Clear input field
         } catch (error) {
             console.error("Error resetting password:", error);
-
-
             let errorMessage;
             switch (error.code) {
                 case "auth/invalid-email":
@@ -76,7 +73,7 @@ resetPasswordForm.addEventListener("submit", async (e) => {
                 default:
                     errorMessage = "Failed to send reset email. Please try again later.";
             }
-            messageDiv.innerHTML = `<p style="color: red;">${errorMessage}</p>`;
+            displayMessage(errorMessage, "red");
         }
     }
 });
