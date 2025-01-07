@@ -12,6 +12,7 @@ header{
     margin-top: 0;
     top: 0;
     position: fixed;
+    z-index: 99;
     
 }
 
@@ -229,13 +230,13 @@ a i{
 
 .mainPicture{
     margin-left: 22px;
+    position: relative;
+    width: 600px;
 }
 
 .postImg{
     width: 500px;
-    /* height: 450px; */
     object-fit: cover;
-    /* margin: 30px; */
     border-radius: 3px;
 }
 
@@ -794,6 +795,23 @@ iframe{
     position: absolute;
     right: 20px;
     top: 20px;
+}
+
+.emoji {
+    position: absolute;
+    top: 50%;
+    left: 44%;
+    transform: translate(-50%, -50%) scale(0);
+    color: red;
+    opacity: 0;
+    /* z-index: 999; */
+    font-size: 200px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.emoji.show{
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
 }
 
 

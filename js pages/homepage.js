@@ -137,7 +137,7 @@ async function fetchPosts() {
                 </div>
                 <div class="mainPicture">
                     <img src="${postURL}" alt="Post Image" class="postImg" id="postImg-${postid}">
-                    <i class="fa-solid fa-face-grin-hearts emoji" id="emoji-${postid}"></i>
+                    <div><i class="fa-solid fa-face-grin-hearts emoji" id="emoji-${postid}"></i></div>
                 </div>
                 <div class="like">
                     <div class="LikeYes">
@@ -189,6 +189,11 @@ async function fetchPosts() {
 
 
                     } else {
+                        const emoji = document.getElementById(`emoji-${postid}`);
+                        emoji.classList.add("show");
+                        setTimeout(() => {
+                            emoji.classList.remove("show");
+                        },1000);
 
                         likedPeople.push(userUID);
                         await setDoc(likesDocRef, { likedPeople });
