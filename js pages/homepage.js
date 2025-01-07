@@ -137,7 +137,7 @@ async function fetchPosts() {
                 </div>
                 <div class="mainPicture">
                     <img src="${postURL}" alt="Post Image" class="postImg" id="postImg-${postid}">
-                    <div><i class="fa-solid fa-face-grin-hearts emoji" id="emoji-${postid}"></i></div>
+                    <div><i class="fa-solid fa-heart emoji" id="emoji-${postid}"></i></div>
                 </div>
                 <div class="like">
                     <div class="LikeYes">
