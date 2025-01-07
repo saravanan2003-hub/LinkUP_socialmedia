@@ -18,7 +18,7 @@ const auth = getAuth(app);
 
 // Redirect to homepage if uid is present
 if (localStorage.getItem("uid")) {
-    window.location.href = "./pages/homepage.html";
+    window.location.href = "./pages/landingPage.html";
 }
 
 function showMessage(message, divId) {
@@ -118,7 +118,7 @@ loginForm.addEventListener("submit", (event) => {
                 showMessage('Login successful', 'signInMessage');
                 localStorage.setItem('uid', user.uid);
                
-              window.location.href = "./pages/homepage.html"// Adjust path if necessary
+              window.location.href = "./pages/landingPage.html"
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -130,6 +130,7 @@ loginForm.addEventListener("submit", (event) => {
             });
     }
 });
+
 
 
 

@@ -23,7 +23,6 @@ const auth = getAuth(app);
 const showImg = document.getElementById("ProfileImg");
 const docRef = doc(db, "users", localStorage.getItem("uid"));
 const docSnap = await getDoc(docRef);
-console.log(docSnap.data().profileimg);
 
 showImg.src = docSnap.data().profileimg;
 
@@ -38,32 +37,38 @@ if (localStorage.getItem("src")) {
 async function fetchDatas() {
     const userPostContainer = document.getElementById("fileDisplay");
     const querySnapshot = await getDocs(query(collection(db, "Posts"), where("uid", "==", localStorage.getItem("uid"))));
+    const SnapEmpty = querySnapshot.empty;
+    
+    if (SnapEmpty){
+        const noPostMsgDiv = document.createElement("div");
+        noPostMsgDiv.innerHTML = `<p class="PostEmptyMsg">No Post Yet</p>`;
+        noPostMsgDiv.classList.add("noPostMsgDiv");
+        userPostContainer.appendChild(noPostMsgDiv)
+        console.log(SnapEmpty);
+    }
+    else {
 
 
-    console.log(querySnapshot)
-
-    querySnapshot.forEach((doc) => {
-
-        console.log("Document Data:", doc.data());
-
-        // Create and configure the image element
-        const postId = doc.id;
-        const postURL = doc.data().postURL
-        console.log(postURL)
-        const imgElement = document.createElement("img");
-        imgElement.classList.add("post-image");
-        imgElement.setAttribute("id", postId)
-        imgElement.src = doc.data().postURL;
-        const postUID = doc.data().uid
+        querySnapshot.forEach((doc) => {
 
 
-        // Append the image element to the container
-        userPostContainer.appendChild(imgElement);
+            // Create and configure the image element
+            const postId = doc.id;
+            const postURL = doc.data().postURL
+            const imgElement = document.createElement("img");
+            imgElement.classList.add("post-image");
+            imgElement.setAttribute("id", postId)
+            imgElement.src = doc.data().postURL;
+            const postUID = doc.data().uid
 
 
-        imgElement.addEventListener("dblclick", () => {
-            const showPost = document.getElementById("showPost");
-            showPost.innerHTML = `
+            // Append the image element to the container
+            userPostContainer.appendChild(imgElement);
+
+
+            imgElement.addEventListener("dblclick", () => {
+                const showPost = document.getElementById("showPost");
+                showPost.innerHTML = `
                 <div id="postImg-${postId}" class="postImg">
                     <div class="Delete">
                         <i class="fa-regular fa-circle-xmark" id="showProfileXmark"></i>
@@ -79,56 +84,57 @@ async function fetchDatas() {
                 </div>
             `;
 
-            showPost.style.display = "block";
+                showPost.style.display = "block";
 
 
-            /////////////////////// xMark function /////////////
-            const showProfileXmark = document.getElementById("showProfileXmark");
-            showProfileXmark.addEventListener("click", () => {
-                const showPost = document.getElementById("showPost");
+                /////////////////////// xMark function /////////////
+                const showProfileXmark = document.getElementById("showProfileXmark");
+                showProfileXmark.addEventListener("click", () => {
+                    const showPost = document.getElementById("showPost");
 
-                showPost.style.display = "none"
+                    showPost.style.display = "none"
 
-            })
-
-            ////// only delete button actions div calls
-            const deleteBtn = document.getElementById(`deleteBtn-${postId}`);
-            deleteBtn.addEventListener("click", async () => {
-
-                const DeleteConfrim = document.getElementById("DeleteConfrim");
-                DeleteConfrim.style.display = "block"
-
-                /// delete confrim action 
-                const deleteOkay = document.getElementById("deleteOkay");
-                deleteOkay.addEventListener("click", () => {
-                    deletePost(postURL, postId)
                 })
 
+                ////// only delete button actions div calls
+                const deleteBtn = document.getElementById(`deleteBtn-${postId}`);
+                deleteBtn.addEventListener("click", async () => {
 
-                /// delete cancel action
-                const deleteNo = document.getElementById("deleteNo")
-                deleteNo.addEventListener("click", () => {
                     const DeleteConfrim = document.getElementById("DeleteConfrim");
-                    DeleteConfrim.style.display = "none"
+                    DeleteConfrim.style.display = "block"
+
+                    /// delete confrim action 
+                    const deleteOkay = document.getElementById("deleteOkay");
+                    deleteOkay.addEventListener("click", () => {
+                        deletePost(postURL, postId)
+                    })
+
+
+                    /// delete cancel action
+                    const deleteNo = document.getElementById("deleteNo")
+                    deleteNo.addEventListener("click", () => {
+                        const DeleteConfrim = document.getElementById("DeleteConfrim");
+                        DeleteConfrim.style.display = "none"
+                    })
                 })
-            })
 
-            /////////////   show like and comments //////////
-            const ShowImgLike = document.getElementById(`ShowImgLike-${postId}`);
-            ShowImgLike.addEventListener("click", () => {
-                ShowLikedPeople(postId, postUID);
-            })
+                /////////////   show like and comments //////////
+                const ShowImgLike = document.getElementById(`ShowImgLike-${postId}`);
+                ShowImgLike.addEventListener("click", () => {
+                    ShowLikedPeople(postId, postUID);
+                })
 
-            const showComments = document.getElementById(`showImgComment${postId}`);
-            showComments.addEventListener("click", () => {
-                showComment(postId, postUID);
-            })
+                const showComments = document.getElementById(`showImgComment${postId}`);
+                showComments.addEventListener("click", () => {
+                    showComment(postId, postUID);
+                })
+
+
+            });
 
 
         });
-
-
-    });
+    }
 }
 fetchDatas()
 ///////////////////////////////    Delete  post function   ////////////////////////
@@ -532,7 +538,6 @@ async function getUsername() {
     const bio = document.getElementsByClassName("Bio")[0];
     // Get the UID from localStorage
     const userUID = localStorage.getItem("uid");
-    console.log("UID:", userUID);
 
     if (!userUID) {
         console.error("No UID found in localStorage.");
@@ -550,7 +555,6 @@ async function getUsername() {
         if (userDoc.exists()) {
             // Get user data
             const userData = userDoc.data();
-            console.log("User Data:", userData);
 
             // Display the username
             nameDis.textContent = userData.username || "No username found.";
@@ -585,7 +589,7 @@ async function followers() {
             followPeople.addEventListener("click", async () => {
                 followPeople.style.opacity = "0.5"; // Make it appear dimmed
                 followPeople.style.pointerEvents = "none"; // Disable interaction
-                 
+
                 if (followers.length === 0) {
                     showFollowers.style.display = "block";
                     const noneMsg = document.createElement("div");
@@ -644,24 +648,19 @@ async function following() {
     const userUID = localStorage.getItem("uid");
     var followingCount = 0;
     const following = document.getElementById("following");
-   
+
     try {
         const followingquerySnapshot = await getDocs(query(collection(db, "followers")));
         followingquerySnapshot.forEach(doc => {
             const array = doc.data().followers;
-            console.log(array)
             if (array.includes(userUID)) {
                 followingCount++;
-                console.log(followingCount);
                 const followingPeopleId = doc.id;
-                following.addEventListener("click", async() =>{
+                following.addEventListener("click", async () => {
                     following.style.opacity = "0.5"; // Make it appear dimmed
                     following.style.pointerEvents = "none";
                     showFollowingPeople(followingPeopleId);
                 })
-            }
-            else {
-                console.log("no one");
             }
         });
         following.textContent = `${followingCount} following`;
@@ -682,8 +681,6 @@ async function showFollowingPeople(followingPeopleId) {
     const userData = docSnap.data();
     const username = userData.username;
     const userProfile = userData.profileimg;
-    console.log(username);
-    console.log(userProfile);
     const showFollowerPeople = document.createElement("div");
     showFollowerPeople.classList.add("showFollowerPeople")
     showFollowerPeople.innerHTML = `
@@ -697,28 +694,28 @@ async function showFollowingPeople(followingPeopleId) {
 const bio = document.getElementsByClassName("Bio")[0];
 const setBioBtn = document.getElementById("setBio");
 const bioInputDIv = document.getElementsByClassName("bioInputDIv")[0];
-setBioBtn.addEventListener("click", () =>{
+setBioBtn.addEventListener("click", () => {
     bio.style.display = "none"
     bioInputDIv.style.display = "block";
 })
 
 const BioSetButton = document.getElementsByClassName("fa-check")[0];
-BioSetButton.addEventListener("click",() =>{
+BioSetButton.addEventListener("click", () => {
     const bioInput = document.getElementById("bioInput").value.trim();
-    if(bioInput.length === 0){
+    if (bioInput.length === 0) {
         bioInputDIv.style.display = "none";
         bio.style.display = "block";
     }
-    else if(bioInput.length>=5 && bioInput.length<=45){
-        const documentRef = doc(db, "users",localStorage.getItem("uid"));
+    else if (bioInput.length >= 5 && bioInput.length <= 45) {
+        const documentRef = doc(db, "users", localStorage.getItem("uid"));
         updateDoc(documentRef, {
-            userBio:bioInput // Replace with your field name and value
+            userBio: bioInput // Replace with your field name and value
         })
         bio.textContent = bioInput;
         bioInputDIv.style.display = "none";
         bio.style.display = "block";
     }
-    else{
+    else {
         alert("Bio length must be 5 to 45 letters")
     }
 

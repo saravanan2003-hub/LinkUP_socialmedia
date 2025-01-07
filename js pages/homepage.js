@@ -21,7 +21,10 @@ const storage = getStorage(app);
 const auth = getAuth(app);
 const folderRef = ref(storage, 'Posts')
 
-
+const loading = document.getElementsByClassName("loading")[0];
+setTimeout(() => {
+    loading.style.display = "none";
+}, 5000);
 
 /////////////////////////////////////////////     user name fetch function    /////////////////////////////////////////////////////////////
 async function getUsername() {
@@ -138,6 +141,7 @@ async function fetchPosts() {
                 <div class="mainPicture">
                     <img src="${postURL}" alt="Post Image" class="postImg" id="postImg-${postid}">
                     <div><i class="fa-solid fa-heart emoji" id="emoji-${postid}"></i></div>
+                    <div><i class="fa-solid fa-heart-crack brokenHeart" id="brokenHeart-${postid}"></i></div>
                 </div>
                 <div class="like">
                     <div class="LikeYes">
@@ -176,6 +180,11 @@ async function fetchPosts() {
 
                     if (likedPeople.includes(userUID)) {
                         // Unlike the post
+                        const brokenHeart = document.getElementById(`brokenHeart-${postid}`)
+                        brokenHeart.classList.add("show");
+                        setTimeout(() => {
+                            brokenHeart.classList.remove("show");
+                        }, 1000);
                         const updatedLikedPeople = likedPeople.filter((uid) => uid !== userUID);
                         await setDoc(likesDocRef, { likedPeople: updatedLikedPeople });
                         likePeople()
@@ -193,7 +202,7 @@ async function fetchPosts() {
                         emoji.classList.add("show");
                         setTimeout(() => {
                             emoji.classList.remove("show");
-                        },1000);
+                        }, 1000);
 
                         likedPeople.push(userUID);
                         await setDoc(likesDocRef, { likedPeople });
@@ -259,7 +268,6 @@ async function fetchPosts() {
 
             likeShow.addEventListener("click", () => {
                 likePeople();
-
                 // Toggle display of the popup
                 if (popmain) {
                     popmain.style.display = (popmain.style.display === "none" || popmain.style.display === "") ? "block" : "none";
@@ -270,6 +278,9 @@ async function fetchPosts() {
 
             /// show liked people function
             async function likePeople() {
+                const ShowLikedPeopleDiv = document.getElementsByClassName("ShowLikedPeopleDiv")[0];
+                
+                popmain.appendChild(ShowLikedPeopleDiv)
                 try {
                     const popmain = document.getElementById("likeShowPopup");
                     if (!likesData || !likesData.likedPeople) {
@@ -277,11 +288,11 @@ async function fetchPosts() {
                         return;
                     }
 
-                    popmain.innerHTML = `<i id="xmark" class="fa-solid fa-xmark"></i>
-                    <div class="EmptyLengthMsg">
-                            <p>No One Like This Post</p>
-                    </div>
-                    `;
+                    // popmain.innerHTML = `<i id="xmark" class="fa-solid fa-xmark"></i>
+                    // <div class="EmptyLengthMsg">
+                    //         <p>No One Like This Post</p>
+                    // </div>
+                    // `;
                     const likedPeoples = likesData.likedPeople;
                     if (likedPeoples.length === 0) {
 
@@ -318,10 +329,12 @@ async function fetchPosts() {
                                 const childPopup = document.createElement("div");
                                 childPopup.classList.add("childPopup");
                                 childPopup.innerHTML = `
+                                <div class="likedPeopleDisplayDiv">
                                     <img src="${profileimg}" alt="profileImg" class="popupPost">
                                     <p class="popupUser">${username}</p>
+                                </div>
                                 `;
-                                popmain.appendChild(childPopup);
+                                ShowLikedPeopleDiv.appendChild(childPopup);
                             } else {
                                 console.warn(`User data not found for userId: ${userId}`);
                             }
@@ -334,7 +347,11 @@ async function fetchPosts() {
                     const xmark = document.getElementById("xmark");
                     if (xmark) {
                         xmark.addEventListener("click", () => {
+                            const EmptyLengthMsg = document.querySelector(".EmptyLengthMsg");
                             popmain.style.display = "none";
+                            ShowLikedPeopleDiv.innerHTML = ""
+                            EmptyLengthMsg.style.display = "none"
+
                         });
                     } else {
                         console.error("xmark element not found.");
@@ -417,7 +434,7 @@ async function fetchPosts() {
     } catch (error) {
         console.error("Error fetching posts:", error);
     }
-
+    // loading.style.display = "none";
 }
 
 fetchPosts();
@@ -522,26 +539,34 @@ async function userProfilePageDisplay(otheruserUID) {
 
     const querySnapshot = await getDocs(query(collection(db, "Posts"), where("uid", "==", otheruserUID)));
 
-    console.log(querySnapshot)
+    const SnapEmpty = querySnapshot.empty;
 
-    querySnapshot.forEach((doc) => {
+    if (SnapEmpty) {
+        const noPostMsgDiv = document.createElement("div");
+        noPostMsgDiv.innerHTML = `<p class="PostEmptyMsg">No Post Yet</p>`;
+        noPostMsgDiv.classList.add("noPostMsgDiv");
+        fileDisplay.appendChild(noPostMsgDiv)
+        console.log(SnapEmpty);
+    } else {
+        querySnapshot.forEach((doc) => {
 
-        console.log("Document Data:", doc.data());
+            console.log("Document Data:", doc.data());
 
-        // Create and configure the image element
-        const postId = doc.id;
-        const postURL = doc.data().postURL
-        // console.log(postURL)
-        const imgElement = document.createElement("img");
-        imgElement.classList.add("post-image");
-        imgElement.setAttribute("id", postId)
-        imgElement.src = doc.data().postURL;
+            // Create and configure the image element
+            const postId = doc.id;
+            const postURL = doc.data().postURL
+            // console.log(postURL)
+            const imgElement = document.createElement("img");
+            imgElement.classList.add("post-image");
+            imgElement.setAttribute("id", postId)
+            imgElement.src = doc.data().postURL;
 
 
 
-        // Append the image element to the container
-        fileDisplay.appendChild(imgElement);
-    })
+            // Append the image element to the container
+            fileDisplay.appendChild(imgElement);
+        })
+    }
 
     const othersPageFollowBtn = document.getElementById(`profileFollow-${otheruserUID}`);
     othersPageFollowBtn.addEventListener("click", () => {
@@ -677,7 +702,13 @@ async function checkFun(userid, btnId) {
             ? followDocSnap.data().followers || []
             : []; // Fallback to an empty array if the document doesn't exist
 
-        if (followers.includes(userUID)) {
+
+        if (userid === userUID) {
+            const followBtn = document.getElementById(`followBtn-${userid}`);
+            followBtn.textContent = "You"
+            followBtn.disabled = true;
+        }
+        else if (followers.includes(userUID)) {
             // Update UI for unfollow
             followBtn.classList.remove("followBtn");
             followBtn.classList.add("unFollowBtn");
