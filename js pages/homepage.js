@@ -745,8 +745,7 @@ async function followersAdd(userid) {
         const followDocSnap = await getDoc(followDocRef);
         const followers = followDocSnap.exists()
             ? followDocSnap.data().followers || []
-            : []; // Fallback to an empty array if the document doesn't exist
-
+            : []; 
         if (followers.includes(userUID)) {
             // Unfollow: Remove the user from followers
             await setDoc(followDocRef, { followers: followers.filter((uid) => uid !== userUID) });
@@ -934,7 +933,7 @@ if ('webkitSpeechRecognition' in window) {
 
     recognition.onstart = () => {
         recordMsgDiv.style.display = "block";
-        recordMsg.innerHTML += '<p>Listening in Thanglish...</p>';
+        recordMsg.innerHTML += '<p>Listening Your Voice...</p>';
     };
 
     recognition.onresult = (event) => {
