@@ -38,8 +38,8 @@ async function fetchDatas() {
     const userPostContainer = document.getElementById("fileDisplay");
     const querySnapshot = await getDocs(query(collection(db, "Posts"), where("uid", "==", localStorage.getItem("uid"))));
     const SnapEmpty = querySnapshot.empty;
-    
-    if (SnapEmpty){
+
+    if (SnapEmpty) {
         const noPostMsgDiv = document.createElement("div");
         noPostMsgDiv.innerHTML = `<p class="PostEmptyMsg">No Post Yet</p>`;
         noPostMsgDiv.classList.add("noPostMsgDiv");
@@ -586,18 +586,11 @@ async function followers() {
         }
         else {
             followPeople.textContent = `${followers.length} followers`;
-            followPeople.addEventListener("click", async () => {
-                followPeople.style.opacity = "0.5"; // Make it appear dimmed
-                followPeople.style.pointerEvents = "none"; // Disable interaction
+            if (followers.length != 0) {
+                followPeople.addEventListener("click", async () => {
+                    followPeople.style.opacity = "0.5"; // Make it appear dimmed
+                    followPeople.style.pointerEvents = "none"; // Disable interaction
 
-                if (followers.length === 0) {
-                    showFollowers.style.display = "block";
-                    const noneMsg = document.createElement("div");
-                    noneMsg.classList.add("noneMsg");
-                    noneMsg.textContent = "No one follow this person";
-                    showFollowers.appendChild(noneMsg);
-                }
-                else {
                     const displayFollowers = document.getElementsByClassName("displayFollowers")[0];
                     showFollowers.style.display = "block";
                     for (const people of followers) {
@@ -615,9 +608,10 @@ async function followers() {
                         displayFollowers.appendChild(showFollowerPeople)
 
                     }
-                }
-            });
 
+                });
+
+            }
         }
 
 
@@ -634,8 +628,6 @@ followersXmark.addEventListener("click", () => {
     const followPeople = document.getElementById("followers");
     const following = document.getElementById("following");
     const displayFollowers = document.getElementsByClassName("displayFollowers")[0];
-    const noneMsg = document.getElementsByClassName("noneMsg")[0];
-    // noneMsg.remove()
     showFollowers.style.display = "none";
     displayFollowers.innerHTML = ""
     followPeople.style.opacity = "1"; // Make it appear dimmed
@@ -650,17 +642,20 @@ async function following() {
     const following = document.getElementById("following");
 
     try {
+
         const followingquerySnapshot = await getDocs(query(collection(db, "followers")));
         followingquerySnapshot.forEach(doc => {
             const array = doc.data().followers;
-            if (array.includes(userUID)) {
-                followingCount++;
-                const followingPeopleId = doc.id;
-                following.addEventListener("click", async () => {
-                    following.style.opacity = "0.5"; // Make it appear dimmed
-                    following.style.pointerEvents = "none";
-                    showFollowingPeople(followingPeopleId);
-                })
+            if (array.length != 0) {
+                if (array.includes(userUID)) {
+                    followingCount++;
+                    const followingPeopleId = doc.id;
+                    following.addEventListener("click", async () => {
+                        following.style.opacity = "0.5"; // Make it appear dimmed
+                        following.style.pointerEvents = "none";
+                        showFollowingPeople(followingPeopleId);
+                    })
+                }
             }
         });
         following.textContent = `${followingCount} following`;

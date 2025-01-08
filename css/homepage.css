@@ -915,6 +915,8 @@ iframe{
     animation-delay: 0.4s;
 }
 
+
+
 @keyframes bounce {
     0%, 80%, 100% {
         transform: scale(0);
