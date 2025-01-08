@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getFirestore, setDoc, doc, getDocs, getDoc, addDoc, collection, query, where, orderBy,limit } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import { getStorage, uploadBytes, getDownloadURL, deleteObject, listAll } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
-import {getDatabase,get,ref,onValue,set,remove,} from "https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js";
+// import {getDatabase,get,ref,onValue,set,remove,} from "https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -16,8 +16,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const storage = getStorage(app);
-const rdb = getDatabase(app);
+// const storage = getStorage(app);
+// const rdb = getDatabase(app);
 
 
 try {
@@ -27,12 +27,7 @@ try {
             const array = doc.data().followers;
             console.log(array)
             if (array.includes(userUID)) {
-                // followingCount++;
-                // console.log(followingCount);
                 const followingPeopleId = doc.id;
-                
-                    // following.style.opacity = "0.5"; // Make it appear dimmed
-                    // following.style.pointerEvents = "none";
                     showFollowingPeople(followingPeopleId);
                 
             }
@@ -52,12 +47,15 @@ try {
         showFollowers.style.display = "block";
         const docRef = doc(db, "users", followingPeopleId);
         const docSnap = await getDoc(docRef);
+        const userId = docSnap.id;
+        console.log(userId)
         const userData = docSnap.data();
         const username = userData.username;
         const userProfile = userData.profileimg;
         console.log(username);
         console.log(userProfile);
         const showFollowerPeople = document.createElement("div");
+        showFollowerPeople.setAttribute("id", `userId-${userId}`)
         showFollowerPeople.classList.add("showFollowerPeople")
         showFollowerPeople.innerHTML = `
         <img src="${userProfile}" alt="Profile Image" class="followersProfile">
@@ -68,29 +66,9 @@ try {
         
     }
 
+const arrowMark = document.getElementsByClassName("fa-arrow-left")[0];
+arrowMark.addEventListener("click",()=>{
+  window.location.href = "homepage.html";
+})
 
-    const messagesContainer = document.getElementById("messages");
-    const messageInput = document.getElementById("chatInput");
-    const sendButton = document.getElementById("send");
-    sendButton.addEventListener("click" ,() =>{
-    onValue(messagesRef, (snapshot) => {
-        messagesContainer.innerHTML = ""; // Clear messages
-        const messages = snapshot.val();
-        for (let id in messages) {
-          const message = messages[id];
-          const div = document.createElement("div");
-          div.textContent = message;
-          messagesContainer.appendChild(div);
-        }
-      });
-      
-      // Send a message
-      sendButton.addEventListener("click", () => {
-        const message = messageInput.value;
-        if (message.trim() !== "") {
-          push(messagesRef, message); // Save to Firebase
-          messageInput.value = ""; // Clear input
-        }
-      });
-    });
       

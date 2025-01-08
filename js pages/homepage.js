@@ -187,7 +187,7 @@ async function fetchPosts() {
                         }, 1000);
                         const updatedLikedPeople = likedPeople.filter((uid) => uid !== userUID);
                         await setDoc(likesDocRef, { likedPeople: updatedLikedPeople });
-                        likePeople()
+                        
 
 
                         // Update UI
@@ -206,14 +206,13 @@ async function fetchPosts() {
 
                         likedPeople.push(userUID);
                         await setDoc(likesDocRef, { likedPeople });
-                        likePeople()
+
 
                         // Update UI
                         heart.classList.remove("fa-regular");
                         heart.classList.add("fa-solid");
                         likeCountEl.textContent = likedPeople.length;
                         console.log(`User ${userUID} liked the post.`);
-
 
                     }
                 } catch (error) {
@@ -229,8 +228,6 @@ async function fetchPosts() {
             const usernameEl = box.querySelector(`#username-${postid}`);
             const postUid = document.getElementsByClassName(`${postUID}`)[0];
             const sli = postUid.className.slice(10);
-
-            // console.log(sli)
 
 
 
@@ -265,6 +262,7 @@ async function fetchPosts() {
 
             const likeShow = document.getElementById(`showlike-${postid}`);
             const popmain = document.getElementById("likeShowPopup"); // Declare popmain globally
+            
 
             likeShow.addEventListener("click", () => {
                 likePeople();
@@ -279,6 +277,12 @@ async function fetchPosts() {
             /// show liked people function
             async function likePeople() {
                 const ShowLikedPeopleDiv = document.getElementsByClassName("ShowLikedPeopleDiv")[0];
+                ShowLikedPeopleDiv.innerHTML = ""
+
+                const likesDocRef = doc(db, "Likes", postid);
+                const likesDocSnap = await getDoc(likesDocRef);
+                const likesData = likesDocSnap.data() || { likedPeople: [] };
+    
                 
                 popmain.appendChild(ShowLikedPeopleDiv)
                 try {
@@ -288,11 +292,6 @@ async function fetchPosts() {
                         return;
                     }
 
-                    // popmain.innerHTML = `<i id="xmark" class="fa-solid fa-xmark"></i>
-                    // <div class="EmptyLengthMsg">
-                    //         <p>No One Like This Post</p>
-                    // </div>
-                    // `;
                     const likedPeoples = likesData.likedPeople;
                     if (likedPeoples.length === 0) {
 
@@ -1023,6 +1022,8 @@ logout1.addEventListener('click', () => {
 
     }
 });
+
+
 
 
 
