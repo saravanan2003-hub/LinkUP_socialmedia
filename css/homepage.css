@@ -6,7 +6,7 @@
 header{
     display: grid;
     grid-template-columns: 50% 50%;
-    background-color: #134B70;
+    background-color: black;
     height: 10vh;
     width: 80%;
     margin-top: 0;
@@ -19,8 +19,7 @@ header{
 aside{
     height: 100vh;
     width: 20vw;
-    background-color: #134B70;
-    /* background-color: #; */
+    background-color: black;
     margin-top: 0;
     top: 0;
     position: fixed;
@@ -28,7 +27,6 @@ aside{
     flex-direction: column;
     justify-content: start;
     align-items: center;
-    /* border-right: 2px solid black; */
     z-index: 2;
     
 
@@ -42,7 +40,7 @@ main{
 }
 
 aside span img{
-    height: 125px;
+    height: 200px;
     width: 230px;
     margin-top: 50px;
 }
@@ -170,7 +168,6 @@ aside a{
 }
 
 .childPopup{
-    /* background-color: #E5E1DA; */
     height: 100px;
     width: 300px;
     display: flex;
@@ -212,7 +209,7 @@ aside a{
     width: 400px;
     top: 200px;
     left: 500px;
-    background-color: #134B70;
+    background-color:black;
     z-index: 99;
     border-radius: 10px;
     position: fixed;
