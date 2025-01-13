@@ -20,6 +20,32 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 const auth = getAuth(app);
 const uploadBtn = document.getElementById("uploadBtn");
+const allowedImageTypes = ["image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp", "image/tiff", "image/x-icon", "image/svg+xml", "image/heif", "image/heic"];
+const allowedVideoTypes = ["video/mp4", "video/avi", "video/mpeg", "video/quicktime", "video/x-msvideo", "video/x-ms-wmv", "video/webm", "video/3gpp", "video/3gpp2", "video/x-matroska"];
+
+const changeBtn = document.getElementById("ChangeBtn");
+changeBtn.addEventListener("click", () => {
+  const showImg = document.getElementById("showImg");
+  const postVideo = document.getElementById("postVideo");
+  const uploadLabel = document.getElementById("upload-label");
+  const imagePreview = document.getElementsByClassName("imagePreview")[0];
+
+
+  if (postVideo.style.display === "none" || postVideo.style.display === "") {
+    showImg.style.display = "none";
+    postVideo.style.display = "block";
+    changeBtn.textContent = "Switch To Image";
+    uploadLabel.textContent = "Choose Video"
+    imagePreview.style.display = "none"
+  } else {
+    postVideo.style.display = "none";
+    showImg.style.display = "block";
+    changeBtn.textContent = "Switch To Video";
+    uploadLabel.textContent = "Choose Image"
+    imagePreview.style.display = "block"
+  }
+});
+
 
 uploadBtn.addEventListener("click", () => {
     uploadBtn.style.pointerEvents = "none";
@@ -30,52 +56,89 @@ async function uploadImage() {
     const messageShow = document.getElementById("messageShow");
     const upload = document.getElementById("upload");
     const file = upload.files[0];
+    console.log(file.type)
 
 
     if (!file) {
         alert("No Photo/Image selected");
         return;
     }
+    if (allowedImageTypes.includes(file.type)) {
+        try {
+            const storageRef = ref(storage, `image/${file.name}`);
+            await uploadBytes(storageRef, file);
+            console.log("File Uploaded Successfully");
 
 
-    try {
-        const storageRef = ref(storage, `image/${file.name}`);
-        await uploadBytes(storageRef, file);
-        console.log("File Uploaded Successfully");
+            const downloadURL = await getDownloadURL(storageRef);
+            const postType = "image";
+            insertPost(downloadURL, postType);
+            messageShow.style.display = "block";
 
-
-        const downloadURL = await getDownloadURL(storageRef);
-        console.log(downloadURL);
-        insertPost(downloadURL);
-        messageShow.style.display = "block";
-         
-        setTimeout(() => {
-            window.location.href = "./homepage.html"
-            uploadBtn.style.pointerEvents = "auto";
-        }, 2000);
-    } catch (error) {
-        console.error("Error:", error);
+            setTimeout(() => {
+                window.location.href = "./homepage.html"
+                uploadBtn.style.pointerEvents = "auto";
+            }, 2000);
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+    else if (allowedVideoTypes) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", "Linkup assets");
+        let cloudinaryEndpoint = "https://api.cloudinary.com/v1_1/dvdp7km2p/video/upload";
+        const response = await fetch(cloudinaryEndpoint, {
+            method: "POST",
+            body: formData,
+        });
+        const postType = "Video";
+        const data = await response.json();
+        const postLink = data.secure_url;
+        insertPost(postLink, postType)
+    }
+    else {
+        alert("Only video and image files can upload")
     }
 
 }
 
+const postCaption = document.getElementById("PostCaption");
+
+postCaption.addEventListener("input", () => {
+    captionVal();
+});
+
+function captionVal(){
+    const caption = postCaption.value; 
+    if (caption.length <= 250) {
+        postCaption.removeAttribute("readonly");
+        return caption;
+    } else {
+        postCaption.setAttribute("readonly", true);
+        return caption;
+    }
+}
+
+postCaption.addEventListener("focus", () => {
+    if (postCaption.hasAttribute("readonly")) {
+        postCaption.removeAttribute("readonly");
+        postCaption.style.cursor = "text";
+    }
+});
 
 
+async function insertPost(downloadURL, postType) {
 
-
-async function insertPost(downloadURL) {
-   
     const uploadInput = document.getElementById("upload");
     const file = uploadInput.files[0];
-    const postCaption = document.getElementById("PostCaption");
-    const captionVal = postCaption.value
-
     const postData = {
         postURL: downloadURL,
         postTime: new Date().toISOString(),
         postName: file.name,
         uid: localStorage.getItem("uid"),
-        postDes: captionVal
+        postDes: captionVal(),
+        postType: postType
     };
 
 
@@ -93,15 +156,21 @@ async function insertPost(downloadURL) {
 
 const upload = document.getElementById("upload");
 const showImg = document.getElementById("showImg");
+const postVideo = document.getElementById("postVideo")
 
 upload.addEventListener("change", () => {
     const file = upload.files[0];
 
-    if (file && file.type.startsWith("image/")) {
+    if (file && allowedImageTypes.includes(file.type)) {
+        const imagePreview = document.getElementsByClassName("imagePreview")[0];
         const imageUrl = URL.createObjectURL(file);
+        imagePreview.style.display = "none"
         showImg.setAttribute("src", imageUrl);
-    } else {
-        alert("Please upload a valid image file.");
+    } else if(file&& allowedVideoTypes.includes(file.type)){
+        const videoUrl = URL.createObjectURL(file);
+        postVideo.setAttribute("src",videoUrl)
+    }else{
+        alert("Only video and image files can upload")
     }
 });
 

@@ -95,6 +95,7 @@ async function fetchPosts() {
             const postURL = postData.postURL;
             var postUID = postData.uid;
             const postid = postDoc.id;
+            const postType = postData.postType;
 
             // Default post description if undefined
             const postDes = postData.postDes || " ";
@@ -138,10 +139,7 @@ async function fetchPosts() {
                         <p class="username" id="username-${postid}">${username}</p>
                     </div>
                 </div>
-                <div class="mainPicture">
-                    <img src="${postURL}" alt="Post Image" class="postImg" id="postImg-${postid}">
-                    <div><i class="fa-solid fa-heart emoji" id="emoji-${postid}"></i></div>
-                    <div><i class="fa-solid fa-heart-crack brokenHeart" id="brokenHeart-${postid}"></i></div>
+                <div class="mainPicture" id="postDiv-${postid}">
                 </div>
                 <div class="like">
                     <div class="LikeYes">
@@ -248,18 +246,6 @@ async function fetchPosts() {
                 });
             });
 
-
-            const post = document.getElementById(`postImg-${postid}`);
-            post.addEventListener("dblclick", () => {
-                likeFunction();
-            })
-
-
-
-
-
-
-
             const likeShow = document.getElementById(`showlike-${postid}`);
             const popmain = document.getElementById("likeShowPopup"); // Declare popmain globally
             
@@ -318,9 +304,10 @@ async function fetchPosts() {
                         try {
                             const userDocRef = doc(db, "users", userId);
                             const userDocSnap = await getDoc(userDocRef);
-
+                            const likedPeopleUserId = userDocSnap.id;
                             if (userDocSnap.exists()) {
                                 const userData = userDocSnap.data();
+
                                 const username = userData.username || "Unknown User";
                                 const profileimg = userData.profileimg || "default-profile.png";
 
@@ -329,11 +316,16 @@ async function fetchPosts() {
                                 childPopup.classList.add("childPopup");
                                 childPopup.innerHTML = `
                                 <div class="likedPeopleDisplayDiv">
-                                    <img src="${profileimg}" alt="profileImg" class="popupPost">
+                                    <img src="${profileimg}" alt="profileImg" class="popupPost" id="likedPeoplePost-${likedPeopleUserId}">
                                     <p class="popupUser">${username}</p>
                                 </div>
                                 `;
                                 ShowLikedPeopleDiv.appendChild(childPopup);
+
+                                const likedPeopleProfile = document.getElementById(`likedPeoplePost-${likedPeopleUserId}`);
+                                likedPeopleProfile.addEventListener("click",()=>{
+                                    userProfilePageDisplay(likedPeopleUserId)
+                                })
                             } else {
                                 console.warn(`User data not found for userId: ${userId}`);
                             }
@@ -428,6 +420,27 @@ async function fetchPosts() {
                 fetchAndDisplayComments(postid)
             });
 
+            const mainPicture = document.getElementById(`postDiv-${postid}`);
+            if(postType === "image"){
+                console.log("yes");
+                mainPicture.innerHTML = `
+                <img src="${postURL}" alt="Post Image" class="postImg" id="postImg-${postid}"></img>
+                <div><i class="fa-solid fa-heart emoji" id="emoji-${postid}"></i></div>
+                <div><i class="fa-solid fa-heart-crack brokenHeart" id="brokenHeart-${postid}"></i></div>
+                `
+            }
+            else{
+               mainPicture.innerHTML = `
+               <video src="${postURL}" alt="Post Image" class="postImg" id="postImg-${postid}" controls></video>
+                <div><i class="fa-solid fa-heart emoji" id="emoji-${postid}"></i></div>
+                <div><i class="fa-solid fa-heart-crack brokenHeart" id="brokenHeart-${postid}"></i></div>
+               `
+            }
+
+            const post = document.getElementById(`postImg-${postid}`);
+            post.addEventListener("dblclick", () => {
+                likeFunction();
+            })
 
         }
     } catch (error) {
@@ -437,6 +450,8 @@ async function fetchPosts() {
 }
 
 fetchPosts();
+
+
 
 async function fetchAndDisplayComments(postid) {
     try {
@@ -460,6 +475,7 @@ async function fetchAndDisplayComments(postid) {
                 try {
                     const userDocRef = doc(db, "users", comment.userId);
                     const docSnap = await getDoc(userDocRef);
+                    const commentedUserId = docSnap.id;
 
                     // Default values if user data is missing
                     const userData = docSnap.exists() ? docSnap.data() : {};
@@ -474,7 +490,7 @@ async function fetchAndDisplayComments(postid) {
                     commentDiv.innerHTML = `
                         <div class="comment_profileDiv">
                             <small class="commentedTime">${new Date(comment.timestamp).toLocaleString()}</small>
-                            <img src="${profileimg}" class="comment-profile" alt="Profile Image">
+                            <img src="${profileimg}" class="comment-profile commentProfile-${commentedUserId}" alt="Profile Image">
                             <p>${username}</p>
                         </div>
                         <div class="main_commentDiv">
@@ -484,6 +500,13 @@ async function fetchAndDisplayComments(postid) {
 
                     // Append to the container
                     commentsContainer.appendChild(commentDiv);
+
+                    const commentedUserProfiles = document.getElementsByClassName(`commentProfile-${commentedUserId}`);
+                    for(const commentedUserProfile of commentedUserProfiles)
+                    commentedUserProfile.addEventListener("click", () =>{
+                        console.log("button clicked")
+                        userProfilePageDisplay(commentedUserId);
+                    })
                 } catch (userError) {
                     console.error("Error fetching user data for comment:", comment, userError);
                 }
@@ -525,9 +548,10 @@ async function userProfilePageDisplay(otheruserUID) {
     othersBio.textContent = Bio
     followers(otheruserUID);
     following(otheruserUID)
-    const ProfileFollowbtn = document.createElement("button");
+    // const ProfileFollowbtn = document.createElement("button");
+    const ProfileFollowbtn = document.getElementsByClassName("followBtn")[0]
     ProfileFollowbtn.setAttribute("id", `profileFollow-${otheruserUID}`)
-    ProfileFollowbtn.classList.add("followBtn");
+    // ProfileFollowbtn.classList.add("followBtn");
     const ProfileFollowDiv = document.getElementsByClassName("ProfileFollowDiv")[0];
     ProfileFollowDiv.appendChild(ProfileFollowbtn)
 
@@ -811,13 +835,14 @@ async function followers(otheruserUID) {
                     for (const people of followers) {
                         const docRef = doc(db, "users", people);
                         const docSnap = await getDoc(docRef);
+                        const followersUID = docSnap.id;
                         const userData = docSnap.data();
                         const username = userData.username;
                         const userProfile = userData.profileimg;
                         const showFollowerPeople = document.createElement("div");
                         showFollowerPeople.classList.add("showFollowerPeople")
                         showFollowerPeople.innerHTML = `
-                            <img src="${userProfile}" alt="Profile Image" class="followersProfile">
+                            <img src="${userProfile}" alt="Profile Image" class="followersProfile" id="followersProfile-${followersUID}">
                             <p class="followersName">${username}</p>
                         `
                         displayFollowers.appendChild(showFollowerPeople)
