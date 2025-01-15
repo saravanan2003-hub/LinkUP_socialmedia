@@ -23,30 +23,6 @@ const uploadBtn = document.getElementById("uploadBtn");
 const allowedImageTypes = ["image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp", "image/tiff", "image/x-icon", "image/svg+xml", "image/heif", "image/heic"];
 const allowedVideoTypes = ["video/mp4", "video/avi", "video/mpeg", "video/quicktime", "video/x-msvideo", "video/x-ms-wmv", "video/webm", "video/3gpp", "video/3gpp2", "video/x-matroska"];
 
-const changeBtn = document.getElementById("ChangeBtn");
-changeBtn.addEventListener("click", () => {
-  const showImg = document.getElementById("showImg");
-  const postVideo = document.getElementById("postVideo");
-  const uploadLabel = document.getElementById("upload-label");
-  const imagePreview = document.getElementsByClassName("imagePreview")[0];
-
-
-  if (postVideo.style.display === "none" || postVideo.style.display === "") {
-    showImg.style.display = "none";
-    postVideo.style.display = "block";
-    changeBtn.textContent = "Switch To Image";
-    uploadLabel.textContent = "Choose Video"
-    imagePreview.style.display = "none"
-  } else {
-    postVideo.style.display = "none";
-    showImg.style.display = "block";
-    changeBtn.textContent = "Switch To Video";
-    uploadLabel.textContent = "Choose Image"
-    imagePreview.style.display = "block"
-  }
-});
-
-
 uploadBtn.addEventListener("click", () => {
     uploadBtn.style.pointerEvents = "none";
     uploadImage();
@@ -160,15 +136,19 @@ const postVideo = document.getElementById("postVideo")
 
 upload.addEventListener("change", () => {
     const file = upload.files[0];
-
+    const imagePreview = document.getElementsByClassName("imagePreview")[0];
     if (file && allowedImageTypes.includes(file.type)) {
-        const imagePreview = document.getElementsByClassName("imagePreview")[0];
         const imageUrl = URL.createObjectURL(file);
         imagePreview.style.display = "none"
         showImg.setAttribute("src", imageUrl);
+        postVideo.style.display = "none"
+        showImg.style.display  = "block"
     } else if(file&& allowedVideoTypes.includes(file.type)){
         const videoUrl = URL.createObjectURL(file);
         postVideo.setAttribute("src",videoUrl)
+        showImg.style.display = "none"
+        postVideo.style.display = "block"
+        imagePreview.style.display = "none"
     }else{
         alert("Only video and image files can upload")
     }

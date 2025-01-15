@@ -53,90 +53,117 @@ async function fetchDatas() {
 
 
             // Create and configure the image element
-            const postId = doc.id;
-            const postURL = doc.data().postURL
-            const imgElement = document.createElement("img");
-            imgElement.classList.add("post-image");
-            imgElement.setAttribute("id", postId)
-            imgElement.src = doc.data().postURL;
-            const postUID = doc.data().uid
-
-
-            // Append the image element to the container
-            userPostContainer.appendChild(imgElement);
-
-
-            imgElement.addEventListener("dblclick", () => {
-                const showPost = document.getElementById("showPost");
-                showPost.innerHTML = `
-                <div id="postImg-${postId}" class="postImg">
-                    <div class="Delete">
-                        <i class="fa-regular fa-circle-xmark" id="showProfileXmark"></i>
-                        <button id="deleteBtn-${postId}" class="deleteBtn"><i class="fa-solid fa-trash"></i> Delete</button>
-                    </div>
-                    <div class="showPostImage">
-                        <img  src="${postURL}"alt="Post Image" id="popupImg">
-                        <div>
-                            <i class="fa-solid fa-heart" id="ShowImgLike-${postId}" ></i>
-                            <i class="fa-solid fa-comment" id="showImgComment${postId}"></i>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-                showPost.style.display = "block";
-
-
-                /////////////////////// xMark function /////////////
-                const showProfileXmark = document.getElementById("showProfileXmark");
-                showProfileXmark.addEventListener("click", () => {
-                    const showPost = document.getElementById("showPost");
-
-                    showPost.style.display = "none"
-
+            var postId = doc.id;
+            const postURL = doc.data().postURL;
+            const postType = doc.data().postType;
+            if (postType === "image") {
+                const imgElement = document.createElement("img");
+                imgElement.classList.add("post-image");
+                imgElement.setAttribute("id", postId)
+                imgElement.src = doc.data().postURL;
+                const postUID = doc.data().uid
+                userPostContainer.appendChild(imgElement);
+                imgElement.addEventListener("dblclick" ,() =>{
+                    displayPost(postId,postURL,postUID,postType);
                 })
-
-                ////// only delete button actions div calls
-                const deleteBtn = document.getElementById(`deleteBtn-${postId}`);
-                deleteBtn.addEventListener("click", async () => {
-
-                    const DeleteConfrim = document.getElementById("DeleteConfrim");
-                    DeleteConfrim.style.display = "block"
-
-                    /// delete confrim action 
-                    const deleteOkay = document.getElementById("deleteOkay");
-                    deleteOkay.addEventListener("click", () => {
-                        deletePost(postURL, postId)
-                    })
-
-
-                    /// delete cancel action
-                    const deleteNo = document.getElementById("deleteNo")
-                    deleteNo.addEventListener("click", () => {
-                        const DeleteConfrim = document.getElementById("DeleteConfrim");
-                        DeleteConfrim.style.display = "none"
-                    })
+            }
+            else{
+                var imgElement = document.createElement("video");
+                imgElement.classList.add("post-image");
+                imgElement.setAttribute("id", postId)
+                imgElement.src = doc.data().postURL;
+                const postUID = doc.data().uid
+                imgElement.setAttribute("controls", "")
+                userPostContainer.appendChild(imgElement);
+                imgElement.addEventListener("click" ,() =>{
+                    displayPost(postId,postURL,postUID,postType);
                 })
-
-                /////////////   show like and comments //////////
-                const ShowImgLike = document.getElementById(`ShowImgLike-${postId}`);
-                ShowImgLike.addEventListener("click", () => {
-                    ShowLikedPeople(postId, postUID);
-                })
-
-                const showComments = document.getElementById(`showImgComment${postId}`);
-                showComments.addEventListener("click", () => {
-                    showComment(postId, postUID);
-                })
-
-
-            });
-
-
+            }
         });
     }
 }
 fetchDatas()
+
+function displayPost(postId,postURL,postUID,postType){
+        const showPost = document.getElementById("showPost");
+        showPost.innerHTML = `
+        <div id="postImg-${postId}" class="postImg">
+            <div class="Delete">
+                <i class="fa-regular fa-circle-xmark" id="showProfileXmark"></i>
+                <button id="deleteBtn-${postId}" class="deleteBtn"><i class="fa-solid fa-trash"></i> Delete</button>
+            </div>
+            <div class="showPostImage">
+                <div id="postdiv-${postId}">
+                
+                </div>
+                <div>
+                    <i class="fa-solid fa-heart" id="ShowImgLike-${postId}" ></i>
+                    <i class="fa-solid fa-comment" id="showImgComment${postId}"></i>
+                </div>
+            </div>
+        </div>
+    `;
+
+        showPost.style.display = "block";
+        const imageAndVideoDiv = document.getElementById(`postdiv-${postId}`)
+        if(postType == "image"){
+            imageAndVideoDiv.innerHTML = `
+            <img  src="${postURL}"alt="Post Image" id="popupImg">
+            `
+        }
+        else{
+            imageAndVideoDiv.innerHTML = `
+            <video  src="${postURL}"alt="Post video" id="popupImg" controls class="popupVideo"><video>
+            `
+        }
+
+
+        /////////////////////// xMark function /////////////
+        const showProfileXmark = document.getElementById("showProfileXmark");
+        showProfileXmark.addEventListener("click", () => {
+            const showPost = document.getElementById("showPost");
+
+            showPost.style.display = "none"
+
+        })
+
+        ////// only delete button actions div calls
+        const deleteBtn = document.getElementById(`deleteBtn-${postId}`);
+        deleteBtn.addEventListener("click", async () => {
+
+            const DeleteConfrim = document.getElementById("DeleteConfrim");
+            DeleteConfrim.style.display = "block"
+
+            /// delete confrim action 
+            const deleteOkay = document.getElementById("deleteOkay");
+            deleteOkay.addEventListener("click", () => {
+                deletePost(postURL, postId)
+            })
+
+
+            /// delete cancel action
+            const deleteNo = document.getElementById("deleteNo")
+            deleteNo.addEventListener("click", () => {
+                const DeleteConfrim = document.getElementById("DeleteConfrim");
+                DeleteConfrim.style.display = "none"
+            })
+        })
+
+        /////////////   show like and comments //////////
+        const ShowImgLike = document.getElementById(`ShowImgLike-${postId}`);
+        ShowImgLike.addEventListener("click", () => {
+            ShowLikedPeople(postId, postUID);
+        })
+
+        const showComments = document.getElementById(`showImgComment${postId}`);
+        showComments.addEventListener("click", () => {
+            showComment(postId, postUID);
+        })
+
+
+    
+
+}
 ///////////////////////////////    Delete  post function   ////////////////////////
 
 async function deletePost(postURL, postId) {

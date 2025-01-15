@@ -14,7 +14,8 @@ body{
 }
 .container{
     display: grid;
-    grid-template-rows:20% 80%;
+    grid-template-rows:15% 85%;
+    height: 100vh;
     
     
 }
@@ -22,8 +23,9 @@ body{
 .logobox{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
+    height: 15%;
 }
 
 .logobox marquee{
@@ -38,8 +40,8 @@ body{
 }
 
 .logo{
-    height:300px;
-    width: 300px;
+    height:200px;
+    width: 200px;
     background: none;
 }
 

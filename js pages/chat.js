@@ -57,7 +57,9 @@ async function showFollowingPeople(followingPeopleId) {
 
   const people = document.getElementById(`followersPeople${followingPeopleId}`);
   people.addEventListener("click", () => {
-    chat(followingPeopleId,username,userProfile);
+    const UserID = people.getAttribute("id");
+    const targetUserId  = userId.slice(0);
+    chat(targetUserId,username,userProfile);
   })
 }
 
@@ -67,54 +69,67 @@ arrowMark.addEventListener("click", () => {
 })
 
 
-async function chat(targetUserId,username,userProfile) {
+async function chat(targetUserId, username, userProfile) {
+  console.log("Chat opened with:", targetUserId);
+  
   const chatUsername = document.getElementById("chatUsername");
   const chatUserProfile = document.getElementById("chatUserProfile");
-  chatUserProfile.setAttribute("src",userProfile);
-  chatUsername.textContent = username
   const chatWindow = document.getElementById("messages");
   const messageInput = document.getElementById("chatInput");
   const sendMessageButton = document.getElementById("send");
-  // Current user ID (assume it's stored in session or localStorage)
+
+  
+  chatUserProfile.setAttribute("src", userProfile);
+  chatUsername.textContent = username;
+
+  
   const currentUserId = localStorage.getItem("uid");
+
+  
+  sendMessageButton.replaceWith(sendMessageButton.cloneNode(true));
+  const newSendMessageButton = document.getElementById("send");
+  
   // Function to send a message
-  sendMessageButton.addEventListener("click", () => {
+  newSendMessageButton.addEventListener("click", async () => {
+    console.log("Target ID:", targetUserId);
+
     const message = messageInput.value.trim();
     if (message) {
-      const sortUser = [currentUserId, targetUserId].sort().join("_")
+      const sortUser = [currentUserId, targetUserId].sort().join("_");
       const chatRef = ref(database, `LinkUP/chats/${sortUser}`);
-      push(chatRef, {
+      await push(chatRef, {
         sender: currentUserId,
         receiver: targetUserId,
         message,
         timestamp: Date.now(),
       });
-      messageInput.value = "";
+      messageInput.value = ""; // Clear input
+      console.log(`Message sent to: ${targetUserId}`);
     }
   });
 
   // Function to receive messages
-  const sortUser = [currentUserId, targetUserId].sort().join("_")
+  const sortUser = [currentUserId, targetUserId].sort().join("_");
   const chatRef = ref(database, `LinkUP/chats/${sortUser}`);
   onValue(chatRef, (snapshot) => {
-    chatWindow.innerHTML = ""; 
+    chatWindow.innerHTML = ""; // Clear existing messages
     snapshot.forEach((childSnapshot) => {
       const data = childSnapshot.val();
       const messageBubble = document.createElement("div");
-      messageBubble.classList.add("messageBubble")
-      if(data.sender === currentUserId){
+      messageBubble.classList.add("messageBubble");
+      if (data.sender === currentUserId) {
         messageBubble.classList.add("sender");
-      }
-      else{
-        messageBubble.classList.add("receiver")
+      } else {
+        messageBubble.classList.add("receiver");
       }
       messageBubble.innerText = data.message;
-      
+
       chatWindow.appendChild(messageBubble);
     });
     chatWindow.scrollTop = chatWindow.scrollHeight;
   });
 }
+
 
 
 
