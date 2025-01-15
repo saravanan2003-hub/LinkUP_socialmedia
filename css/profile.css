@@ -323,14 +323,14 @@ footer{
 
 .postH1{
     margin-left: 20px;
-    border-bottom: 2px solid #92C7CF;
+    border-bottom: 2px solid black;
 }
 
 
 
 
 #Choose {
-    display: none; /* Hides the default file input */
+    display: none; 
 }
 
 #upload-label {

@@ -136,9 +136,8 @@ const postVideo = document.getElementById("postVideo")
 
 upload.addEventListener("change", () => {
     const file = upload.files[0];
-
+    const imagePreview = document.getElementsByClassName("imagePreview")[0];
     if (file && allowedImageTypes.includes(file.type)) {
-        const imagePreview = document.getElementsByClassName("imagePreview")[0];
         const imageUrl = URL.createObjectURL(file);
         imagePreview.style.display = "none"
         showImg.setAttribute("src", imageUrl);
@@ -149,6 +148,7 @@ upload.addEventListener("change", () => {
         postVideo.setAttribute("src",videoUrl)
         showImg.style.display = "none"
         postVideo.style.display = "block"
+        imagePreview.style.display = "none"
     }else{
         alert("Only video and image files can upload")
     }

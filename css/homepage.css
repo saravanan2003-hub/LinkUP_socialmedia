@@ -156,8 +156,10 @@ aside a{
     border-radius: 20px;
     margin: 30px;
     padding: 15px 50px 15px 50px;
+    position: relative;
+    transition: color 0.3s ease
+    
 }
-
 .popupPost{
     height: 60px;
     width: 70px;
@@ -195,7 +197,7 @@ aside a{
 .likedPeopleDisplayDiv{
     height: 100px;
     width:390px;
-    background-color: #608BC1;
+    background-color: #525252;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -276,15 +278,11 @@ a i{
     margin-left: 20px;
 }
 .like{
-    /* background-color: #AAD7D9; */
     display: flex;
     justify-content:flex-start;
     align-items: center;
-    /* margin-bottom: 20px; */
     margin-left: 5px;
     margin-bottom: 15px;
-
-    
 }
 
 .viewLike{
@@ -302,7 +300,7 @@ a i{
     width: 500px;
     top: 200px;
     left: 450px;
-    background-color:#134B70;
+    background-color:black;
     position: fixed;
     padding: 10px;
     border-radius: 10px;
@@ -350,10 +348,11 @@ a i{
     display: none;
     height: 100px;
     width: 300px;
-    background-color:#608BC1;
+    background-color:#525252;
     position: absolute;
     top:250px;
     left: 100px;
+    color: white;
 }
 
 .recordMsg{
@@ -389,8 +388,8 @@ a i{
 #showlike{
     padding: 5px 20px;
     border: none;
-    background-color: #134B70;
-    color: black;
+    background-color:#525252;
+    color:white;
 }
 
 .userPhoto{
@@ -405,28 +404,7 @@ a i{
     font-size: 25px;
 }
 
-aside a:hover{
-    padding: 15px 50px 15px 50px;
-    /* box-shadow: 0 0 10px white, 0 0 60px white; */
-    transition: box-shadow 0.3s ease-in-out;
-}
 
-aside a:focus{
-    padding: 15px 50px 15px 50px;
-    box-shadow: 0 0 10px white, 0 0 60px white;
-    transition: box-shadow 0.3s ease-in-out;
-}
-
-#Logout:hover{
-    padding: 15px 50px 15px 50px;
-    box-shadow: 0 0 10px white, 0 0 60px white;
-    transition: box-shadow 0.3s ease-in-out;
-}
-#Logout :focus{
-    padding: 15px 50px 15px 50px;
-    box-shadow: 0 0 10px white, 0 0 60px white ;
-    transition: box-shadow 0.3s ease-in-out;
-}
 
 footer{
     display: none;
@@ -462,11 +440,10 @@ footer{
 }
 
 .comment-item {
-    /* border-bottom: 1px solid #ddd; */
     padding: 5px 0;
     display: grid;
     grid-template-columns: 1fr 2fr;
-    background-color: #134B70;
+    background-color: #525252;
     margin: 10px;
     border-radius: 20px;
     
@@ -521,7 +498,7 @@ footer{
     width: 500px;
     height: 20px;
     padding: 10px;
-    background-color: #608BC1;
+    background-color:#525252;
     border: block;
     border-radius: 10px;
     position: relative;
@@ -538,7 +515,7 @@ footer{
 
 
 ::placeholder{
-    color: black;
+    color: white;
     
 }
 
@@ -559,7 +536,7 @@ footer{
     align-items: center;
     height: 100px;
     width:480px;
-    background-color: #608BC1;
+    background-color: #525252;
     border-radius: 10px;
     margin-bottom: 5px;
     margin-top: 5px;
@@ -599,7 +576,7 @@ footer{
     right: 0;
     top: 10px;
     display: none;
-    background-color: #134B70;
+    background-color:black;
     z-index: 10;
     border-radius: 10px;
     overflow-y: auto;
@@ -652,7 +629,6 @@ iframe{
 
 #othersProfilePageShow{
     display: none;
-    /* position: fixed; */
     margin-left: 20vw;
     height: 100vh;
     width: 80vw;
@@ -675,7 +651,7 @@ iframe{
     border-radius: 50%;
     height: 200px;
     width: 200px;
-    border: 10px solid #134B70;
+    border: 10px solid black;
     padding: 5px;
     margin: 20px; 
     width: 200px;
@@ -694,18 +670,18 @@ iframe{
 .postH1{
     margin-left: 20px;
     width: 75px;
-    border-bottom: 2px solid #134B70;
+    border-bottom: 2px solid black;
 }
 
 .files{
-    /* margin-top: 30vh; */
+   
     margin-left: 35px;
     height: 60vh;
     overflow-y: auto;
 }
 
 #fileDisplay{
-    /* margin-top:10%; */
+    
     width: 100%;
     align-content: center;
     display: flex;
@@ -721,7 +697,7 @@ iframe{
     object-fit: cover;
     margin: 30px;
     border-radius: 3px;
-    background-color: #134B70;
+    background-color:black ;
     padding: 10px;
     border-radius: 10px;
 }
@@ -747,7 +723,7 @@ iframe{
 #showFollowers{
     height: 300px;
     width: 500px;
-    background-color:#134B70;
+    background-color:black;
     position:absolute;
     top: 350px;
     left: 350px;
@@ -784,7 +760,7 @@ iframe{
 .showFollowerPeople{
     height: 110px;
     width: 400px;
-    background-color: #608BC1;
+    background-color: #525252;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -825,7 +801,6 @@ iframe{
     transform: translate(-50%, -50%) scale(0);
     color: rgb(197, 41, 6);
     opacity: 0;
-    /* z-index: 999; */
     font-size: 200px;
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
@@ -880,6 +855,8 @@ iframe{
 .loading{
     display:block;
 }
+
+
 .loading-container {
     position: fixed;
     height: 100vh;
@@ -890,7 +867,7 @@ iframe{
     display: flex;
     gap: 8px;
     z-index: 999;
-    background-color: #134B70;
+    background-color:black;
 }
 
 .dot {
@@ -899,7 +876,7 @@ iframe{
     left:50%;
     width: 30px;
     height: 30px;
-    background-color: #ffffff;
+    background-color:white;
     border-radius: 50%;
     animation: bounce 0.6s infinite ease-in-out;
 }
