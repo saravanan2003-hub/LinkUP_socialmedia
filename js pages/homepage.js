@@ -185,7 +185,7 @@ async function fetchPosts() {
                         }, 1000);
                         const updatedLikedPeople = likedPeople.filter((uid) => uid !== userUID);
                         await setDoc(likesDocRef, { likedPeople: updatedLikedPeople });
-                        
+
 
 
                         // Update UI
@@ -248,7 +248,7 @@ async function fetchPosts() {
 
             const likeShow = document.getElementById(`showlike-${postid}`);
             const popmain = document.getElementById("likeShowPopup"); // Declare popmain globally
-            
+
 
             likeShow.addEventListener("click", () => {
                 likePeople();
@@ -268,8 +268,8 @@ async function fetchPosts() {
                 const likesDocRef = doc(db, "Likes", postid);
                 const likesDocSnap = await getDoc(likesDocRef);
                 const likesData = likesDocSnap.data() || { likedPeople: [] };
-    
-                
+
+
                 popmain.appendChild(ShowLikedPeopleDiv)
                 try {
                     const popmain = document.getElementById("likeShowPopup");
@@ -323,7 +323,7 @@ async function fetchPosts() {
                                 ShowLikedPeopleDiv.appendChild(childPopup);
 
                                 const likedPeopleProfile = document.getElementById(`likedPeoplePost-${likedPeopleUserId}`);
-                                likedPeopleProfile.addEventListener("click",()=>{
+                                likedPeopleProfile.addEventListener("click", () => {
                                     userProfilePageDisplay(likedPeopleUserId)
                                 })
                             } else {
@@ -354,65 +354,86 @@ async function fetchPosts() {
 
 
 
-            const commentButton = document.getElementById(`comment-${postid}`); // Button for showing the comment section
+            const commentButton = document.getElementById(`comment-${postid}`);
             commentButton.addEventListener("click", () => {
-                const commentDiv = document.getElementsByClassName("comment")[0]; // Select the comment div
+                const commentDiv = document.getElementsByClassName("comment")[0];
                 commentButton.style.pointerEvents = "none"
                 if (commentDiv.style.display === "none") {
                     commentDiv.style.display = "block";
-                    commentButton.style.pointerEvents = "none" // Show the comment section
+                    commentButton.style.pointerEvents = "none"
                 } else {
-                    commentDiv.style.display = "none"; // Hide the comment section
+                    commentDiv.style.display = "none";
                     commentButton.style.pointerEvents = "auto"
                 }
-
 
                 const CommentSend = document.getElementById("CommentSend");
                 CommentSend.addEventListener("click", async () => {
                     try {
+                        const commentText = document.getElementById("commentText").value.trim();
+                        if (!commentText) return;
 
-                        //comment disabled
-
-
-                        const commentText = document.getElementById("commentText").value;
                         const commentsDocRef = doc(db, "Comments", postid);
                         const commentsDocSnap = await getDoc(commentsDocRef);
-                        const commentsData = commentsDocSnap.data() || { comments: [] }; // Initialize if document doesn't exist
-                        if (commentText.length != 0) {
-                            // Ensure commentsData.comments is an array
-                            if (!Array.isArray(commentsData.comments)) {
-                                commentsData.comments = [];
-                            }
+                        const commentsData = commentsDocSnap.data() || { comments: [] }; // Initialize if no data exists
 
-                            const newComment = {
-                                comment: commentText, // The comment text
-                                userId: userUID,      // ID of the user making the comment
-                                timestamp: new Date().toISOString() // Timestamp of the comment
-                            };
-                            document.getElementById("commentText").value = "";
 
-                            // Add the new comment to the comments array
-                            commentsData.comments.push(newComment);
-
-                            // Update the document in Firestore
-                            await setDoc(commentsDocRef, commentsData);
-
-                            console.log("Comment added successfully!");
+                        if (!Array.isArray(commentsData.comments)) {
+                            commentsData.comments = [];
                         }
 
+                        const newComment = {
+                            comment: commentText,
+                            userId: userUID,
+                            timestamp: new Date().toISOString()
+                        };
+
+
+                        document.getElementById("commentText").value = "";
+
+
+                        commentsData.comments.push(newComment);
+                        await setDoc(commentsDocRef, commentsData);
+
+                        console.log("Comment added successfully!");
+
+
+                        const userDocRef = doc(db, "users", userUID);
+                        const userDocSnap = await getDoc(userDocRef);
+                        const userData = userDocSnap.data() || {};
+                        const username = userData.username || "Unknown User";
+                        const profileimg = userData.profileimg || "default-profile.png";
+
+
+                        const commentsContainer = document.getElementById("commentDisplay");
+                        const commentDiv = document.createElement("div");
+                        commentDiv.classList.add("comment-item");
+
+
+                        commentDiv.innerHTML = `
+                        <div class="comment_profileDiv">
+                            <small class="commentedTime">${new Date().toLocaleString()}</small>
+                            <img src="${profileimg}" class="comment-profile commentProfile-${userUID}" alt="Profile Image">
+                            <p>${username}</p>
+                        </div>
+                        <div class="main_commentDiv">
+                            <p>${commentText}</p>
+                        </div>
+                        `;
+
+
+                        commentsContainer.appendChild(commentDiv);
                     } catch (error) {
                         console.error("Error in comment function:", error);
                     }
+                });
 
-
-                })
 
                 const xmarkComment = document.getElementById("xmarkComment");
                 xmarkComment.addEventListener("click", () => {
                     const commentDiv = document.getElementsByClassName("comment")[0]; // Select the comment div
                     commentButton.style.pointerEvents = "auto";
                     if (commentDiv.style.display === "block") {
-                        commentDiv.style.display = "none"; // Show the comment section
+                        commentDiv.style.display = "none";
                     }
                 })
 
@@ -421,7 +442,7 @@ async function fetchPosts() {
             });
 
             const mainPicture = document.getElementById(`postDiv-${postid}`);
-            if(postType === "image"){
+            if (postType === "image") {
                 console.log("yes");
                 mainPicture.innerHTML = `
                 <img src="${postURL}" alt="Post Image" class="postImg" id="postImg-${postid}"></img>
@@ -429,8 +450,8 @@ async function fetchPosts() {
                 <div><i class="fa-solid fa-heart-crack brokenHeart" id="brokenHeart-${postid}"></i></div>
                 `
             }
-            else{
-               mainPicture.innerHTML = `
+            else {
+                mainPicture.innerHTML = `
                <video src="${postURL}" alt="Post Image" class="postImg" id="postImg-${postid}" controls></video>
                 <div><i class="fa-solid fa-heart emoji" id="emoji-${postid}"></i></div>
                 <div><i class="fa-solid fa-heart-crack brokenHeart" id="brokenHeart-${postid}"></i></div>
@@ -446,7 +467,7 @@ async function fetchPosts() {
     } catch (error) {
         console.error("Error fetching posts:", error);
     }
-    // loading.style.display = "none";
+
 }
 
 fetchPosts();
@@ -458,35 +479,35 @@ async function fetchAndDisplayComments(postid) {
         const commentsDocRef = doc(db, "Comments", postid);
         const commentsDocSnap = await getDoc(commentsDocRef);
 
-        // Get the container for displaying comments
+
         const commentsContainer = document.getElementById("commentDisplay");
-        commentsContainer.innerHTML = ""; // Clear existing comments
+        commentsContainer.innerHTML = "";
 
         const emptyCommentMsg = document.getElementsByClassName("emptyCommentMsg")[0];
         emptyCommentMsg.style.display = "none"
 
         if (commentsDocSnap.exists()) {
             const commentsData = commentsDocSnap.data();
-            const commentsArray = commentsData.comments || []; // Default to an empty array if no comments
+            const commentsArray = commentsData.comments || [];
 
 
-            // Fetch user data dynamically for each comment
+
             for (const comment of commentsArray) {
                 try {
                     const userDocRef = doc(db, "users", comment.userId);
                     const docSnap = await getDoc(userDocRef);
                     const commentedUserId = docSnap.id;
 
-                    // Default values if user data is missing
+
                     const userData = docSnap.exists() ? docSnap.data() : {};
                     const username = userData.username || "Unknown User";
                     const profileimg = userData.profileimg || "default-profile.png";
 
-                    // Create a new comment div
+
                     const commentDiv = document.createElement("div");
                     commentDiv.classList.add("comment-item");
 
-                    // Add comment content
+
                     commentDiv.innerHTML = `
                         <div class="comment_profileDiv">
                             <small class="commentedTime">${new Date(comment.timestamp).toLocaleString()}</small>
@@ -498,15 +519,15 @@ async function fetchAndDisplayComments(postid) {
                         </div>
                     `;
 
-                    // Append to the container
+
                     commentsContainer.appendChild(commentDiv);
 
                     const commentedUserProfiles = document.getElementsByClassName(`commentProfile-${commentedUserId}`);
-                    for(const commentedUserProfile of commentedUserProfiles)
-                    commentedUserProfile.addEventListener("click", () =>{
-                        console.log("button clicked")
-                        userProfilePageDisplay(commentedUserId);
-                    })
+                    for (const commentedUserProfile of commentedUserProfiles)
+                        commentedUserProfile.addEventListener("click", () => {
+                            console.log("button clicked")
+                            userProfilePageDisplay(commentedUserId);
+                        })
                 } catch (userError) {
                     console.error("Error fetching user data for comment:", comment, userError);
                 }
@@ -514,7 +535,7 @@ async function fetchAndDisplayComments(postid) {
         } else {
             console.log("No comments found for this post.");
 
-            // Show "No Comments Yet" if the comments document doesn't exist
+
             const emptyCommentMsg = document.getElementsByClassName("emptyCommentMsg")[0];
             emptyCommentMsg.style.display = "block"
         }
@@ -527,75 +548,95 @@ async function fetchAndDisplayComments(postid) {
 /////////////////////////  user  Profile Page Display function ///////////////////
 
 async function userProfilePageDisplay(otheruserUID) {
-    const userDocRef = doc(db, "users", otheruserUID);
-    const docSnap = await getDoc(userDocRef);
-    const userData = docSnap.data() || {};
-    const username = userData.username || "Unknown User";
-    const profileimg = userData.profileimg || "default-profile.png";
-    const Bio = userData.userBio;
+    const userUID = localStorage.getItem("uid");
+    if (otheruserUID === userUID) {
+        window.location.href = "./profile.html"
+    }
+    else {
+        const ProfileFollowDiv = document.getElementsByClassName("ProfileFollowDiv")[0];
+        ProfileFollowDiv.innerHTML = ""
+        const fileDisplay = document.getElementById("fileDisplay");
+        fileDisplay.innerHTML = ""
+        const displayFollowers = document.getElementsByClassName("displayFollowers")[0];
+        displayFollowers.innerHTML = ""
 
-    //  get elements from HTML 
-    const main = document.getElementsByClassName("main")[0];
-    main.style.display = "none";
-    const othersProfilePageShow = document.getElementById("othersProfilePageShow");
-    othersProfilePageShow.style.display = "block"
-    const ProfileImg = document.getElementById("ProfileImg");
-    const nameDis = document.getElementById("nameDis");
-    nameDis.textContent = username;
-    ProfileImg.setAttribute("src", profileimg);
-    const fileDisplay = document.getElementById("fileDisplay");
-    const othersBio = document.getElementById("othersBio");
-    othersBio.textContent = Bio
-    followers(otheruserUID);
-    following(otheruserUID)
-    // const ProfileFollowbtn = document.createElement("button");
-    const ProfileFollowbtn = document.getElementsByClassName("followBtn")[0]
-    ProfileFollowbtn.setAttribute("id", `profileFollow-${otheruserUID}`)
-    // ProfileFollowbtn.classList.add("followBtn");
-    const ProfileFollowDiv = document.getElementsByClassName("ProfileFollowDiv")[0];
-    ProfileFollowDiv.appendChild(ProfileFollowbtn)
+        const userDocRef = doc(db, "users", otheruserUID);
+        const docSnap = await getDoc(userDocRef);
+        const userData = docSnap.data() || {};
+        const username = userData.username || "Unknown User";
+        const profileimg = userData.profileimg || "default-profile.png";
+        const Bio = userData.userBio;
 
-
-
-    checkFun(otheruserUID, `profileFollow-${otheruserUID}`);
-
-
-    const querySnapshot = await getDocs(query(collection(db, "Posts"), where("uid", "==", otheruserUID)));
-
-    const SnapEmpty = querySnapshot.empty;
-
-    if (SnapEmpty) {
-        const noPostMsgDiv = document.createElement("div");
-        noPostMsgDiv.innerHTML = `<p class="PostEmptyMsg">No Post Yet</p>`;
-        noPostMsgDiv.classList.add("noPostMsgDiv");
-        fileDisplay.appendChild(noPostMsgDiv)
-        console.log(SnapEmpty);
-    } else {
-        querySnapshot.forEach((doc) => {
-
-            console.log("Document Data:", doc.data());
-
-            // Create and configure the image element
-            const postId = doc.id;
-            const postURL = doc.data().postURL
-            // console.log(postURL)
-            const imgElement = document.createElement("img");
-            imgElement.classList.add("post-image");
-            imgElement.setAttribute("id", postId)
-            imgElement.src = doc.data().postURL;
+        //  get elements from HTML 
+        const main = document.getElementsByClassName("main")[0];
+        main.style.display = "none";
+        const othersProfilePageShow = document.getElementById("othersProfilePageShow");
+        othersProfilePageShow.style.display = "block"
+        const ProfileImg = document.getElementById("ProfileImg");
+        const nameDis = document.getElementById("nameDis");
+        nameDis.textContent = username;
+        ProfileImg.setAttribute("src", profileimg);
+        const othersBio = document.getElementById("othersBio");
+        othersBio.textContent = Bio
+        followers(otheruserUID);
+        following(otheruserUID)
+        // const ProfileFollowbtn = document.getElementsByClassName("followBtn")[0]
+        const ProfileFollowbtn = document.createElement("button");
+        ProfileFollowbtn.classList.add("followBtn");
+        ProfileFollowbtn.setAttribute("id", `profileFollow-${otheruserUID}`)
+        ProfileFollowDiv.appendChild(ProfileFollowbtn)
+        checkFun(otheruserUID, `profileFollow-${otheruserUID}`);
 
 
+        const querySnapshot = await getDocs(query(collection(db, "Posts"), where("uid", "==", otheruserUID)));
 
-            // Append the image element to the container
-            fileDisplay.appendChild(imgElement);
+        const SnapEmpty = querySnapshot.empty;
+
+        if (SnapEmpty) {
+            const noPostMsgDiv = document.createElement("div");
+            noPostMsgDiv.innerHTML = `<p class="PostEmptyMsg">No Post Yet</p>`;
+            noPostMsgDiv.classList.add("noPostMsgDiv");
+            fileDisplay.appendChild(noPostMsgDiv)
+            console.log(SnapEmpty);
+        } else {
+            querySnapshot.forEach((doc) => {
+
+                console.log("Document Data:", doc.data());
+
+                // Create and configure the image element
+                const postId = doc.id;
+                const postURL = doc.data().postURL
+                const postType = doc.data().postType;
+                if (postType === "image") {
+                    const imgElement = document.createElement("img");
+                    imgElement.classList.add("post-image");
+                    imgElement.setAttribute("id", postId)
+                    imgElement.src = doc.data().postURL;
+
+                    fileDisplay.appendChild(imgElement);
+                }
+                else{
+                    const imgElement = document.createElement("video");
+                    imgElement.classList.add("post-image");
+                    imgElement.setAttribute("id", postId)
+                    imgElement.src = doc.data().postURL;
+                    imgElement.setAttribute("controls" ,"")
+                    fileDisplay.appendChild(imgElement);
+                }
+
+
+
+
+
+            })
+        }
+
+        const othersPageFollowBtn = document.getElementById(`profileFollow-${otheruserUID}`);
+        othersPageFollowBtn.addEventListener("click", () => {
+            checkFun(otheruserUID, `profileFollow-${otheruserUID}`);
+            followersAdd(otheruserUID);
         })
     }
-
-    const othersPageFollowBtn = document.getElementById(`profileFollow-${otheruserUID}`);
-    othersPageFollowBtn.addEventListener("click", () => {
-        checkFun(otheruserUID, `profileFollow-${otheruserUID}`);
-        followersAdd(otheruserUID);
-    })
 }
 
 
@@ -679,6 +720,7 @@ SearchInp.addEventListener("input", async () => {
                     <button id="followBtn-${userid}" class="followBtn"></button>
                 </div>
             `;
+
             searchDetails.appendChild(userDiv);
 
             checkFun(userid, `followBtn-${userid}`);
@@ -768,7 +810,7 @@ async function followersAdd(userid) {
         const followDocSnap = await getDoc(followDocRef);
         const followers = followDocSnap.exists()
             ? followDocSnap.data().followers || []
-            : []; 
+            : [];
         if (followers.includes(userUID)) {
             // Unfollow: Remove the user from followers
             await setDoc(followDocRef, { followers: followers.filter((uid) => uid !== userUID) });
@@ -803,131 +845,166 @@ async function followersAdd(userid) {
 
 }
 
-
 async function followers(otheruserUID) {
     const followPeople = document.getElementById("followers");
     const showFollowers = document.getElementById("showFollowers");
+    const displayFollowers = document.getElementsByClassName("displayFollowers")[0];
+
     try {
         const userUID = localStorage.getItem("uid");
-        // const docRef = doc(db, "followers", "0FJTHXq7PoSvgySnSiQRodX259w1");
         const docRef = doc(db, "followers", otheruserUID);
         const docSnap = await getDoc(docRef);
+
+        if (!docSnap.exists() || !docSnap.data().followers) {
+            followPeople.textContent = `0 followers`;
+            console.warn("No followers found for this user.");
+            return;
+        }
+
         const followers = docSnap.data().followers;
-        if (!followers) {
-            console.error("no one follow this")
-        }
-        else {
-            followPeople.textContent = `${followers.length} followers`;
-            followPeople.addEventListener("click", async () => {
-                followPeople.style.opacity = "0.5"; // Make it appear dimmed
-                followPeople.style.pointerEvents = "none"; // Disable interaction
 
-                if (followers.length === 0) {
-                    showFollowers.style.display = "block";
-                    const noneMsg = document.createElement("div");
-                    noneMsg.classList.add("noneMsg");
-                    noneMsg.textContent = "No one follow this person";
-                    showFollowers.appendChild(noneMsg);
+        // Update followers count
+        followPeople.textContent = `${followers.length} followers`;
+
+        // Attach click event listener (add only once)
+        followPeople.onclick = async () => {
+            // Prevent duplicate content on repeated clicks
+            displayFollowers.innerHTML = "";
+            showFollowers.style.display = "block";
+
+            if (followers.length === 0) {
+                const noneMsg = document.createElement("div");
+                noneMsg.classList.add("noneMsg");
+                noneMsg.textContent = "No one follows this person.";
+                displayFollowers.appendChild(noneMsg);
+                return;
+            }
+
+            // Fetch followers' data
+            for (const people of followers) {
+                try {
+                    const userDocRef = doc(db, "users", people);
+                    const userDocSnap = await getDoc(userDocRef);
+
+                    if (!userDocSnap.exists()) continue;
+
+                    const userData = userDocSnap.data();
+                    const username = userData.username || "Unknown User";
+                    const userProfile = userData.profileimg || "default-profile.png";
+                    const followersUID = userDocSnap.id;
+
+                    // Create follower display
+                    const showFollowerPeople = document.createElement("div");
+                    showFollowerPeople.classList.add("showFollowerPeople");
+                    showFollowerPeople.innerHTML = `
+                        <img src="${userProfile}" alt="Profile Image" class="followersProfile" id="followersProfile-${followersUID}">
+                        <p class="followersName">${username}</p>
+                    `;
+                    displayFollowers.appendChild(showFollowerPeople);
+
+                    // Attach profile redirection
+                    const followersProfile = document.getElementById(`followersProfile-${followersUID}`);
+                    followersProfile.onclick = () => {
+                        followersXmarkf();
+                        userProfilePageDisplay(followersUID);
+                    };
+                } catch (err) {
+                    console.error(`Error fetching follower data for UID: ${people}`, err);
                 }
-                else {
-                    const displayFollowers = document.getElementsByClassName("displayFollowers")[0];
-                    showFollowers.style.display = "block";
-                    for (const people of followers) {
-                        const docRef = doc(db, "users", people);
-                        const docSnap = await getDoc(docRef);
-                        const followersUID = docSnap.id;
-                        const userData = docSnap.data();
-                        const username = userData.username;
-                        const userProfile = userData.profileimg;
-                        const showFollowerPeople = document.createElement("div");
-                        showFollowerPeople.classList.add("showFollowerPeople")
-                        showFollowerPeople.innerHTML = `
-                            <img src="${userProfile}" alt="Profile Image" class="followersProfile" id="followersProfile-${followersUID}">
-                            <p class="followersName">${username}</p>
-                        `
-                        displayFollowers.appendChild(showFollowerPeople)
-
-                    }
-                }
-            });
-
-        }
-
-
-    }
-    catch (error) {
-        console.error(error);
+            }
+        };
+    } catch (error) {
+        console.error("Error fetching followers:", error);
     }
 }
-followers();
+
 
 const followersXmark = document.getElementById("followersXmark");
 followersXmark.addEventListener("click", () => {
+    followersXmarkf()
+})
+
+function followersXmarkf() {
     const showFollowers = document.getElementById("showFollowers");
     const followPeople = document.getElementById("followers");
     const following = document.getElementById("following");
     const displayFollowers = document.getElementsByClassName("displayFollowers")[0];
     const noneMsg = document.getElementsByClassName("noneMsg")[0];
-    // noneMsg.remove()
     showFollowers.style.display = "none";
     displayFollowers.innerHTML = ""
-    followPeople.style.opacity = "1"; // Make it appear dimmed
+    followPeople.style.opacity = "1";
     followPeople.style.pointerEvents = "auto";
-    following.style.opacity = "1"; // Make it appear dimmed
+    following.style.opacity = "1";
     following.style.pointerEvents = "auto";
-})
+}
+
 
 async function following(otheruserUID) {
     const userUID = localStorage.getItem("uid");
-    var followingCount = 0;
+    let followingCount = 0;
     const following = document.getElementById("following");
 
     try {
-        const followingquerySnapshot = await getDocs(query(collection(db, "followers")));
-        followingquerySnapshot.forEach(doc => {
+        const followingQuerySnapshot = await getDocs(query(collection(db, "followers")));
+        const followingPeopleIds = []; // To store IDs for all following users
+
+        followingQuerySnapshot.forEach((doc) => {
             const array = doc.data().followers;
-            console.log(array)
+            console.log(array);
+
             if (array.includes(otheruserUID)) {
                 followingCount++;
-                console.log(followingCount);
-                const followingPeopleId = doc.id;
-                following.addEventListener("click", async () => {
-                    following.style.opacity = "0.5"; // Make it appear dimmed
-                    following.style.pointerEvents = "none";
-                    showFollowingPeople(followingPeopleId);
-                })
-            }
-            else {
+                followingPeopleIds.push(doc.id); // Store all relevant IDs
+            } else {
                 console.log("no one");
             }
         });
+
+        // Update the following count
         following.textContent = `${followingCount} following`;
-    }
-    catch (error) {
-        console.error(error)
-    }
-}
 
-following()
+        // Attach a single event listener
+        following.onclick = async () => {
+            following.style.opacity = "0.5"; // Make it appear dimmed
+            following.style.pointerEvents = "none"; // Disable interaction
 
-async function showFollowingPeople(followingPeopleId) {
-    const displayFollowers = document.getElementsByClassName("displayFollowers")[0];
-    const showFollowers = document.getElementById("showFollowers")
-    showFollowers.style.display = "block";
-    const docRef = doc(db, "users", followingPeopleId);
-    const docSnap = await getDoc(docRef);
-    const userData = docSnap.data();
-    const username = userData.username;
-    const userProfile = userData.profileimg;
-    console.log(username);
-    console.log(userProfile);
-    const showFollowerPeople = document.createElement("div");
-    showFollowerPeople.classList.add("showFollowerPeople")
-    showFollowerPeople.innerHTML = `
-    <img src="${userProfile}" alt="Profile Image" class="followersProfile">
-    <p class="followersName">${username}</p>
-    `
-    displayFollowers.appendChild(showFollowerPeople)
+            const displayFollowers = document.getElementsByClassName("displayFollowers")[0];
+            const showFollowers = document.getElementById("showFollowers");
+            showFollowers.style.display = "block";
+            displayFollowers.innerHTML = ""; // Clear previous content
+
+            for (const followingPeopleId of followingPeopleIds) {
+                const docRef = doc(db, "users", followingPeopleId);
+                const docSnap = await getDoc(docRef);
+                const userData = docSnap.data();
+                const username = userData.username || "Unknown User";
+                const userProfile = userData.profileimg || "default-profile.png";
+
+                console.log(username);
+                console.log(userProfile);
+
+                const showFollowerPeople = document.createElement("div");
+                showFollowerPeople.classList.add("showFollowerPeople");
+                showFollowerPeople.innerHTML = `
+                    <img src="${userProfile}" alt="Profile Image" class="followersProfile" id="followes-${followingPeopleId}">
+                    <p class="followersName">${username}</p>
+                `;
+                displayFollowers.appendChild(showFollowerPeople);
+
+                // Add click listener for the follower profile
+                const followPeopleProfile = document.getElementById(`followes-${followingPeopleId}`);
+                followPeopleProfile.onclick = () => {
+                    followersXmarkf();
+                    userProfilePageDisplay(followingPeopleId);
+                };
+            }
+
+            following.style.opacity = "1"; // Reset opacity
+            following.style.pointerEvents = "auto"; // Re-enable interaction
+        };
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 ////////////// other user profilepage bac arrow function ///////////
