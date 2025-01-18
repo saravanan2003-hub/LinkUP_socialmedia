@@ -361,71 +361,16 @@ async function fetchPosts() {
                 if (commentDiv.style.display === "none") {
                     commentDiv.style.display = "block";
                     commentButton.style.pointerEvents = "none"
+                    fetchAndDisplayComments(postid)
+
+                    const CommentSend = document.getElementById("CommentSend");
+                    CommentSend.addEventListener("click", async () => {
+                        CommendSend(postid);
+                    });
                 } else {
                     commentDiv.style.display = "none";
                     commentButton.style.pointerEvents = "auto"
                 }
-
-                const CommentSend = document.getElementById("CommentSend");
-                CommentSend.addEventListener("click", async () => {
-                    try {
-                        const commentText = document.getElementById("commentText").value.trim();
-                        if (!commentText) return;
-
-                        const commentsDocRef = doc(db, "Comments", postid);
-                        const commentsDocSnap = await getDoc(commentsDocRef);
-                        const commentsData = commentsDocSnap.data() || { comments: [] }; // Initialize if no data exists
-
-
-                        if (!Array.isArray(commentsData.comments)) {
-                            commentsData.comments = [];
-                        }
-
-                        const newComment = {
-                            comment: commentText,
-                            userId: userUID,
-                            timestamp: new Date().toISOString()
-                        };
-
-
-                        document.getElementById("commentText").value = "";
-
-
-                        commentsData.comments.push(newComment);
-                        await setDoc(commentsDocRef, commentsData);
-
-                        console.log("Comment added successfully!");
-
-
-                        const userDocRef = doc(db, "users", userUID);
-                        const userDocSnap = await getDoc(userDocRef);
-                        const userData = userDocSnap.data() || {};
-                        const username = userData.username || "Unknown User";
-                        const profileimg = userData.profileimg || "default-profile.png";
-
-
-                        const commentsContainer = document.getElementById("commentDisplay");
-                        const commentDiv = document.createElement("div");
-                        commentDiv.classList.add("comment-item");
-
-
-                        commentDiv.innerHTML = `
-                        <div class="comment_profileDiv">
-                            <small class="commentedTime">${new Date().toLocaleString()}</small>
-                            <img src="${profileimg}" class="comment-profile commentProfile-${userUID}" alt="Profile Image">
-                            <p>${username}</p>
-                        </div>
-                        <div class="main_commentDiv">
-                            <p>${commentText}</p>
-                        </div>
-                        `;
-
-
-                        commentsContainer.appendChild(commentDiv);
-                    } catch (error) {
-                        console.error("Error in comment function:", error);
-                    }
-                });
 
 
                 const xmarkComment = document.getElementById("xmarkComment");
@@ -437,8 +382,6 @@ async function fetchPosts() {
                     }
                 })
 
-
-                fetchAndDisplayComments(postid)
             });
 
             const mainPicture = document.getElementById(`postDiv-${postid}`);
@@ -462,15 +405,52 @@ async function fetchPosts() {
             post.addEventListener("dblclick", () => {
                 likeFunction();
             })
-
         }
+        
     } catch (error) {
         console.error("Error fetching posts:", error);
     }
 
+    
+
 }
 
 fetchPosts();
+
+
+async function CommendSend(postid){
+    const userUID = localStorage.getItem("uid");
+    try {
+        const commentText = document.getElementById("commentText").value.trim();
+        if (!commentText) return;
+
+        const commentsDocRef = doc(db, "Comments", postid);
+        const commentsDocSnap = await getDoc(commentsDocRef);
+        const commentsData = commentsDocSnap.data() || { comments: [] }; // Initialize if no data exists
+
+
+        if (!Array.isArray(commentsData.comments)) {
+            commentsData.comments = [];
+        }
+
+        const newComment = {
+            comment: commentText,
+            userId: userUID,
+            timestamp: new Date().toISOString()
+        };
+
+
+        document.getElementById("commentText").value = "";
+
+
+        commentsData.comments.push(newComment);
+        await setDoc(commentsDocRef, commentsData);   
+        console.log("Comment added successfully!");
+        fetchAndDisplayComments(postid)
+    } catch (error) {
+        console.error("Error in comment function:", error);
+    }
+} 
 
 
 
@@ -490,9 +470,9 @@ async function fetchAndDisplayComments(postid) {
             const commentsData = commentsDocSnap.data();
             const commentsArray = commentsData.comments || [];
 
+            const commentsArraySorted = commentsArray.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
-
-            for (const comment of commentsArray) {
+            for (const comment of commentsArraySorted) {
                 try {
                     const userDocRef = doc(db, "users", comment.userId);
                     const docSnap = await getDoc(userDocRef);
@@ -528,9 +508,12 @@ async function fetchAndDisplayComments(postid) {
                             console.log("button clicked")
                             userProfilePageDisplay(commentedUserId);
                         })
+
+                    
                 } catch (userError) {
                     console.error("Error fetching user data for comment:", comment, userError);
                 }
+            
             }
         } else {
             console.log("No comments found for this post.");

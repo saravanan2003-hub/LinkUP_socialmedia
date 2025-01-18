@@ -60,6 +60,8 @@ async function showFollowingPeople(followingPeopleId) {
     const UserID = people.getAttribute("id");
     const targetUserId  = userId.slice(0);
     chat(targetUserId,username,userProfile);
+    const notSelectiveDiv = document.getElementsByClassName("notSelectiveDiv")[0];
+    notSelectiveDiv.style.display = "none";
   })
 }
 
@@ -67,6 +69,16 @@ const arrowMark = document.getElementsByClassName("fa-arrow-left")[0];
 arrowMark.addEventListener("click", () => {
   window.location.href = "homepage.html";
 })
+
+// Encryption and Decryption functions
+const secretKey = "Sara@2003"; // Replace with your own secret key
+function encryptMessage(message) {
+  return CryptoJS.AES.encrypt(message, secretKey).toString();
+}
+function decryptMessage(encryptedMessage) {
+  const bytes = CryptoJS.AES.decrypt(encryptedMessage, secretKey);
+  return bytes.toString(CryptoJS.enc.Utf8);
+}
 
 
 async function chat(targetUserId, username, userProfile) {
@@ -97,10 +109,12 @@ async function chat(targetUserId, username, userProfile) {
     if (message) {
       const sortUser = [currentUserId, targetUserId].sort().join("_");
       const chatRef = ref(database, `LinkUP/chats/${sortUser}`);
+      const encryptedMessage = encryptMessage(message); // Encrypt the message
+
       await push(chatRef, {
         sender: currentUserId,
         receiver: targetUserId,
-        message,
+        Message : encryptedMessage,
         timestamp: Date.now(),
       });
       messageInput.value = ""; // Clear input
@@ -115,6 +129,7 @@ async function chat(targetUserId, username, userProfile) {
     chatWindow.innerHTML = ""; // Clear existing messages
     snapshot.forEach((childSnapshot) => {
       const data = childSnapshot.val();
+      const decryptedMessage = decryptMessage(data.Message); 
       const messageBubble = document.createElement("div");
       messageBubble.classList.add("messageBubble");
       if (data.sender === currentUserId) {
@@ -122,7 +137,7 @@ async function chat(targetUserId, username, userProfile) {
       } else {
         messageBubble.classList.add("receiver");
       }
-      messageBubble.innerText = data.message;
+      messageBubble.innerText = decryptedMessage;
 
       chatWindow.appendChild(messageBubble);
     });
