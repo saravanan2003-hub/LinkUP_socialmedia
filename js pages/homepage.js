@@ -123,6 +123,10 @@ async function fetchPosts() {
             const commentsData = commentsDocSnap.data() || { comments: [] }
             const commentCount = commentsData.comments.length
 
+            const postCommentCountSpan = document.getElementById(`comment-count-${postid}`);
+           
+            
+
             const userUID = localStorage.getItem("uid");
             const isLiked = likesData.likedPeople.includes(userUID);
             const likeCount = likesData.likedPeople.length;
@@ -363,6 +367,15 @@ async function fetchPosts() {
                     commentButton.style.pointerEvents = "none"
                     fetchAndDisplayComments(postid)
 
+
+                    const commentText = document.getElementById("commentText")
+                        commentText.addEventListener("keydown", (event) => {
+                            if (event.key === "Enter") { 
+                                event.preventDefault(); 
+                                CommentSend.click();
+                            }
+                        });
+
                     const CommentSend = document.getElementById("CommentSend");
                     CommentSend.addEventListener("click", async () => {
                         CommendSend(postid);
@@ -422,6 +435,7 @@ async function CommendSend(postid){
     const userUID = localStorage.getItem("uid");
     try {
         const commentText = document.getElementById("commentText").value.trim();
+
         if (!commentText) return;
 
         const commentsDocRef = doc(db, "Comments", postid);
@@ -458,6 +472,7 @@ async function fetchAndDisplayComments(postid) {
     try {
         const commentsDocRef = doc(db, "Comments", postid);
         const commentsDocSnap = await getDoc(commentsDocRef);
+        
 
 
         const commentsContainer = document.getElementById("commentDisplay");
@@ -469,6 +484,10 @@ async function fetchAndDisplayComments(postid) {
         if (commentsDocSnap.exists()) {
             const commentsData = commentsDocSnap.data();
             const commentsArray = commentsData.comments || [];
+            const commentCount = commentsData.comments.length
+
+            const postCommentCountSpan = document.getElementById(`comment-count-${postid}`);
+            postCommentCountSpan.textContent = commentCount
 
             const commentsArraySorted = commentsArray.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 

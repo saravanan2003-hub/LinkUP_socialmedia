@@ -28,15 +28,21 @@ showImg.src = docSnap.data().profileimg;
 
 if (localStorage.getItem("src")) {
     const showImg = document.getElementById("ProfileImg");
-    const savedSrc = localStorage.getItem("src"); // Retrieve the stored image src
-    showImg.setAttribute("src", savedSrc);       // Set the image's src attribute
+    const savedSrc = localStorage.getItem("src"); 
+    showImg.setAttribute("src", savedSrc);       
 }
 
 
 // fetch data from firestore
 async function fetchDatas() {
     const userPostContainer = document.getElementById("fileDisplay");
-    const querySnapshot = await getDocs(query(collection(db, "Posts"), where("uid", "==", localStorage.getItem("uid"))));
+    const querySnapshot = await getDocs(
+        query(
+            collection(db, "Posts"), 
+            where("uid", "==", localStorage.getItem("uid")),
+            orderBy("postTime", "desc") 
+        )
+    );
     const SnapEmpty = querySnapshot.empty;
 
     if (SnapEmpty) {

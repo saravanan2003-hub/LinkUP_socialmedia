@@ -90,6 +90,13 @@ async function chat(targetUserId, username, userProfile) {
   const messageInput = document.getElementById("chatInput");
   const sendMessageButton = document.getElementById("send");
 
+
+  messageInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") { 
+        event.preventDefault(); 
+        newSendMessageButton.click();
+    }
+});
   
   chatUserProfile.setAttribute("src", userProfile);
   chatUsername.textContent = username;
@@ -117,7 +124,7 @@ async function chat(targetUserId, username, userProfile) {
         Message : encryptedMessage,
         timestamp: Date.now(),
       });
-      messageInput.value = ""; // Clear input
+      messageInput.value = ""; 
       console.log(`Message sent to: ${targetUserId}`);
     }
   });
@@ -126,7 +133,7 @@ async function chat(targetUserId, username, userProfile) {
   const sortUser = [currentUserId, targetUserId].sort().join("_");
   const chatRef = ref(database, `LinkUP/chats/${sortUser}`);
   onValue(chatRef, (snapshot) => {
-    chatWindow.innerHTML = ""; // Clear existing messages
+    chatWindow.innerHTML = ""; 
     snapshot.forEach((childSnapshot) => {
       const data = childSnapshot.val();
       const decryptedMessage = decryptMessage(data.Message); 
