@@ -28,15 +28,21 @@ showImg.src = docSnap.data().profileimg;
 
 if (localStorage.getItem("src")) {
     const showImg = document.getElementById("ProfileImg");
-    const savedSrc = localStorage.getItem("src"); // Retrieve the stored image src
-    showImg.setAttribute("src", savedSrc);       // Set the image's src attribute
+    const savedSrc = localStorage.getItem("src"); 
+    showImg.setAttribute("src", savedSrc);       
 }
 
 
 // fetch data from firestore
 async function fetchDatas() {
     const userPostContainer = document.getElementById("fileDisplay");
-    const querySnapshot = await getDocs(query(collection(db, "Posts"), where("uid", "==", localStorage.getItem("uid"))));
+    const querySnapshot = await getDocs(
+        query(
+            collection(db, "Posts"), 
+            where("uid", "==", localStorage.getItem("uid")),
+            orderBy("postTime", "desc") 
+        )
+    );
     const SnapEmpty = querySnapshot.empty;
 
     if (SnapEmpty) {
@@ -177,7 +183,7 @@ async function deletePost(postURL, postId) {
             return;
         }
 
-        // Step 2: Loop through the querySnapshot to delete matching documents
+        
         for (const doc of querySnapshot.docs) {
             // Delete the document from Firestore
             await deleteDoc(doc.ref);
@@ -185,9 +191,9 @@ async function deletePost(postURL, postId) {
         }
 
         // Step 3: Delete the file from Firebase Storage
-        const fileRef = ref(storage, postURL); // Reference the file in storage
-        await deleteObject(fileRef);
-        console.log("File deleted from Firebase Storage.");
+        // const fileRef = ref(storage, postURL); // Reference the file in storage
+        // await deleteObject(fileRef);
+        // console.log("File deleted from Firebase Storage.");
 
         // Step 4: Remove the associated DOM element
         const parentElement = document.getElementById(`postImg-${postId}`);
@@ -398,14 +404,15 @@ async function uploadImage() {
             const storageRef = ref(storage, `image/${file.name}`);
             await uploadBytes(storageRef, file);
             console.log("File Uploaded Successfully");
-
+            const ProfileURL = URL.createObjectURL(file);
+            messageShow.removeAttribute("src");
+            messageShow.setAttribute("src", ProfileURL)
 
             const downloadURL = await getDownloadURL(storageRef);
             const docRef = doc(db, "users", localStorage.getItem("uid"));
             const docSnap = await getDoc(docRef);
             await updateDoc(docRef, { profileimg: downloadURL });
             messageShow.style.display = "block";
-            window.location.reload(true);
 
         } catch (error) {
             console.error("Error:", error);

@@ -72,6 +72,11 @@ async function uploadImage() {
         const data = await response.json();
         const postLink = data.secure_url;
         insertPost(postLink, postType)
+
+        setTimeout(() => {
+            window.location.href = "./homepage.html"
+            uploadBtn.style.pointerEvents = "auto";
+        }, 2000);
     }
     else {
         alert("Only video and image files can upload")
