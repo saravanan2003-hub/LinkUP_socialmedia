@@ -854,19 +854,15 @@ iframe{
 }
 .loading{
     display:block;
+    z-index: 999;
 }
 
 
 .loading-container {
     position: fixed;
     height: 100vh;
-    width:100vw ;
-    position: absolute;
-    top: 0;
-    left: 0;
+    width:100vw;
     display: flex;
-    gap: 8px;
-    z-index: 999;
     background-color:black;
 }
 
@@ -904,7 +900,7 @@ iframe{
 
 
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 768px) {
 
     
     aside {
@@ -930,31 +926,7 @@ iframe{
         align-items: center;
         padding: 0 10px;
     }
-
-
-    main {
-        margin: 0;
-        margin-bottom: 10vh;
-        width: 100%;
-    }
-
-    main .feed {
-        margin-bottom: 15%;
-        width: 100%;
-    }
-
-    .main{
-        width: 100%;
-    }
-
-
-    .container {
-        display: grid;
-        grid-template-rows: 7% 83% 10%;
-        grid-template-columns: none;
-    }
-
-
+    
     footer {
         position: fixed;
         bottom: 0;
@@ -968,7 +940,44 @@ iframe{
         border-top: 1px solid white;
     }
 
+    main{
+        width: 550px;
+        margin-left: 0;
+    }
 
+    .postImg{
+        width: 100%;
+    }
+
+    .main{
+        width: 550px;
+        margin-left: 0;
+    }
+    .feed{
+        width: 550px;
+        margin-left: 0;
+        margin-bottom: 10vh;
+    }
+
+    .box{
+        width: 550px;
+        margin-left: 0;
+    }
+
+    .profilePicture{
+        width: 550px;
+        margin-left: 0;
+    }
+
+    .mainPicture{
+        width: 550px;
+        margin-left: 0;
+    }
+
+    .like{
+        width: 550px; 
+        margin-left: 0;
+    }
     footer a {
         display: block;
         color: white;
@@ -984,29 +993,6 @@ iframe{
         display: block;
     }
 
-    .box {
-        width: 100%;
-        margin-right: 44px;
-    }
-
-    .profilePicture{
-        width: 100%;
-        margin-left: 20px;
-
-    }
-
-    .mainPicture{
-        width: 100%;
-    }
-    .like{
-        width: 100%;
-        margin-left: 10px;
-    }
-    .postImg {
-        width: 100%;
-    }
-
-
     footer a i, 
     footer button i {
         font-size: 25px;
@@ -1019,46 +1005,6 @@ iframe{
     #Logout:hover,
     #Logout:focus {
         box-shadow: none;
-    }
-
-
-    #ProfileImg {
-        height: 150px;
-        width: 150px;
-        margin: 20px auto;
-    }
-
-
-    .comment {
-        height:600px;
-        width: 100%;
-        left: 0%;
-        top: 50%;
-        position: fixed;
-    }
-
-    #commentDisplay {
-        width: 93%;
-        height: 500px;
-    }
-
-    #xmarkComment{
-        position: relative;
-        left: 10px;
-        font-size:25px;
-    }
-
-    .commentIp{
-        position: relative;
-        top: 10px;
-    }
-
-    #commentText{
-        width:430px;
-    }
-
-    #microphone{
-        right: 110px;
     }
 
 

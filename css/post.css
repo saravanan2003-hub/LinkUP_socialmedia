@@ -1,34 +1,34 @@
-*{
+* {
     margin: 0;
     padding: 0;
 }
 
-aside{
+aside {
     height: 100vh;
     width: 20vw;
-    background-color:black;
+    background-color: black;
     margin-top: 0;
     top: 0;
     position: fixed;
     display: flex;
     flex-direction: column;
-    justify-content:flex-start;
+    justify-content: flex-start;
     align-items: center;
 
 }
 
-.postSection{
-    margin-top:7vh;
+.postSection {
+    margin-top: 7vh;
 }
 
 
-aside span img{
+aside span img {
     height: 200px;
     width: 230px;
     margin-top: 50px;
 }
 
-aside a{
+aside a {
     color: white;
     text-decoration: none;
     font-size: 25px;
@@ -38,66 +38,67 @@ aside a{
     margin: 30px;
 }
 
-a i{
-   color: white;
-   margin-right: 15px;
+a i {
+    color: white;
+    margin-right: 15px;
 }
 
-aside a:hover{
-    box-shadow: 0 0 10px white, 0 0 60px white;
-    transition: box-shadow 0.3s ease-in-out;
-}
-
-aside a:focus{
+aside a:hover {
     box-shadow: 0 0 10px white, 0 0 60px white;
     transition: box-shadow 0.3s ease-in-out;
 }
 
-#LogoutPost:hover{
+aside a:focus {
     box-shadow: 0 0 10px white, 0 0 60px white;
     transition: box-shadow 0.3s ease-in-out;
 }
-#LogoutPost :focus{
+
+#LogoutPost:hover {
     box-shadow: 0 0 10px white, 0 0 60px white;
     transition: box-shadow 0.3s ease-in-out;
 }
-#messageShow{
+
+#LogoutPost :focus {
+    box-shadow: 0 0 10px white, 0 0 60px white;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+#messageShow {
     display: none;
     position: absolute;
     height: 200px;
     width: 300px;
-    background-color:white;
+    background-color: white;
     padding-top: 25px;
 }
 
-.alert{
+.alert {
     display: flex;
     flex-direction: column;
-    justify-content:space-evenly;
+    justify-content: space-evenly;
     align-items: center;
 }
 
-.mg{
-    margin-top:40px ;
+.mg {
+    margin-top: 40px;
 }
 
-.fa-check-to-slot{
+.fa-check-to-slot {
     margin-top: 20px;
 }
 
 
-#LogoutPost{
-    padding: 15px 50px 15px 50px;
-    color:white;
+#LogoutPost {
+    background: none;
+    color: white;
     font-size: 25px;
     border-radius: 20px;
     border: none;
-    cursor: pointer;
-    background: none;
     margin: 30px;
+    padding: 15px 50px 15px 50px;
 }
 
-.fa-check-to-slot{
+.fa-check-to-slot {
     font-size: 70px;
     color: green;
 
@@ -105,67 +106,69 @@ aside a:focus{
 
 
 
-#messageShow div{
+#messageShow div {
     font-size: 25px;
-    
+
 }
 
-.mainSection{
-     display: grid;
+.mainSection {
+    display: grid;
     grid-template-rows: 10% 90%;
 
 }
 
-main{
+main {
     margin-left: 20vw;
     height: 100vh;
     width: 80vw;
-    background-color:#ffffff;
+    background-color: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
-   
+
 }
 
-.postSection{
+.postSection {
     height: 85vh;
     width: 50%;
     display: flex;
     flex-direction: column;
-    justify-content:space-evenly;
+    justify-content: space-evenly;
     align-items: center;
     margin-bottom: 70px;
     border-radius: 20px;
     border: 3px black solid;
 }
 
-.postSection div{
-    width:90%;
+.postSection div {
+    width: 90%;
     height: 65%;
     /* padding: 10px;
     padding: 10px; */
 }
-.active{
+
+.active {
     border-bottom: 2px solid white;
 }
 
-#PostCaption{
+#PostCaption {
     height: 50px;
     width: 465px;
     border-radius: 10px;
     padding: 10px;
 }
 
-#showImg{
-    display:block;
-    width:100%;
+#showImg {
+    display: block;
+    width: 100%;
     height: 100%;
     border-radius: 10px;
 }
 
 
 #upload {
-    display: none; /* Hides the default file input */
+    display: none;
+    /* Hides the default file input */
 }
 
 #upload-label {
@@ -187,49 +190,52 @@ main{
     box-shadow: 0 0 10px #54b1d0, 0 0 60px #54b1d0;
 }
 
-#uploadBtn{
+#uploadBtn {
     padding: 15px 105px;
-    background-color:#8CB9BD;
+    background-color: #8CB9BD;
     cursor: pointer;
     border-radius: 10px;
     border: none;
     color: black;
     font-weight: bolder;
 }
-.imagePerview{
+
+.imagePerview {
     position: absolute;
     top: 330px;
     font-size: 20px;
     z-index: 0;
 }
-#uploadBtn:hover{
+
+#uploadBtn:hover {
     background-color: #54b1d0;
-    box-shadow: 0 0 10px #54b1d0, 0 0 60px #54b1d0;   
+    box-shadow: 0 0 10px #54b1d0, 0 0 60px #54b1d0;
 }
 
 input[type="file"] {
     color: transparent;
-    width: 120px; 
-    cursor: pointer; 
-  }
+    width: 120px;
+    cursor: pointer;
+}
 
 
 
-footer{
+footer {
     display: none;
 }
 
 .no-pointer {
-    cursor: none; /* Hide the cursor */
+    cursor: none;
+    /* Hide the cursor */
 }
 
-#postVideo{
+#postVideo {
     display: none;
-    width:100%;
+    width: 100%;
     height: 100%;
 }
 
-#ChangeBtn{
+#ChangeBtn {
     padding: 15px 50px;
     background-color: #ffffff;
     cursor: pointer;
@@ -238,125 +244,85 @@ footer{
     color: black;
     font-weight: bolder;
     position: absolute;
-    right:20px;
+    right: 20px;
     top: 20px;
     background-color: #8CB9BD;
 }
 
-.imagePreview{
+.imagePreview {
     position: absolute;
     top: 320px;
     font-size: 30px;
 }
 
 @media screen and (max-width: 720px) {
-        /* Hide the aside (sidebar) section */
-        aside {
-            display: none;
-        }
-    
-    
-        /* Full-width header for mobile view */
-        header {
-            height: 7%;
-            width: 100%;
-            margin: 0;
-            top: 0;
-            left: 0;
-            position: fixed;
-            z-index: 10;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 10px;
-            background-color: #252734;
-        }
 
-        main{
-            /* margin-top: 7%; */
-            background-color: #252734;
-            margin-bottom: 7%;
-            width: 100vw;
-            height: 100vh;
-            margin: 0;
-            margin-right: 0;
-        }
-        
-        .postSection{
-            margin: 0;
-            height: 70%;
-            width: 100%;
-            display: flex;
-            justify-content:space-evenly;
-            align-items: center;
-        }
+    
+    aside {
+        display: none;
+    }
 
-        
+    main {
+        background-color: white;
+        margin-bottom: 7%;
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-  
-           
-        /* Footer as a bottom navigation bar */
-        footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            height: 7%;
-            background-color: #252734;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 10;
-            border-top: 1px solid white;
-        }
-    
-        /* Footer navigation links */
-        footer a {
-            display: block;
-            color: white;
-            font-size: 25px;
-            text-decoration: none;
-            background: none;
-            border: none;
-        }
-    
-        #LogoutPost {
-            font-size: 25px;
-            color: white;
-            border: none;
-            background: none;
-            display: block; /* Ensure it is visible */
-        }
-    
-    
-        /* Footer icon styling */
-        footer a i {
-            font-size: 25px;
-            color: white;
-        }
-    
-        footer button i{
-            font-size: 25px;
-            color: white;  
-        }
-    
-        /* Remove hover effect on mobile */
-        a:hover {
-            background: none;
-        }
-    /* Logout button adjustments */
-        #Logout:hover {
-            background: none;
-        }
+    .postSection {
+        margin: 0;
+        height: 70%;
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+    }
 
-        #upload{
-            padding: 10px 10px 10px 10px;
-        }
-    
-        
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 10vh;
+        background-color: black;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 10;
+        border-top: 1px solid white;
+    }
+
+    footer a {
+        display: block;
+        color: white;
+        font-size: 25px;
+        text-decoration: none;
+    }
+
+    footer a i,
+    footer button i {
+        font-size: 25px;
+        color: white;
+    }
+
+    aside a:hover,
+    aside a:focus,
+    #Logout:hover,
+    #Logout:focus {
+        box-shadow: none;
+    }
+
+    #LogoutPost{
+        font-size: 25px;
+        color: white;
+        border: none;
+        background: none;
+        display: block;
+        margin: 0;
+        padding: 0;
+    }
+
 }
-
-
-
-
-
-
