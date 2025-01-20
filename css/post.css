@@ -262,31 +262,13 @@ footer {
         display: none;
     }
 
-    main {
-        background-color: white;
-        margin-bottom: 7%;
-        width: 100vw;
-        height: 100vh;
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
 
-    .postSection {
-        margin: 0;
-        height: 70%;
-        width: 100%;
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-    }
 
     footer {
         position: fixed;
         bottom: 0;
         width: 100%;
-        height: 10vh;
+        height: 7vh;
         background-color: black;
         display: flex;
         justify-content: space-around;
@@ -302,6 +284,10 @@ footer {
         text-decoration: none;
     }
 
+    #PostCaption{
+        width: 300px;
+        height: 30px;
+    }
     footer a i,
     footer button i {
         font-size: 25px;
@@ -324,5 +310,27 @@ footer {
         margin: 0;
         padding: 0;
     }
+
+    .mainSection{
+        width: 100%;
+        margin-left: 0;
+    }
+
+    main{
+        width:100%;
+        margin-left: 0;  
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+    }
+    .postSection{
+        width:90%;
+        height: 70%;
+        margin-left: 0;
+        margin-bottom:30%;
+    }
+
+
 
 }
