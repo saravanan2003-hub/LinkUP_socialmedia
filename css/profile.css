@@ -183,28 +183,7 @@ aside a:focus{
     margin-left: 24px;
 }
 
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-        transform: translate(-50%, -60%);
-    }
-    100% {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
-}
-
-/* Exit animation */
-@keyframes fadeOut {
-    0% {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
-    100% {
-        opacity: 0;
-        transform: translate(-50%, -60%);
-    }
-}
+animation: fadeIn 0.5s ease-out forwards;animation: fadeIn 0.5s ease-out forwards;
 
 
 
