@@ -904,6 +904,10 @@ iframe{
 }
 
 
+#commentText::placeholder{
+    color: black;
+}
+
 
 
 
@@ -915,7 +919,7 @@ iframe{
     }
 
     
-    .ad1 {
+    .ad1 div iframe{
         display: none;
     }
 
@@ -984,18 +988,19 @@ iframe{
     }
 
     .like{
-        width: 100vw; 
-        margin-left: 0;
+        width: 95vw; 
+        margin-left:20px;
+
     }
 
     .LikeYes{
-        width: 100vw; 
+        width: 95vw; 
         margin-left: 0;
     }
 
     .postDesDiv{
-        width: 100vw; 
-        margin-left: 0; 
+        width: 90vw; 
+        margin-left: 5px; 
     }
     footer a {
         display: block;
@@ -1026,7 +1031,59 @@ iframe{
         box-shadow: none;
     }
 
+    #nameDisplay{
+        font-size: 20px;
+    }
 
+    #SearchInp{
+        width: 250px;
+        margin-right: 10px;
+    }
+
+    #searchDetails{
+        height:40%;
+        width: 100vw;
+        margin-right: 100%;
+        border-radius: 0px;
+    }
+ 
+     .comment{
+        position: absolute;
+        top:38%;
+        left: 0;
+        height:60%;
+        width:96%;
+        margin: 0;
+        position: fixed;
+    }
+    #commentDisplay{
+        width:95%;
+        margin: 0;
+        
+    }
+
+    #xmarkComment{
+        position: absolute;
+        left: 0;
+    }
+
+    .commentIp{
+        width: 96%;
+        margin: 0;
+        display: flex;
+        justify-content:space-evenly;
+        align-items: center;
+    }
+
+    #commentText{
+        width: 270px;
+        border:blue;
+    }
+
+    #microphone{
+        position: absolute;
+
+    }
 
 }
 
