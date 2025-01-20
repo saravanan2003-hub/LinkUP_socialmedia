@@ -590,7 +590,14 @@ async function userProfilePageDisplay(otheruserUID) {
         checkFun(otheruserUID, `profileFollow-${otheruserUID}`);
 
 
-        const querySnapshot = await getDocs(query(collection(db, "Posts"), where("uid", "==", otheruserUID)));
+        // const querySnapshot = await getDocs(query(collection(db, "Posts"), where("uid", "==", otheruserUID)));
+        const querySnapshot = await getDocs(
+                query(
+                    collection(db, "Posts"), 
+                    where("uid", "==", otheruserUID),
+                    orderBy("postTime", "desc") 
+                )
+            );
 
         const SnapEmpty = querySnapshot.empty;
 
