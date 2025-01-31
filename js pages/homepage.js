@@ -806,8 +806,8 @@ async function checkFun(userid, btnId) {
 
 async function followersAdd(userid) {
     try {
-        const followDocRef = doc(db, "followers", userid); // Reference to the document
-        const userUID = localStorage.getItem("uid"); // Current user's UID
+        const followDocRef = doc(db, "followers", userid); 
+        const userUID = localStorage.getItem("uid"); 
         const followBtn = document.getElementById(`followBtn-${userid}`);
         const othersPageFollowBtn = document.getElementById(`profileFollow-${userid}`);
         if (!userUID) {

@@ -1037,7 +1037,7 @@ iframe{
 
     #SearchInp{
         width: 250px;
-        margin-right: 10px;
+        margin-right:10px;
     }
 
     #searchDetails{
@@ -1048,8 +1048,8 @@ iframe{
     }
  
      .comment{
-        position: absolute;
-        top:38%;
+        position:absolute;
+        bottom:0;
         left: 0;
         height:60%;
         width:96%;

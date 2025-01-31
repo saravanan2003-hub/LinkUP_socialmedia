@@ -200,7 +200,7 @@ function validateInputs() {
 
 // Email validation function
 const validateEmail = (email) => {
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo|outlook)\.com$/i;  //^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simplified email regex
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo|outlook)\.com$/i;
     return emailPattern.test(email);
 };
 
