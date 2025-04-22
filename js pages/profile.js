@@ -530,7 +530,7 @@ Remove.addEventListener("click", async () => {
 
         if (docSnap.exists()) {
             const userData = docSnap.data();
-            const userProfile = userData.profileimg;
+            const userProfile = userData.profileimg;_
             const fileRef = ref(storage, userProfile); // Reference the file in storage
 
             // Delete the file from Firebase Storage
@@ -647,8 +647,6 @@ async function followers() {
 
             }
         }
-
-
     }
     catch (error) {
         console.error(error);

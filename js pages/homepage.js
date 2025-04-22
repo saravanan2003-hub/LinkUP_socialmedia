@@ -1016,7 +1016,7 @@ async function following(otheruserUID) {
     }
 }
 
-////////////// other user profilepage bac arrow function ///////////
+////////////// other user profilepage back_ arrow function ///////////
 const backArrow = document.getElementsByClassName("fa-arrow-left")[0];
 backArrow.addEventListener("click", () => {
     const othersProfilePageShow = document.getElementById("othersProfilePageShow");

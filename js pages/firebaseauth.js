@@ -101,7 +101,7 @@ form.addEventListener('submit', (event) => {
                 setDoc(docRef, userData)
                     .then(() => {
                         showMessage('Account created successfully', 'signInMessage');
-                        window.location.href = "../index.html"; // Redirect to login page
+                        window.location.href = "../index.html"; // Redirect to homepage page
                     })
                     .catch((error) => {
                         console.error("Error writing document:", error);
