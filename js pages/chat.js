@@ -71,7 +71,7 @@ arrowMark.addEventListener("click", () => {
 })
 
 // Encryption and Decryption functions
-const secretKey = "Sara@2003"; // Replace with your own secret key
+const secretKey = "Sara@2003"; // own secret key
 function encryptMessage(message) {
   return CryptoJS.AES.encrypt(message, secretKey).toString();
 }
@@ -151,16 +151,3 @@ async function chat(targetUserId, username, userProfile) {
     chatWindow.scrollTop = chatWindow.scrollHeight;
   });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

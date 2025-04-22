@@ -183,10 +183,6 @@ aside a:focus{
     margin-left: 24px;
 }
 
-animation: fadeIn 0.5s ease-out forwards;animation: fadeIn 0.5s ease-out forwards;
-
-
-
 .input{
     display: flex;
     flex-direction: column;

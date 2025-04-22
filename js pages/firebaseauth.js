@@ -101,7 +101,7 @@ form.addEventListener('submit', (event) => {
                 setDoc(docRef, userData)
                     .then(() => {
                         showMessage('Account created successfully', 'signInMessage');
-                        window.location.href = "../index.html"; // Redirect to login page
+                        window.location.href = "../index.html"; // Redirect to homepage page
                     })
                     .catch((error) => {
                         console.error("Error writing document:", error);
@@ -200,7 +200,7 @@ function validateInputs() {
 
 // Email validation function
 const validateEmail = (email) => {
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo|outlook)\.com$/i;  //^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simplified email regex
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo|outlook)\.com$/i;
     return emailPattern.test(email);
 };
 
